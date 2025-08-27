@@ -18,9 +18,12 @@ import { Select,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-
-import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { ref, onMounted, watch, reactive, computed } from 'vue';
 import { useLocationStore } from '@/store/locationStore';
+import { useAuthStore } from '@/store/auth';
+
+const router = useRouter();
 
 const signupData = ref({
   role: "", // 'student' or 'parent'
@@ -114,25 +117,79 @@ onMounted(() => {
   locationStore.loadProvinces(); // Call to load provinces
 });
 
-// Watch for province changes and load the corresponding districts
+// Update watcher untuk menyimpan ke signupData
 watch(selectedProvince, (newProvinceId) => {
+  signupData.value.province = newProvinceId; // Tambahkan ini
   locationStore.loadDistricts(newProvinceId);
-  selectedDistrict.value = null; // Reset district when province changes
-  selectedSubDistrict.value = null; // Reset sub-district when province changes
-  selectedSchool.value = null; // Reset school when province changes
+  selectedDistrict.value = null;
+  selectedSubDistrict.value = null;
+  selectedSchool.value = null;
 });
 
-// Watch for district changes and load the corresponding sub-districts
 watch(selectedDistrict, (newDistrictId) => {
+  signupData.value.district = newDistrictId; // Tambahkan ini
   locationStore.loadSubDistricts(newDistrictId);
-  selectedSubDistrict.value = null; // Reset sub-district when district changes
-  selectedSchool.value = null; // Reset school when district changes
+  selectedSubDistrict.value = null;
+  selectedSchool.value = null;
 });
 
-// Watch for sub-district changes and load the corresponding schools
 watch(selectedSubDistrict, (newSubDistrictId) => {
+  signupData.value.subdistrict = newSubDistrictId; // Tambahkan ini
   locationStore.loadSchools(newSubDistrictId);
-  selectedSchool.value = null; // Reset school when sub-district changes
+  selectedSchool.value = null;
+});
+
+watch(selectedSchool, (newSchoolId) => {
+  signupData.value.school = newSchoolId; // Tambahkan ini
+});
+
+const isFormValid = computed(() => {
+  const basicValidation = 
+    signupData.value.firstName &&
+    signupData.value.lastName &&
+    signupData.value.username &&
+    signupData.value.email &&
+    signupData.value.phoneNumber &&
+    signupData.value.gender &&
+    signupData.value.password &&
+    signupData.value.konfirmasi_password &&
+    selectedProvince.value &&          // ✅ Tambahkan
+    selectedDistrict.value &&          // ✅ Tambahkan
+    selectedSubDistrict.value &&       // ✅ Tambahkan
+    selectedSchool.value &&
+    passwordMessages.length === "none" &&
+    passwordMessages.capital === "none" &&
+    passwordMessages.symbol === "none" &&
+    confirmPasswordMatch.value === "block";
+
+  if (signupData.value.role === 'student') {
+    return basicValidation && signupData.value.nomorInduk;
+  } else if (signupData.value.role === 'parent') {
+    return basicValidation && signupData.value.childName && signupData.value.childNomorInduk;
+  }
+
+  return false;
+});
+
+const authStore = useAuthStore()
+// Langsung akses state ✅
+const isRegistering = computed(() => authStore.isLoading)
+const registrationError = computed(() => authStore.error)
+const currentUser = computed(() => authStore.user)
+const isLoggedIn = computed(() => authStore.isAuthenticated)
+const register = async () => {
+  const result = await authStore.register(signupData.value)
+  
+  if (result.success) {
+    alert(result.message)
+    router.push('/auth/login')
+  } else {
+    alert(result.message)
+  }
+}
+
+definePageMeta({
+  layout: "AuthPage",
 });
 </script>
 
@@ -152,7 +209,7 @@ watch(selectedSubDistrict, (newSubDistrictId) => {
           <!-- Pilihan Peran -->
           <div class="grid gap-2">
             <Label for="peran">Peran</Label>
-            <Select v-model="selectedPeran" @change="setPeran(selectedPeran)">
+            <Select v-model="selectedPeran" @update:modelValue="setPeran">
               <SelectTrigger class="w-[180px]">
                 <SelectValue placeholder="Pilih Peran" />
               </SelectTrigger>
@@ -221,8 +278,8 @@ watch(selectedSubDistrict, (newSubDistrictId) => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="perempuan">Perempuan</SelectItem>
-                    <SelectItem value="laki-laki">Laki Laki</SelectItem>
+                    <SelectItem value="female">Perempuan</SelectItem>
+                    <SelectItem value="male">Laki Laki</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -340,76 +397,78 @@ watch(selectedSubDistrict, (newSubDistrictId) => {
             </div>
           </div>
 
-          <!-- Province Dropdown -->
-          <div class="grid gap-2">
-            <Label for="province">Province</Label>
-            <Select v-model="selectedProvince">
-              <SelectTrigger class="w-[180px]">
-                <SelectValue placeholder="Pilih Provinsi" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Provinsi</SelectLabel>
-                  <SelectItem v-for="province in locationStore.provinces" :key="province.id" :value="province.id">
-                    {{ province.name }}
-                  </SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <!-- District Dropdown -->
-          <div class="grid gap-2">
-            <Label for="district">District</Label>
-            <Select v-model="selectedDistrict" :disabled="!selectedProvince">
-              <SelectTrigger class="w-[180px]">
-                <SelectValue placeholder="Pilih Kota/Kabupaten" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Kota/Kabupaten</SelectLabel>
-                  <SelectItem v-for="district in locationStore.districts" :key="district.id" :value="district.id">
-                    {{ district.name }}
-                  </SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <!-- Sub District Dropdown -->
-          <div class="grid gap-2">
-            <Label for="sub-district">Sub District</Label>
-            <Select v-model="selectedSubDistrict" :disabled="!selectedDistrict">
-              <SelectTrigger class="w-[180px]">
-                <SelectValue placeholder="Pilih Kecamatan" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Kecamatan</SelectLabel>
-                  <SelectItem v-for="subDistrict in locationStore.subDistricts" :key="subDistrict.id" :value="subDistrict.id">
-                    {{ subDistrict.name }}
-                  </SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <!-- Schools Dropdown -->
-          <div class="grid gap-2">
-            <Label for="school">Sekolah</Label>
-            <Select v-model="selectedSchool" :disabled="!selectedSubDistrict">
-              <SelectTrigger class="w-[180px]">
-                <SelectValue placeholder="Pilih Sekolah" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Sekolah</SelectLabel>
-                  <SelectItem v-for="school in locationStore.schools" :key="school.id" :value="school.id">
-                    {{ school.name }}
-                  </SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+          <div v-if="selectedPeran === 'student' || selectedPeran === 'parent'">
+            <!-- Province Dropdown -->
+            <div class="grid gap-2">
+              <Label for="province">Province</Label>
+              <Select v-model="selectedProvince">
+                <SelectTrigger class="w-[180px]">
+                  <SelectValue placeholder="Pilih Provinsi" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Provinsi</SelectLabel>
+                    <SelectItem v-for="province in locationStore.provinces" :key="province.id" :value="province.id">
+                      {{ province.name }}
+                    </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+  
+            <!-- District Dropdown -->
+            <div class="grid gap-2">
+              <Label for="district">District</Label>
+              <Select v-model="selectedDistrict" :disabled="!selectedProvince">
+                <SelectTrigger class="w-[180px]">
+                  <SelectValue placeholder="Pilih Kota/Kabupaten" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Kota/Kabupaten</SelectLabel>
+                    <SelectItem v-for="district in locationStore.districts" :key="district.id" :value="district.id">
+                      {{ district.name }}
+                    </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+  
+            <!-- Sub District Dropdown -->
+            <div class="grid gap-2">
+              <Label for="sub-district">Sub District</Label>
+              <Select v-model="selectedSubDistrict" :disabled="!selectedDistrict">
+                <SelectTrigger class="w-[180px]">
+                  <SelectValue placeholder="Pilih Kecamatan" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Kecamatan</SelectLabel>
+                    <SelectItem v-for="subDistrict in locationStore.subDistricts" :key="subDistrict.id" :value="subDistrict.id">
+                      {{ subDistrict.name }}
+                    </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+  
+            <!-- Schools Dropdown -->
+            <div class="grid gap-2">
+              <Label for="school">Sekolah</Label>
+              <Select v-model="selectedSchool" :disabled="!selectedSubDistrict">
+                <SelectTrigger class="w-[180px]">
+                  <SelectValue placeholder="Pilih Sekolah" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Sekolah</SelectLabel>
+                    <SelectItem v-for="school in locationStore.schools" :key="school.id" :value="school.id">
+                      {{ school.name }}
+                    </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           <!-- Tombol Submit -->

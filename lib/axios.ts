@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const instance = axios.create({
-    baseURL: 'http://165.22.246.34/api',
+    baseURL: 'http://157.245.193.186/api',
     validateStatus: (status) => {
         if(status >= 200 && status < 300){
             return true
