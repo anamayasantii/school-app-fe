@@ -1,138 +1,252 @@
 <template>
-  <!-- <div class="mx-auto my-8 max-w-[1420px] px-[170px]">
-    <h2 class="text-2xl font-semibold mb-4">Recent Reviews</h2>
-    <div class="flex flex-wrap justify-between">
-      <div 
-        v-for="review in reviews" 
-        :key="review.id" 
-        class="flex flex-col bg-[#F2ECE3] rounded-xl p-4 md:p-5 dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70 mb-4 w-full md:w-[48%]"
-        style="width: 450px; height: 222px;"
+  <section class="max-w-6xl mx-auto p-6">
+    <h2 class="text-2xl font-manrope-bold text-gray-900 mb-6">
+      Recent Reviews
+    </h2>
+
+    <div class="relative">
+      <!-- Btn kiri -->
+      <button
+        class="nav-btn left-0 -translate-x-1/2"
+        :class="{ 'opacity-30 pointer-events-none': atStart }"
+        @click="scrollPrev"
+        aria-label="Previous"
       >
-        <div class="flex items-start mb-2">
-          <img
-            v-if="review.image && review.image.length > 0"
-            :src="review.image"
-            alt="Profile Picture"
-            class="w-12 h-12 rounded-full mr-4"
-          />
-          <div class="flex-1">
-            <div class="flex justify-between">
-              <div>
-                <div class="text-lg font-bold text-gray-800 dark:text-white">{{ review.username }}</div>
-                <div class="text-sm font-medium uppercase text-gray-500 dark:text-neutral-500">{{ review.schoolDetailName }}</div>
+        <svg
+          class="size-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </button>
+
+      <!-- Track: sejajar dgn container, gap 24px -->
+      <div
+        ref="track"
+        class="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory no-scrollbar"
+      >
+        <!-- Card: 564px, tinggi 272px -->
+        <article
+          v-for="review in reviews"
+          :key="review.id"
+          class="snap-start shrink-0 bg-[#F2ECE3] rounded-2xl border border-[#E8E1D6] shadow-sm min-w-[564px] max-w-[564px] h-[272px] p-6 relative"
+        >
+          <!-- Header -->
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-4">
+              <img
+                v-if="review.image && review.image.length > 0"
+                :src="review.image"
+                alt="Profile Picture"
+                class="w-16 h-16 rounded-full object-cover"
+              />
+              <div
+                v-else
+                class="w-16 h-16 rounded-full bg-[#76685A] flex items-center justify-center text-white font-bold"
+              >
+                {{ getInitials(review.username) }}
               </div>
-              <div class="text-yellow-500 flex items-center">
-                <span v-for="star in 5" :key="star" class="material-icons">
-                  {{ star <= review.rating ? 'star' : 'star_border' }}
-                </span>
+              <div>
+                <div
+                  class="text-[16px] font-manrope-bold text-[#28190C] leading-none"
+                >
+                  {{ review.username }}
+                </div>
+                <!-- Updated: Sejajar ke samping dan hanya tampilkan tahun -->
+                <div
+                  class="mt-2 flex items-center gap-4 text-[12px] text-[#28190C]"
+                >
+                  <span
+                    v-if="review.createdAt"
+                    class="inline-flex items-center gap-1.5"
+                  >
+                    <svg
+                      class="size-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                    >
+                      <rect x="3" y="4.5" width="18" height="16" rx="3" />
+                      <path d="M8 2.5v4M16 2.5v4M3 9h18" />
+                    </svg>
+                    Enrolled in {{ getYear(review.createdAt) }}
+                  </span>
+                  <span
+                    class="inline-flex items-center gap-1.5 text-[#28190C]"
+                  >
+                    <svg
+                      class="size-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                    >
+                      <path d="M3 10.5L12 6l9 4.5-9 4.5-9-4.5Z" />
+                      <path d="M7 12.8V17c0 1.7 2.6 3 5 3s5-1.3 5-3v-4.2" />
+                    </svg>
+                    {{ review.schoolDetailName }}
+                  </span>
+                </div>
               </div>
             </div>
-            <p class="mt-2 text-gray-800 dark:text-neutral-400">{{ review.reviewText }}</p>
+
+            <!-- Stars -->
+            <div class="flex items-center text-[#FFB800]">
+              <svg
+                v-for="star in 5"
+                :key="star"
+                class="size-6"
+                viewBox="0 0 24 24"
+                :fill="star <= (review.rating || 0) ? '#FFB800' : '#28190C'"
+                :opacity="star <= (review.rating || 0) ? 1 : 0.12"
+              >
+                <path
+                  d="M12 3.8l2.5 5.1 5.7.8-4.1 4 1 5.7L12 16.9 6.9 19.4l1-5.7-4.1-4 5.7-.8L12 3.8z"
+                />
+              </svg>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
-  <div class="mx-auto my-8 max-w-[1420px] px-[160px]">
-    <h2 class="text-2xl font-semibold mb-4">Recent Reviews</h2>
-    <div class="flex flex-wrap justify-between">
-      <div
-        v-for="review in reviews"
-        :key="review.id"
-        class="flex flex-col bg-[#F2ECE3] shadow-2xs rounded-xl p-4 md:p-5 m-2"
-        style="width: 455px; height: 200px"
-      >
-        <div class="flex items-center">
-          <img
-            v-if="review.image && review.image.length > 0"
-            :src="review.image"
-            alt="Profile Picture"
-            class="w-12 h-12 rounded-full mr-4"
-          />
-          <img
-            v-else
-            src=""
-            alt="Default Profile Picture"
-            class="w-12 h-12 rounded-full mr-4"
-          />
-          <div>
-            <h3 class="text-lg font-bold text-gray-800 dark:text-white">
-              {{ review.username }}
-            </h3>
-            <p
-              class="mt-1 text-xs font-medium text-gray-500 dark:text-neutral-500"
-            >
-              {{ review.schoolDetailName }}
-            </p>
-          </div>
-        </div>
-        <p class="mt-2 text-gray-500 dark:text-neutral-400 line-clamp-3">
-          {{ review.reviewText }}
-        </p>
-        <a
-          class="mt-3 inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent text-[#0FAE13] hover:underline focus:underline focus:outline-hidden focus:text-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-600 dark:focus:text-blue-600"
-          href="#"
-        >
-          See Full Reviews
-          <svg
-            class="shrink-0 size-4"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+
+          <!-- Body -->
+          <p
+            class="text-[13px] leading-relaxed text-[#76685A] line-clamp-3 mt-10 font-manrope-regular"
           >
-            <path d="m9 18 6-6-6-6"></path>
-          </svg>
-        </a>
+            {{ review.reviewText }}
+          </p>
+
+          <!-- Footer - Fixed at bottom -->
+          <div class="absolute bottom-6 right-6">
+            <a
+              class="inline-flex items-center gap-1 text-sm font-manrope-semibold text-[#0FAE13] hover:underline"
+              href="#"
+            >
+              See Full Reviews
+              <svg
+                class="size-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </a>
+          </div>
+        </article>
       </div>
+
+      <!-- Btn kanan -->
+      <button
+        class="nav-btn right-0 translate-x-1/2"
+        :class="{ 'opacity-30 pointer-events-none': atEnd }"
+        @click="scrollNext"
+        aria-label="Next"
+      >
+        <svg
+          class="size-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M9 18l6-6-6-6" />
+        </svg>
+      </button>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import axios from "@/lib/axios"; // Ganti dengan path sesuai project Anda
+import { ref, onMounted, nextTick, onBeforeUnmount } from "vue";
+import axios from "@/lib/axios";
 
 const reviews = ref([]);
 
+// -- fetch tetap --
 const fetchReviews = async () => {
   try {
     const response = await axios.get("/reviews/recent");
-    reviews.value = response.data.data; // Mengambil hanya bagian data dari respons
+    reviews.value = response.data.data;
   } catch (error) {
     console.error("Error fetching reviews:", error);
   }
 };
 
-onMounted(() => {
-  fetchReviews();
+// Carousel
+const track = ref(null);
+const atStart = ref(true);
+const atEnd = ref(false);
+
+// STEP = lebar kartu (564) + gap (24)
+const STEP = 588;
+
+const getInitials = (username) => {
+  const nameParts = username.split(" ");
+  const initials = nameParts
+    .map((part) => part.charAt(0).toUpperCase())
+    .join("");
+  return initials;
+};
+
+// Fungsi untuk mengambil tahun saja dari tanggal
+const getYear = (dateString) => {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  return date.getFullYear();
+};
+
+const updateArrows = () => {
+  if (!track.value) return;
+  const el = track.value;
+  atStart.value = el.scrollLeft <= 2;
+  atEnd.value = el.scrollLeft + el.clientWidth >= el.scrollWidth - 2;
+};
+const scrollPrev = () =>
+  track.value?.scrollBy({ left: -STEP, behavior: "smooth" });
+const scrollNext = () =>
+  track.value?.scrollBy({ left: STEP, behavior: "smooth" });
+
+onMounted(async () => {
+  await fetchReviews();
+  await nextTick();
+  updateArrows();
+  track.value?.addEventListener("scroll", updateArrows, { passive: true });
+  window.addEventListener("resize", updateArrows, { passive: true });
+});
+onBeforeUnmount(() => {
+  track.value?.removeEventListener("scroll", updateArrows);
+  window.removeEventListener("resize", updateArrows);
 });
 </script>
 
 <style scoped>
-.material-icons {
-  font-size: 20px;
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
-.flex {
-  display: flex;
-}
-
-.items-center {
-  align-items: center;
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-.mr-4 {
-  margin-right: 1rem; /* Ubah sesuai kebutuhan */
+.nav-btn {
+  @apply absolute top-1/2 -translate-y-1/2 grid place-items-center
+         w-8 h-8 rounded-full bg-[#2B2015] text-white shadow ring-1 ring-black/5
+         hover:bg-[#20170F] transition;
+  z-index: 10;
 }
+.size-5 {
+  width: 20px;
+  height: 20px;
+}
+
 .line-clamp-3 {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  -webkit-line-clamp: 3; /* batas maksimal 3 baris */
+  -webkit-line-clamp: 3;
 }
 </style>

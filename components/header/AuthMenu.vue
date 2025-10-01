@@ -1,38 +1,40 @@
 <template>
   <div class="header__auth flex justify-start items-center">
-    <NuxtLink v-if="!isLoggedIn" to="/login">
-      <!-- Tombol Login sesuai spesifikasi Figma -->
+    <NuxtLink v-if="!isLoggedIn" to="/auth/login">
       <button class="login-button">
         Login
       </button>
     </NuxtLink>
 
-    <div class="profile-menu ml-6">
+    <div class="profile-menu">
       <ProfileMenu v-if="isLoggedIn"/>
     </div>
   </div>
 </template>
 
 <script setup>
-import ProfileMenu from './ProfileMenu.vue';
-import { computed } from 'vue';
-import { useAuthStore } from '@/store/auth'; // Ganti ini untuk menggunakan Pinia
+import ProfileMenu from './ProfileMenu.vue'
+import { computed } from 'vue'
+import { useAuthStore } from '@/store/auth'
 
-const authStore = useAuthStore();
-const isLoggedIn = computed(() => authStore.isAuthenticated); // Mengambil status login dari store Pinia
+const authStore = useAuthStore()
+
+// ✅ HAPUS onMounted, cukup computed aja
+const isLoggedIn = computed(() => authStore.isLoggedIn)
 </script>
 
 <style scoped>
 /* Login button sesuai spesifikasi Figma */
 .login-button {
-  width: 115px;
-  height: 46px;
+  width: 110px;
+  height: 38px;
+  margin: 0;
   padding: 12px 36px;
   border-radius: 32px;
   border: 1px solid rgba(40, 25, 12, 0.12);
   background: transparent;
   color: #28190C; /* text-gray-500 */
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
@@ -40,6 +42,7 @@ const isLoggedIn = computed(() => authStore.isAuthenticated); // Mengambil statu
   align-items: center;
   justify-content: center;
   gap: 10px; /* Sesuai spesifikasi gap dari Figma */
+  overflow: hidden;
 }
 
 .login-button:focus {
@@ -49,34 +52,7 @@ const isLoggedIn = computed(() => authStore.isAuthenticated); // Mengambil statu
   ring-offset: 2px;
 }
 
-.login-button:active {
-  transform: scale(0.98);
-}
-
 /* Existing styles */
-.btn {
-  padding: 8px 16px;
-  border-radius: 7px;
-  cursor: pointer;
-  margin-right: 12px;
-}
-
-.btn-register {
-  background-color: white;
-  color: #4c4d4d;
-  border: 1px solid #466543;
-}
-
-.btn-login {
-  background-color: #466543;
-  color: white;
-  border: none;
-}
-
-.btn:hover {
-  opacity: 0.8;
-}
-
 .profile-menu {
   margin-right: 30px; /* Memperbesar jarak dari tombol login */
 }

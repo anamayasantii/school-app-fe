@@ -1,0 +1,234 @@
+<template>
+  <div class="min-h-screen bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="mb-8">
+        <h1 class="text-2xl font-bold text-gray-900">Pengaturan</h1>
+      </div>
+
+      <div class="flex gap-8">
+        <!-- Sidebar Menu -->
+        <div class="w-64 flex-shrink-0">
+          <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+            <nav class="space-y-1 p-2">
+              <button
+                v-for="item in menuItems"
+                :key="item.id"
+                :class="[
+                  'w-full flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-colors text-left',
+                  activeTab === item.id
+                    ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700'
+                    : item.id === 'logout'
+                    ? 'text-red-600 hover:bg-red-50 hover:text-red-700'
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                ]"
+                @click="setActiveTab(item.id)"
+                :disabled="isLoggingOut && item.id === 'logout'"
+              >
+                <component 
+                  :is="item.icon" 
+                  :class="[
+                    'w-5 h-5 mr-3',
+                    activeTab === item.id 
+                      ? 'text-blue-700' 
+                      : item.id === 'logout'
+                      ? 'text-red-500'
+                      : 'text-gray-400'
+                  ]"
+                />
+                <span v-if="isLoggingOut && item.id === 'logout'">
+                  Keluar...
+                </span>
+                <span v-else>
+                  {{ item.name }}
+                </span>
+              </button>
+            </nav>
+          </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="flex-1">
+          <slot :activeTab="activeTab" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Logout Confirmation Modal -->
+    <div v-if="showLogoutModal" class="fixed inset-0 z-50 overflow-y-auto">
+      <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Background overlay -->
+        <div 
+          class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+          @click="cancelLogout"
+        ></div>
+
+        <!-- Modal panel -->
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+          <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+            <div class="sm:flex sm:items-start">
+              <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                <LogOutIcon class="h-6 w-6 text-red-600" />
+              </div>
+              <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                  Konfirmasi Keluar
+                </h3>
+                <div class="mt-2">
+                  <p class="text-sm text-gray-500">
+                    Apakah Anda yakin ingin keluar dari akun Anda? Anda perlu login kembali untuk mengakses fitur-fitur yang memerlukan autentikasi.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+            <button
+              type="button"
+              class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              @click="confirmLogout"
+              :disabled="isLoggingOut"
+            >
+              <span v-if="isLoggingOut" class="flex items-center">
+                <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Memproses...
+              </span>
+              <span v-else>Ya, Keluar</span>
+            </button>
+            <button
+              type="button"
+              class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+              @click="cancelLogout"
+              :disabled="isLoggingOut"
+            >
+              Batal
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed } from 'vue'
+import { useAuthStore } from '~/store/auth'
+import { 
+  UserIcon, 
+  KeyIcon, 
+  BookmarkIcon, 
+  StarIcon, 
+  LogOutIcon,
+  TriangleAlertIcon 
+} from 'lucide-vue-next'
+
+// Props
+const props = defineProps({
+  initialTab: {
+    type: String,
+    default: 'profile'
+  }
+})
+
+const authStore = useAuthStore()
+// const authStore = useAuthStore() // Jika menggunakan Pinia
+const router = useRouter()
+
+// Reactive data
+const activeTab = ref(props.initialTab)
+const showLogoutModal = ref(false)
+const isLoggingOut = ref(false)
+
+// Menu items configuration
+const menuItems = [
+  {
+    id: 'profile',
+    name: 'Profil',
+    icon: UserIcon,
+  },
+  {
+    id: 'change-password',
+    name: 'Ganti Kata Sandi',
+    icon: KeyIcon,
+  },
+  {
+    id: 'saved',
+    name: 'Disimpan',
+    icon: BookmarkIcon,
+  },
+  {
+    id: 'reviews',
+    name: 'Ulasan Saya',
+    icon: StarIcon,
+  },
+  {
+    id: 'logout',
+    name: 'Keluar',
+    icon: LogOutIcon,
+  }
+]
+
+// Methods
+const setActiveTab = (tabId) => {
+  if (tabId === 'logout') {
+    showLogoutModal.value = true
+    return
+  }
+  activeTab.value = tabId
+}
+
+const confirmLogout = async () => {
+  try {
+    isLoggingOut.value = true
+    
+    // Opsi 1: Jika menggunakan auth store/module Nuxt
+    //await $auth.logout()
+    
+    // Opsi 2: Jika menggunakan Pinia store
+    authStore.logout()
+    
+    // Opsi 3: Jika menggunakan custom composable
+    // const { logout } = useAuth()
+    // await logout()
+    
+    // Redirect ke halaman login atau home
+    await router.push('/')
+    
+    // Optional: Show success message
+    // $toast.success('Berhasil keluar dari akun')
+    
+  } catch (error) {
+    console.error('Logout error:', error)
+    
+    // Handle error - bisa show toast error
+    // $toast.error('Gagal keluar dari akun. Silakan coba lagi.')
+    
+  } finally {
+    isLoggingOut.value = false
+    showLogoutModal.value = false
+  }
+}
+
+const cancelLogout = () => {
+  showLogoutModal.value = false
+}
+
+// Emits
+const emit = defineEmits(['tabChanged'])
+
+// Watch for tab changes
+watch(activeTab, (newTab) => {
+  emit('tabChanged', newTab)
+})
+</script>
+
+<style scoped>
+/* Smooth transitions */
+.transition-colors {
+  transition-property: color, background-color, border-color;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+</style>

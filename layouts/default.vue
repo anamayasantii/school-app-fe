@@ -1,9 +1,11 @@
 <template>
-  <div class="bg-[#F9F6F1] flex flex-col min-h-screen">
+  <div class="flex flex-col min-h-screen">
     <!-- Header dengan spesifikasi Figma -->
-    <header class="w-full h-[120px] bg-[#F9F6F1] border-b border-[#F2ECE3] pt-8 pb-8 px-60">
+    <header
+      class="w-full h-[120px] border-b border-[#F2ECE3] pt-8 pb-8 px-60"
+    >
       <!-- Inner container untuk logo, navbar, dan tombol login -->
-      <div class="w-full h-14 flex items-center justify-between">
+      <div class="w-full h-10 flex items-center justify-between">
         <!-- Logo Section -->
         <div class="flex items-center">
           <nuxt-link to="/">
@@ -16,19 +18,11 @@
         </div>
 
         <!-- Navigation Section -->
-        <nav class="flex items-center space-x-8">
-          <a href="/" class="text-[#76685A]">
-            Home
-          </a>
-          <a href="/explore-school" class="text-[#76685A]">
-            Explore School
-          </a>
-          <a href="/schools/smp" class="text-[#76685A]">
-            Write a Review
-          </a>
-          <a href="/schools/sma" class="text-[#76685A]">
-            About Us
-          </a>
+        <nav class="flex items-center space-x-8 text-xs">
+          <a href="/" class="text-[#76685A]"> Home </a>
+          <a href="/explore-school" class="text-[#76685A]"> Explore School </a>
+          <a href="/about-us" class="text-[#76685A]"> About Us </a>
+          <a href="/ranking" class="text-[#76685A]"> Ranking </a>
         </nav>
 
         <!-- Auth Menu Section -->
@@ -42,113 +36,224 @@
     <main class="flex-grow">
       <slot />
     </main>
-   
+
     <!-- Footer -->
-    <footer class="bg-[#F9F6F1] text-[#1D2B29] py-12 border-t border-[#F2ECE3]">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <!-- Company Info -->
-          <div>
-            <div class="flex items-center mb-4">
-              <span class="text-xl font-bold text-[#1D2B29]">Schoola</span>
+    <footer class="py-16">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          <!-- Logo and Contact Section -->
+          <div class="lg:col-span-1">
+            <div class="flex items-center mb-6">
+              <div
+                class="bg-black rounded-full flex items-center justify-center mr-3"
+              >
+                <nuxt-link to="/">
+            <img
+              src="assets/images/logo-footer.png"
+              alt="School Advisor"
+              class="h-10"
+            />
+          </nuxt-link>
+              </div>
             </div>
-            <p class="mb-4 text-gray-600 leading-relaxed">
-              Your trusted partner in finding the perfect educational institution.
-            </p>
+
+            <div class="mb-6">
+              <p class="text-sm text-gray-600 mb-2">General Inquiry</p>
+              <a
+                href="mailto:hallo@schoolaadvisor.com"
+                class="text-gray-900 hover:text-gray-700 transition-colors"
+              >
+                hallo@schoolaadvisor.com
+              </a>
+            </div>
+
+            <!-- Social Media Icons -->
             <div class="flex space-x-4">
-              <a href="#" class="text-gray-500 hover:text-[#1D2B29] transition-colors duration-200">
-                <i class="fab fa-facebook text-lg"></i>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fill-rule="evenodd"
+                    d="M2 5a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3 1h6v4l-3-2-3 2V6z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
               </a>
-              <a href="#" class="text-gray-500 hover:text-[#1D2B29] transition-colors duration-200">
-                <i class="fab fa-twitter text-lg"></i>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fill-rule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
               </a>
-              <a href="#" class="text-gray-500 hover:text-[#1D2B29] transition-colors duration-200">
-                <i class="fab fa-instagram text-lg"></i>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"
+                  />
+                </svg>
               </a>
-              <a href="#" class="text-gray-500 hover:text-[#1D2B29] transition-colors duration-200">
-                <i class="fab fa-linkedin text-lg"></i>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
               </a>
             </div>
           </div>
 
-          <!-- Quick Links -->
+          <!-- Menu 1 -->
           <div>
-            <h3 class="font-semibold mb-4 text-[#1D2B29]">Quick Links</h3>
-            <ul class="space-y-2">
+            <ul class="space-y-4">
               <li>
-                <a href="#" class="text-gray-600 hover:text-[#1D2B29] transition-colors duration-200">
+                <NuxtLink
+                  to="/"
+                  class="text-gray-900 hover:text-gray-700 transition-colors font-medium"
+                >
                   Home
-                </a>
+                </NuxtLink>
               </li>
               <li>
-                <a href="#" class="text-gray-600 hover:text-[#1D2B29] transition-colors duration-200">
-                  Explore Schools
-                </a>
+                <NuxtLink
+                  to="/explore-school"
+                  class="text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                  Explore School
+                </NuxtLink>
               </li>
               <li>
-                <a href="#" class="text-gray-600 hover:text-[#1D2B29] transition-colors duration-200">
-                  Write a Review
-                </a>
-              </li>
-              <li>
-                <a href="#" class="text-gray-600 hover:text-[#1D2B29] transition-colors duration-200">
+                <NuxtLink
+                  to="/about"
+                  class="text-gray-600 hover:text-gray-800 transition-colors"
+                >
                   About Us
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Support -->
-          <div>
-            <h3 class="font-semibold mb-4 text-[#1D2B29]">Support</h3>
-            <ul class="space-y-2">
-              <li>
-                <a href="#" class="text-gray-600 hover:text-[#1D2B29] transition-colors duration-200">
-                  Help Center
-                </a>
+                </NuxtLink>
               </li>
               <li>
-                <a href="#" class="text-gray-600 hover:text-[#1D2B29] transition-colors duration-200">
+                <NuxtLink
+                  to="/contact"
+                  class="text-gray-600 hover:text-gray-800 transition-colors"
+                >
                   Contact Us
-                </a>
-              </li>
-              <li>
-                <a href="#" class="text-gray-600 hover:text-[#1D2B29] transition-colors duration-200">
-                  Privacy Policy
-                </a>
-              </li>
-              <li>
-                <a href="#" class="text-gray-600 hover:text-[#1D2B29] transition-colors duration-200">
-                  Terms of Service
-                </a>
+                </NuxtLink>
               </li>
             </ul>
           </div>
 
-          <!-- Contact -->
+          <!-- Menu 2 -->
           <div>
-            <h3 class="font-semibold mb-4 text-[#1D2B29]">Contact Info</h3>
+            <ul class="space-y-4">
+              <li>
+                <NuxtLink
+                  to="/privacy"
+                  class="text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                  Privacy Policy
+                </NuxtLink>
+              </li>
+              <li>
+                <NuxtLink
+                  to="/terms"
+                  class="text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                  Terms & Condition
+                </NuxtLink>
+              </li>
+              <li>
+                <NuxtLink
+                  to="/review-guide"
+                  class="text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                  Review Writing Guide
+                </NuxtLink>
+              </li>
+              <li>
+                <NuxtLink
+                  to="/career"
+                  class="text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                  Career/Collaboration
+                </NuxtLink>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Newsletter Section -->
+          <div>
+            <div class="mb-6">
+              <h4 class="text-lg font-semibold text-gray-900 mb-4">
+                Subscribe to our newsletter
+              </h4>
+              <form class="space-y-3">
+                <div>
+                  <label for="email" class="sr-only">Email Address</label>
+                  <input
+                    type="email"
+                    id="email"
+                    placeholder="Email Address"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  class="w-full bg-gray-900 text-white py-3 px-6 rounded-lg hover:bg-gray-800 transition-colors font-medium"
+                >
+                  Submit
+                </button>
+              </form>
+            </div>
+
+            <!-- Social Media Links -->
             <div class="space-y-3">
-              <p class="flex items-center text-gray-600">
-                <i class="fas fa-envelope mr-3 text-[#1D2B29]"></i>
-                contact@schoola.com
-              </p>
-              <p class="flex items-center text-gray-600">
-                <i class="fas fa-phone mr-3 text-[#1D2B29]"></i>
-                +62 123 456 789
-              </p>
-              <p class="flex items-center text-gray-600">
-                <i class="fas fa-map-marker-alt mr-3 text-[#1D2B29]"></i>
-                Jakarta, Indonesia
-              </p>
+              <a
+                href="#"
+                class="block text-gray-600 hover:text-gray-800 transition-colors"
+              >
+                Instagram
+              </a>
+              <a
+                href="#"
+                class="block text-gray-600 hover:text-gray-800 transition-colors"
+              >
+                Tiktok
+              </a>
+              <a
+                href="#"
+                class="block text-gray-600 hover:text-gray-800 transition-colors"
+              >
+                Facebook
+              </a>
+              <a
+                href="#"
+                class="block text-gray-600 hover:text-gray-800 transition-colors"
+              >
+                Youtube
+              </a>
             </div>
           </div>
         </div>
 
-        <!-- Copyright -->
-        <div class="mt-8 pt-8 border-t border-[#F2ECE3]">
-          <p class="text-gray-500 text-sm">
-            &copy; 2024 Schoola. All rights reserved.
+        <!-- Bottom Copyright -->
+        <div class="border-t border-gray-200 pt-8">
+          <p class="text-sm text-gray-600 text-left lg:text-left">
+            Copyright © 2025 School Advisor. All Rights Reserved. Powered by PT.
+            Timedoor Indonesia.
           </p>
         </div>
       </div>
@@ -181,7 +286,7 @@ header {
     padding-left: 2rem;
     padding-right: 2rem;
   }
-  
+
   nav {
     gap: 1rem; /* Reduce spacing on tablets */
   }
@@ -195,7 +300,7 @@ header {
     padding-top: 1rem;
     padding-bottom: 1rem;
   }
-  
+
   nav {
     display: none; /* Hide navigation on mobile, you might want to add a mobile menu */
   }

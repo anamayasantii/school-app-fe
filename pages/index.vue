@@ -1,13 +1,13 @@
 <template>
-  <div class="min-h-screen bg-[#F9F6F1]">
+  <div class="min-h-screen">
     <!-- Hero Section -->
     <section class="bg-gradient-to-br py-16 pb-0">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <!-- Button sesuai spesifikasi Figma -->
         <div class="mb-8 flex justify-center">
-          <button class="figma-button">
-            <span class="font-manrope-medium text-[#F9F6F1] underline"
-              >Checkout Top 25 University Ranked in 2025</span
+          <NuxtLink to="/ranking" class="figma-button">
+            <span class="text-[#F9F6F1] underline"
+              >Lihat 10 Sekolah Dasar Terbaik {{ currentYear }}</span
             >
             <div class="arrow-container">
               <!-- Panah pertama (terlihat normal) -->
@@ -41,15 +41,15 @@
                 <path d="M12 5l7 7-7 7" />
               </svg>
             </div>
-          </button>
+          </NuxtLink>
         </div>
 
         <h1
           class="text-3xl font-manrope-extrabold md:text-6xl mb-4 py-4"
         >
-          Explore, Compare,
+          Pencarian sekolah lebih
           <br />
-          Decide
+          sederhana dan mudah.
         </h1>
 
         <div class="flex justify-center mb-12">
@@ -69,7 +69,7 @@
             </svg>
             <input
               type="text"
-              placeholder="Find School by name, or location"
+              placeholder="Cari sekolah mana pun"
               class="search-input"
             />
           </div>
@@ -82,10 +82,14 @@
       <SchoolTypes />
     </section>
 
-    <!-- Featured Schools -->
-    <section class="py-16">
-      <FeaturedSchools />
+    <section class="py-7">
+      <IndexSchools />
     </section>
+
+    <!-- Featured Schools -->
+    <!-- <section class="py-16">
+      <FeaturedSchools />
+    </section> -->
 
     <!-- Indonesian Leaderboard -->
     <section class="py-16">
@@ -101,15 +105,18 @@
 
 <script setup>
 import SchoolTypes from "~/components/school/SchoolTypes.vue";
-import FeaturedSchools from "~/components/school/FeaturedSchools.vue";
+//import FeaturedSchools from "~/components/school/FeaturedSchools.vue";
 import Leaderboard from "~/components/school/Leaderboard.vue";
 import RecentReviews from "~/components/review/RecentReviews.vue";
+import IndexSchools from "~/components/home/index.vue";
+
+const currentYear = new Date().getFullYear();
 </script>
 
 <style scoped>
 /* Button sesuai spesifikasi Figma */
 .figma-button {
-  width: 417px;
+  width: 360px;
   height: 46px;
   padding: 12px 24px;
   gap: 16px;
@@ -123,7 +130,7 @@ import RecentReviews from "~/components/review/RecentReviews.vue";
   transition: all 0.2s ease-in-out;
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Space between text and arrow */
+  justify-content: center; /* Space between text and arrow */
   text-align: left;
   white-space: nowrap;
   overflow: hidden;
@@ -209,11 +216,10 @@ import RecentReviews from "~/components/review/RecentReviews.vue";
 }
 
 .search-container {
-      width: 500px;
+      width: 690px;
       height: 45px;
       border-radius: 32px;
-      border: 1px solid #E5E7EB;
-      background-color: #F2ECE3;
+      background-color: #FBFBFB;
       padding: 24px;
       display: flex;
       align-items: center;
@@ -229,11 +235,11 @@ import RecentReviews from "~/components/review/RecentReviews.vue";
     }
     
     .search-input::placeholder {
-      color: #76685A;
+      color: #082519;
     }
     
     .search-icon {
-      color: #76685A;
+      color: #082519;
       flex-shrink: 0;
     }
     
