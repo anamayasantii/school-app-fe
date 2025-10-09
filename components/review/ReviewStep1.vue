@@ -187,6 +187,10 @@
 </template>
 
 <script setup>
+import { useAuthStore } from '@/store/auth'
+
+const authStore = useAuthStore()
+
 const formData = ref({
   fullName: '',
   email: '',
@@ -194,6 +198,12 @@ const formData = ref({
   relationship: '',
   file: null,
   fileName: ''
+})
+
+onMounted(() => {
+  formData.value.fullName = authStore.user.fullname
+  formData.value.email = authStore.user.email
+  formData.value.phone = authStore.user.phone
 })
 
 // Computed untuk validasi form

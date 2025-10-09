@@ -1,13 +1,10 @@
 <template>
   <div>
     <!-- Step 1: Detail Anda -->
-    <Step1PersonalInfo 
-      v-if="currentStep === 1"
-      @next="handleStep1Next"
-    />
+    <Step1PersonalInfo v-if="currentStep === 1" @next="handleStep1Next" />
 
     <!-- Step 2: Tinjau Sekolah -->
-    <Step2TinjauSekolah 
+    <Step2TinjauSekolah
       v-if="currentStep === 2"
       :schoolName="schoolName"
       @next="handleStep2Next"
@@ -15,14 +12,14 @@
     />
 
     <!-- Step 3: Langkah Terakhir -->
-    <Step3LangkahTerakhir 
+    <Step3LangkahTerakhir
       v-if="currentStep === 3"
       @submit="handleSubmit"
       @back="currentStep = 2"
     />
 
     <!-- Success Screen -->
-    <ReviewSuccess 
+    <ReviewSuccess
       v-if="currentStep === 4"
       :schoolId="schoolId"
       :schoolName="schoolName"
@@ -31,38 +28,43 @@
 </template>
 
 <script setup>
+import Step1PersonalInfo from "./ReviewStep1.vue";
+import Step2TinjauSekolah from "./ReviewStep2.vue";
+import Step3LangkahTerakhir from "./ReviewStep3.vue";
+import ReviewSuccess from "./Success.vue";
+
 const props = defineProps({
   schoolId: {
     type: [String, Number],
-    required: true
+    required: true,
   },
   schoolName: {
     type: String,
-    default: 'Jakarta Intercultural School'
-  }
-})
+    default: "Jakarta Intercultural School",
+  },
+});
 
 // Current step state
-const currentStep = ref(1)
+const currentStep = ref(1);
 
 // Data dari semua step
 const reviewData = ref({
   step1: null,
   step2: null,
-  step3: null
-})
+  step3: null,
+});
 
 // Handle Step 1 Next
 const handleStep1Next = (data) => {
-  reviewData.value.step1 = data
-  currentStep.value = 2
-}
+  reviewData.value.step1 = data;
+  currentStep.value = 2;
+};
 
 // Handle Step 2 Next
 const handleStep2Next = (data) => {
-  reviewData.value.step2 = data
-  currentStep.value = 3
-}
+  reviewData.value.step2 = data;
+  currentStep.value = 3;
+};
 
 // Handle Final Submit
 const handleSubmit = async () => {
@@ -71,10 +73,10 @@ const handleSubmit = async () => {
     const fullReviewData = {
       schoolId: props.schoolId,
       ...reviewData.value.step1,
-      ...reviewData.value.step2
-    }
+      ...reviewData.value.step2,
+    };
 
-    console.log('Data yang akan dikirim:', fullReviewData)
+    console.log("Data yang akan dikirim:", fullReviewData);
 
     // Kirim ke API
     // const response = await $fetch('/api/reviews/create', {
@@ -83,18 +85,17 @@ const handleSubmit = async () => {
     // })
 
     // Jika berhasil, pindah ke success screen
-    currentStep.value = 4
+    currentStep.value = 4;
 
     // Optional: Reset form setelah beberapa detik
     // setTimeout(() => {
     //   navigateTo(`/school-details/${props.schoolId}`)
     // }, 3000)
-
   } catch (error) {
-    console.error('Error submitting review:', error)
+    console.error("Error submitting review:", error);
     // Handle error (bisa tambahkan toast notification)
   }
-}
+};
 </script>
 
 <style scoped>

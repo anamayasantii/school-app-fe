@@ -72,12 +72,14 @@
           <button class="text-sm text-blue-500 hover:text-blue-700">
             <ShareIcon class="inline-block mr-1" />
           </button>
+          <NuxtLink :to="`/reviews/${route.params.id}`">
           <button
             class="flex items-center space-x-2 px-4 py-2 rounded-[16px] border border-gray-300 hover:bg-gray-100"
           >
             <AddReviewIcon class="inline-block mr-2" />
             <span class="text-sm text-gray-800">Add Review</span>
           </button>
+          </NuxtLink>
           <button
             class="flex items-center space-x-2 px-4 py-2 rounded-[16px] border border-gray-300 hover:bg-gray-100"
           >
