@@ -194,7 +194,7 @@ const validateEmail = () => {
 }
 
 const validatePassword = () => {
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]/
   
   if (!form.password) {
     passwordError.value = 'Password wajib diisi'

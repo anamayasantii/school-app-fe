@@ -5,20 +5,22 @@
       <!-- Education Level Header -->
       <nav class="mt-8 px-6 font-manrope-medium">
         <ol class="flex items-center space-x-2 text-sm text-[#76685A]">
-          <li><a href="/">Home</a></li>
+          <li><a href="/">Beranda</a></li>
+          <li><span class="mx-2">></span></li>
+          <li><a href="/">Jelajahi Sekolah</a></li>
           <li><span class="mx-2">></span></li>
           <li :class="selectedStatus ? 'text-[#76685A]' : 'text-[#28190C]'">
             {{
               level === "sd"
-                ? "Elementary School"
+                ? "Sekolah Dasar"
                 : level === "smp"
-                ? "Junior High School"
+                ? "Sekolah Menengah Pertama"
                 : level === "sma"
-                ? "Senior High School"
+                ? "Sekolah Menengah Atas"
                 : level === "smk"
-                ? "Vocational High School"
+                ? "Sekolah Menengah Kejuruan"
                 : level === "universitas"
-                ? "University"
+                ? "Universitas"
                 : level
             }}
           </li>
@@ -38,7 +40,51 @@
 
       <!-- Status Filter Buttons -->
       <div v-if="!filterVisible" class="p-6">
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 mb-6">
+        <!-- Header Section - Dynamic based on selected level -->
+        <div class="mb-6">
+          <div class="flex items-center space-x-3">
+            <!-- Dynamic Icon based on selected level -->
+            <div class="flex-shrink-0">
+              <!-- SD Icon -->
+              <IconSd v-if="level === 'sd'" class="w-8 h-8" />
+
+              <!-- SMP Icon -->
+              <SmpIcon v-else-if="level === 'smp'" class="w-8 h-8" />
+
+              <!-- SMA Icon -->
+              <SmaIcon v-else-if="level === 'sma'" class="w-8 h-8" />
+
+              <!-- SMK Icon -->
+              <SmkIcon v-else-if="level === 'smk'" class="w-8 h-8" />
+
+              <!-- Universitas Icon -->
+              <UniversitasIcon
+                v-else-if="level === 'universitas'"
+                class="w-8 h-8"
+              />
+            </div>
+
+            <!-- Dynamic Title -->
+            <h2 class="font-manrope-bold text-2xl text-[#28190C]">
+              {{
+                level === "sd"
+                  ? "Sekolah Dasar"
+                  : level === "smp"
+                  ? "Sekolah Menengah Pertama"
+                  : level === "sma"
+                  ? "Sekolah Menengah Atas"
+                  : level === "smk"
+                  ? "Sekolah Menengah Kejuruan"
+                  : level === "universitas"
+                  ? "Universitas"
+                  : level
+              }}
+            </h2>
+          </div>
+        </div>
+
+        <!-- Buttons Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div
             v-for="status in statusList"
             :key="status.id"
@@ -47,29 +93,29 @@
           >
             <div
               :class="[
-                'p-6 bg-[#F2ECE3] border border-[#28190C]/[0.12] rounded-xl transition duration-300 hover:bg-[#f1e6da]',
+                'p-6 bg-[#F2ECE3] border border-[#28190C]/[0.12] rounded-xl transition duration-300 hover:bg-[#f1e6da] h-full',
                 selectedStatus === status.name
                   ? 'border-[#28190C]/[0.12] bg-[#F2ECE]'
                   : 'border-[#28190C]/[0.12] hover:border-[#28190C]/[0.12]',
               ]"
             >
-              <div class="flex items-center space-x-4">
+              <div class="flex items-start space-x-4">
                 <!-- Icon Container -->
                 <div class="flex-shrink-0 font-manrope-bold">
                   <!-- Negeri Icon Component -->
-                  <NegeriIcon
+                  <IconType
                     v-if="status.name === 'Negeri'"
                     class="w-12 h-12"
                   />
 
                   <!-- Swasta Icon Component -->
-                  <SwastaIcon
+                  <IconType
                     v-else-if="status.name === 'Swasta'"
                     class="w-12 h-12"
                   />
 
                   <!-- SPK/Nasional Plus Icon Component -->
-                  <SpkIcon
+                  <IconType
                     v-else-if="status.name === 'SPK'"
                     class="w-12 h-12"
                   />
@@ -79,27 +125,29 @@
                 <div class="flex-1">
                   <h3
                     :class="[
-                      'font-manrope-bold text-[#28190C] text-lg mb-1',
+                      'font-manrope-bold text-[#28190C] text-lg mb-2',
                       selectedStatus === status.name ? 'text-[#28190C]' : '',
                     ]"
                   >
                     {{
                       status.name === "SPK"
-                        ? "Nasional Plus/Internasional"
-                        : status.name
+                        ? "Sekolah Internasional"
+                        : status.name === "Negeri"
+                        ? "Sekolah Negeri"
+                        : "Sekolah Swasta"
                     }}
                   </h3>
-                  <p class="text-sm text-[#28190C]/70 font-manrope-regular">
+                  <p
+                    class="text-sm text-[#28190C]/70 font-manrope-regular leading-relaxed"
+                  >
                     <span v-if="status.name === 'Negeri'"
-                      >A state school, public school, or government school</span
+                      >Didanai pemerintah, gratis atau biaya rendah.</span
                     >
                     <span v-else-if="status.name === 'Swasta'"
-                      >A private school operated by private individuals or
-                      organizations</span
+                      >Dikelola secara independen, berbasis biaya kuliah</span
                     >
                     <span v-else-if="status.name === 'SPK'"
-                      >An international or national plus school with global
-                      curriculum</span
+                      >Kurikulum global, sering kali dalam bahasa Inggris.</span
                     >
                   </p>
                 </div>
@@ -341,7 +389,8 @@
             >
               <NuxtLink
                 :to="`/school-details/${school.id}`"
-                class="block cursor-pointer" >
+                class="block cursor-pointer"
+              >
                 <div class="relative overflow-hidden rounded-t-xl bg-gray-100">
                   <!-- Actual Image -->
                   <img
@@ -489,9 +538,12 @@
 import { ref, computed, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import axios from "@/lib/axios";
-import NegeriIcon from "@/assets/NegeriIcon.vue";
-import SwastaIcon from "@/assets/SwastaIcon.vue";
-import SpkIcon from "@/assets/SpkIcon.vue";
+import IconType from "~/assets/IconType.vue";
+import IconSd from "@/assets/IconSd2.vue";
+import SmpIcon from "@/assets/IconSmp2.vue";
+import SmaIcon from "@/assets/IconSma2.vue";
+import SmkIcon from "@/assets/IconSmk2.vue";
+import UniversitasIcon from "@/assets/IconKuliah2.vue";
 
 const route = useRoute();
 const router = useRouter();

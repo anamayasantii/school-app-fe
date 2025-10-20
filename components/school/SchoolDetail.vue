@@ -1,196 +1,387 @@
 <template>
-  <div>
-    <!-- Tabs -->
-    <div class="sticky top-0 z-10 pb-4">
-      <div class="max-w-full mx-auto pt-8">
-        <div class="flex bg-[#F2ECE3] rounded-xl p-1 gap-1 w-fit">
+  <div class="flex min-h-screen">
+    <!-- Left Sidebar Navigation -->
+    <div class="w-64 sticky top-0 h-screen overflow-y-auto bg-white">
+      <div class="p-4 relative">
+        <!-- Garis vertikal abu-abu penuh -->
+        <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-300"></div>
+
+        <nav class="space-y-2 relative">
           <button
             v-for="(tab, index) in tabs"
             :key="index"
             @click="scrollToSection(tab.id)"
             :class="[
-              'flex items-center px-3 py-2 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap',
-              activeTab === tab.id ? 'bg-[#28190C] text-[#F9F6F1]' : 'text-[#76685A] hover:bg-gray-200'
+              'w-full text-left px-4 py-3 text-base transition-all duration-200 flex items-center relative',
+              activeTab === tab.id
+                ? 'text-gray-900 font-semibold'
+                : 'text-gray-500 hover:text-gray-700',
             ]"
           >
-            <span class="text-sm">{{ tab.name }}</span>
+            <!-- Garis hitam HANYA untuk tinggi tab yang aktif -->
+            <span
+              v-if="activeTab === tab.id"
+              class="absolute left-0 top-0 bottom-0 w-0.5 bg-gray-900"
+            ></span>
+
+            <span class="flex-grow pl-0.5">{{ tab.name }}</span>
           </button>
-        </div>
+        </nav>
       </div>
     </div>
 
-    <!-- Content Sections -->
-    <div class="max-w-full mx-auto pb-8">
-      
-      <!-- Overview Section -->
-      <div id="overview" class="section mb-12">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-6">Overview</h2>
-        <p class="text-gray-700 leading-relaxed text-base">
-          Sekolah Pelita Harapan (SPH) Pluit Village adalah bagian dari jaringan sekolah Pelita Harapan yang didirikan dengan visi untuk memberikan generasi muda Indonesia yang berkarakter kuat, cerdas, dan berlandasan nilai-nilai Kristiani. Terletak di kawasan strategis Jakarta Utara, SPH Pluit Village menawarkan lingkungan belajar yang aman, modern, dan mendukung perkembangan akademik maupun spiritual siswa.
-        </p>
-      </div>
-
-      <!-- Location Section -->
-      <div id="location" class="section mb-12">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-6">Location</h2>
-        <p class="text-gray-700 text-base mb-4">
-          Jl. Pluit Indah, RT.1/RW.4, Pluit, Kec. Penjaringan, Jkt Utara, Daerah Khusus Ibukota Jakarta 14450
-        </p>
-        <div class="flex items-center text-blue-600 hover:text-blue-800 cursor-pointer">
-          <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
-          </svg>
-          <span class="text-sm">View on Google Maps</span>
+    <!-- Main Content -->
+    <div class="flex-1 overflow-y-auto">
+      <div class="max-w-4xl mx-auto p-8">
+        <!-- Loading State -->
+        <div v-if="loading" class="text-center py-12">
+          <p class="text-gray-600">Loading school data...</p>
         </div>
-      </div>
 
-      <!-- Official Contact Section -->
-      <div id="official-contact" class="section mb-12">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-6">Official Contact</h2>
-        <div class="space-y-4">
-          <div class="flex items-center">
-            <svg class="w-4 h-4 mr-3 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path>
-            </svg>
-            <span class="text-gray-700">(021) 6667 1234</span>
-          </div>
-          <div class="flex items-center">
-            <svg class="w-4 h-4 mr-3 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path>
-            </svg>
-            <span class="text-gray-700">+62 812 3456 7890</span>
-          </div>
-          <div class="flex items-center">
-            <svg class="w-4 h-4 mr-3 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
-              <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
-            </svg>
-            <span class="text-gray-700">info.pluit@sph.edu</span>
-          </div>
+        <!-- Error State -->
+        <div v-else-if="error" class="text-center py-12">
+          <p class="text-red-600">{{ error }}</p>
         </div>
-      </div>
 
-      <!-- Facility Section -->
-      <div id="facility" class="section mb-12">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-6">Facility</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
-          <div class="space-y-4">
-            <div class="flex items-center">
-              <svg class="w-5 h-5 mr-3 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"></path>
-              </svg>
-              <span class="text-gray-700">Ruang Kelas Ber-AC</span>
+        <!-- Content -->
+        <div v-else>
+          <!-- Overview Section -->
+          <div id="overview" class="section mb-12">
+            <div class="mb-8">
+              <h2 class="text-2xl font-bold text-gray-900 mb-4">
+                Quick Overview
+              </h2>
+              <p class="text-gray-700 leading-relaxed mb-6">
+                {{ schoolData.name }} adalah sekolah {{ schoolData.statusName.toLowerCase() }} 
+                yang berlokasi di {{ schoolData.village }}, {{ schoolData.subDistrictName }}, 
+                {{ schoolData.districtName }}. Sekolah ini menyediakan pendidikan tingkat 
+                {{ schoolData.educationLevelName }} dengan kurikulum {{ schoolData.curriculum }}.
+              </p>
+              <p class="text-gray-700 leading-relaxed mb-8">
+                Sekolah ini memiliki {{ schoolData.numStudent }} siswa dan {{ schoolData.numTeacher }} guru. 
+                Status akreditasi sekolah adalah {{ schoolData.accreditationCode }} dengan kepemilikan 
+                {{ schoolData.ownershipStatus }}.
+              </p>
             </div>
-            <div class="flex items-center">
-              <svg class="w-5 h-5 mr-3 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
-              <span class="text-gray-700">Laboratorium Sains Terpadu</span>
-            </div>
-            <div class="flex items-center">
-              <svg class="w-5 h-5 mr-3 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V4a2 2 0 00-2-2H6zm1 2a1 1 0 000 2h6a1 1 0 100-2H7zm6 7a1 1 0 011 1v3a1 1 0 11-2 0v-3a1 1 0 011-1zm-3 3a1 1 0 100 2h.01a1 1 0 100-2H10zm-4 1a1 1 0 011-1h.01a1 1 0 110 2H7a1 1 0 01-1-1zm1-4a1 1 0 100 2h.01a1 1 0 100-2H7zm2 1a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1zm4-4a1 1 0 100 2h.01a1 1 0 100-2H13zM9 9a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1zM7 8a1 1 0 000 2h.01a1 1 0 000-2H7z" clip-rule="evenodd"></path>
-              </svg>
-              <span class="text-gray-700">Perpustakaan Modern</span>
-            </div>
-            <div class="flex items-center">
-              <svg class="w-5 h-5 mr-3 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
-              </svg>
-              <span class="text-gray-700">Keamanan 24 Jam & Akses Kartu Pelajar</span>
-            </div>
-            <div class="flex items-center">
-              <svg class="w-5 h-5 mr-3 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-              </svg>
-              <span class="text-gray-700">Lapangan Olahraga Indoor & Outdoor</span>
-            </div>
-          </div>
-          <div class="space-y-4">
-            <div class="flex items-center">
-              <svg class="w-5 h-5 mr-3 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm12 4l-3.707 2.923a1 1 0 01-1.33-.067L8 8l-4 3h12V8z"></path>
-              </svg>
-              <span class="text-gray-700">Studio Musik & Ruang Kesenian</span>
-            </div>
-            <div class="flex items-center">
-              <svg class="w-5 h-5 mr-3 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
-              </svg>
-              <span class="text-gray-700">Ruang Konseling & Bimbingan</span>
-            </div>
-            <div class="flex items-center">
-              <svg class="w-5 h-5 mr-3 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
-              </svg>
-              <span class="text-gray-700">Kantin Sehat</span>
-            </div>
-            <div class="flex items-center">
-              <svg class="w-5 h-5 mr-3 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
-                <path fill-rule="evenodd" d="M4 5a2 2 0 012-2v1a2 2 0 002 2h6a2 2 0 002-2V3a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a2 2 0 114 0v2H7V9zm5 3H6v2a2 2 0 002 2h6a2 2 0 002-2v-2h-4z" clip-rule="evenodd"></path>
-              </svg>
-              <span class="text-gray-700">Akses Internet & Wi-Fi di Sekolah</span>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Education Program Section -->
-      <div id="education-program" class="section mb-12">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-6">Education Program</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div>
-            <h3 class="text-lg font-medium text-gray-900 mb-4">Jenjang Pendidikan</h3>
-            <ul class="space-y-2 text-gray-700">
-              <li>• Kindergarten (TK A - TK B)</li>
-              <li>• Primary School (SD)</li>
-              <li>• Middle School (SMP)</li>
-              <li>• Senior High School (SMA)</li>
-            </ul>
+            <!-- Quick Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div class="text-center">
+                <div class="flex justify-center mb-3">
+                  <div
+                    class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center"
+                  >
+                    <svg
+                      class="w-8 h-8 text-gray-600"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-1">
+                  {{ schoolData.accreditationCode }}
+                </h3>
+                <p class="text-sm text-gray-600">Akreditasi</p>
+              </div>
+              <div class="text-center">
+                <div class="flex justify-center mb-3">
+                  <div
+                    class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center"
+                  >
+                    <svg
+                      class="w-8 h-8 text-gray-600"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-1">
+                  {{ schoolData.districtName }}
+                </h3>
+                <p class="text-sm text-gray-600">
+                  {{ schoolData.provinceName }}, Indonesia
+                </p>
+              </div>
+              <div class="text-center">
+                <div class="flex justify-center mb-3">
+                  <div
+                    class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center"
+                  >
+                    <svg
+                      class="w-8 h-8 text-gray-600"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4z"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-1">
+                  {{ schoolData.numStudent }}
+                </h3>
+                <p class="text-sm text-gray-600">Jumlah Siswa</p>
+              </div>
+            </div>
           </div>
-          <div>
-            <h3 class="text-lg font-medium text-gray-900 mb-4">Kurikulum</h3>
-            <ul class="space-y-2 text-gray-700">
-              <li>• Bilingual Learning Environment</li>
-              <li>• Character & Faith-Based Education</li>
-              <li>• STEM & Creative Integration</li>
-              <li>• Global Citizenship & Community Service</li>
-            </ul>
-          </div>
-        </div>
-      </div>
 
-      <!-- Estimated Price Section -->
-      <div id="pricing" class="section mb-12">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-6">Estimated Price</h2>
-        <div class="overflow-x-auto">
-          <table class="w-full border-collapse">
-            <thead>
-              <tr class="bg-gray-50">
-                <th class="border border-gray-200 px-4 py-3 text-left text-sm font-medium text-gray-900">Education Level</th>
-                <th class="border border-gray-200 px-4 py-3 text-left text-sm font-medium text-gray-900">One-Time Fee</th>
-                <th class="border border-gray-200 px-4 py-3 text-left text-sm font-medium text-gray-900">Monthly Fee</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="border border-gray-200 px-4 py-3 text-sm text-gray-700">Elementary School (SD)</td>
-                <td class="border border-gray-200 px-4 py-3 text-sm text-gray-700">Rp 15 - 25 Juta</td>
-                <td class="border border-gray-200 px-4 py-3 text-sm text-gray-700">Rp 3 - 5 Juta</td>
-              </tr>
-              <tr class="bg-gray-50">
-                <td class="border border-gray-200 px-4 py-3 text-sm text-gray-700">Junior High School (SMP)</td>
-                <td class="border border-gray-200 px-4 py-3 text-sm text-gray-700">Rp 25 - 40 Juta</td>
-                <td class="border border-gray-200 px-4 py-3 text-sm text-gray-700">Rp 4 - 6 Juta</td>
-              </tr>
-              <tr>
-                <td class="border border-gray-200 px-4 py-3 text-sm text-gray-700">Senior High School (SMA)</td>
-                <td class="border border-gray-200 px-4 py-3 text-sm text-gray-700">Rp 45 - 70 Juta</td>
-                <td class="border border-gray-200 px-4 py-3 text-sm text-gray-700">Rp 5 - 8 Juta</td>
-              </tr>
-            </tbody>
-          </table>
+          <!-- Location Section -->
+          <div id="location" class="section mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Location</h2>
+
+            <!-- Map Placeholder -->
+            <div
+              class="bg-gray-100 rounded-lg mb-6 h-80 flex items-center justify-center border"
+            >
+              <div class="text-center text-gray-500">
+                <svg
+                  class="w-16 h-16 mx-auto mb-4"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                <p class="text-lg font-medium">Interactive Map Location</p>
+                <p class="text-sm mt-2">
+                  Latitude: {{ schoolData.latitude }}, Longitude: {{ schoolData.longitude }}
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-start p-4 bg-gray-50 rounded-lg">
+              <svg
+                class="w-5 h-5 text-gray-500 mr-3 mt-0.5 flex-shrink-0"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+              <p class="text-gray-700">
+                {{ getFullAddress() }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Ranking Section -->
+          <div id="ranking" class="section mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Ranking</h2>
+            <div class="bg-gray-50 rounded-lg p-6 text-center">
+              <p class="text-gray-600">
+                Rating: {{ schoolData.rating }} ({{ schoolData.reviewers }} reviewers)
+              </p>
+            </div>
+          </div>
+
+          <!-- Facilities Section -->
+          <div id="facilities" class="section mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Facilities</h2>
+            <div v-if="schoolData.facilities && schoolData.facilities.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div
+                v-for="(facility, index) in schoolData.facilities"
+                :key="index"
+                class="flex items-center p-3 bg-white border rounded-lg hover:shadow-sm transition-shadow"
+              >
+                <svg
+                  class="w-6 h-6 mr-4 text-gray-600"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
+                </svg>
+                <span class="text-gray-900">{{ facility }}</span>
+              </div>
+            </div>
+            <div v-else class="bg-gray-50 rounded-lg p-6 text-center">
+              <p class="text-gray-600">Informasi fasilitas belum tersedia</p>
+            </div>
+          </div>
+
+          <!-- Cost Section -->
+          <div id="cost" class="section mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Cost</h2>
+            <div class="bg-white border rounded-lg p-8">
+              <div class="mb-4">
+                <span class="text-sm font-medium text-gray-600"
+                  >Biaya Pendidikan</span
+                >
+              </div>
+              <div class="mb-6">
+                <h3 class="text-4xl font-bold text-gray-900">
+                  {{ schoolData.tuitionFee ? `Rp ${formatNumber(schoolData.tuitionFee)}` : 'Tidak Tersedia' }}
+                </h3>
+              </div>
+              <p class="text-gray-600">
+                Informasi biaya pendidikan tahunan untuk siswa.
+              </p>
+            </div>
+          </div>
+
+          <!-- Programs Section -->
+          <div id="programs" class="section mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">
+              Education Programs
+            </h2>
+            <div class="space-y-4">
+              <div
+                class="border border-gray-200 rounded-lg bg-white"
+              >
+                <button
+                  @click="toggleProgram(1)"
+                  class="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 transition-colors rounded-lg"
+                >
+                  <div class="flex items-center">
+                    <div
+                      class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center mr-4"
+                    >
+                      <svg
+                        class="w-5 h-5 text-gray-600"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z"
+                        ></path>
+                      </svg>
+                    </div>
+                    <span class="font-semibold text-gray-900">
+                      Program {{ schoolData.educationLevelName }}
+                    </span>
+                  </div>
+                  <svg
+                    class="w-5 h-5 text-gray-400 transition-transform"
+                    :class="{ 'rotate-180': programs[0].expanded }"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    ></path>
+                  </svg>
+                </button>
+                <div v-show="programs[0].expanded" class="px-4 pb-4">
+                  <div class="bg-gray-50 rounded-lg p-4">
+                    <ul class="text-gray-700 space-y-2">
+                      <li class="flex items-center">
+                        <span
+                          class="w-1.5 h-1.5 bg-gray-400 rounded-full mr-3"
+                        ></span>
+                        Kurikulum: {{ schoolData.curriculum }}
+                      </li>
+                      <li class="flex items-center">
+                        <span
+                          class="w-1.5 h-1.5 bg-gray-400 rounded-full mr-3"
+                        ></span>
+                        Jumlah Siswa: {{ schoolData.numStudent }}
+                      </li>
+                      <li class="flex items-center">
+                        <span
+                          class="w-1.5 h-1.5 bg-gray-400 rounded-full mr-3"
+                        ></span>
+                        Jumlah Guru: {{ schoolData.numTeacher }}
+                      </li>
+                      <li class="flex items-center">
+                        <span
+                          class="w-1.5 h-1.5 bg-gray-400 rounded-full mr-3"
+                        ></span>
+                        Status: {{ schoolData.statusName }}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Section -->
+          <div id="contact" class="section mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Contact</h2>
+            <div v-if="schoolData.contacts && schoolData.contacts.length > 0" class="space-y-4">
+              <div
+                v-for="(contact, index) in schoolData.contacts"
+                :key="index"
+                class="bg-white border rounded-lg p-4 flex items-center justify-between hover:shadow-md transition-shadow cursor-pointer"
+              >
+                <div class="flex items-center">
+                  <svg
+                    class="w-5 h-5 text-gray-500 mr-4"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"
+                    ></path>
+                  </svg>
+                  <span class="text-gray-900">{{ contact }}</span>
+                </div>
+                <svg
+                  class="w-4 h-4 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 5l7 7-7 7"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <div v-else class="space-y-4">
+              <div class="bg-gray-50 rounded-lg p-6 text-center">
+                <p class="text-gray-600">Informasi kontak belum tersedia</p>
+              </div>
+            </div>
+
+            <!-- School Information -->
+            <div class="mt-8 bg-gray-50 rounded-lg p-6">
+              <h3 class="text-lg font-semibold text-gray-900 mb-4">Informasi Sekolah</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <p class="text-sm text-gray-600">Kepala Sekolah</p>
+                  <p class="text-gray-900">{{ schoolData.principal }}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-600">Operator</p>
+                  <p class="text-gray-900">{{ schoolData.operator }}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-600">NPSN</p>
+                  <p class="text-gray-900">{{ schoolData.institutionCode }}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-600">Izin Operasional</p>
+                  <p class="text-gray-900">{{ schoolData.operationalLicense }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -198,61 +389,135 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from "vue";
+import { useRoute } from "vue-router";
+import axios from "@/lib/axios";
 
 // Reactive data
-const activeTab = ref('overview')
-const isScrolling = ref(false) // Flag untuk prevent conflict
+const activeTab = ref("overview");
+const isScrolling = ref(false);
+const loading = ref(true);
+const error = ref(null);
+const schoolData = ref({});
+const route = useRoute();
 
 const tabs = [
-  { id: 'overview', name: 'Overview' },
-  { id: 'location', name: 'Location' },
-  { id: 'official-contact', name: 'Official Contact' },
-  { id: 'facility', name: 'Facility' },
-  { id: 'education-program', name: 'Education Program' },
-  { id: 'pricing', name: 'Pricing' }
-]
+  { id: "overview", name: "Overview" },
+  { id: "location", name: "Location" },
+  { id: "ranking", name: "Ranking" },
+  { id: "facilities", name: "Facilities" },
+  { id: "cost", name: "Cost" },
+  { id: "programs", name: "Programs" },
+  { id: "contact", name: "Contact" },
+];
 
-// Smooth scroll function
+const programs = ref([
+  {
+    id: 1,
+    name: "Program Utama",
+    expanded: false,
+  },
+]);
+
+// Fetch school data from API
+const fetchSchoolData = async () => {
+  try {
+    loading.value = true;
+    const response = await axios.get(`/school-details/${route.params.id}`);
+    
+    if (response.data.status === "success") {
+      schoolData.value = response.data.data;
+    } else {
+      throw new Error(response.data.message || "Failed to fetch school data");
+    }
+  } catch (err) {
+    error.value = err.response?.data?.message || err.message || "Terjadi kesalahan";
+    console.error("Error fetching school data:", err);
+  } finally {
+    loading.value = false;
+    
+    // Setup Intersection Observer SETELAH data selesai dimuat dan DOM sudah di-render
+    await nextTick();
+    setupIntersectionObserver();
+  }
+};
+
+// Helper functions
+const getFullAddress = () => {
+  const addressParts = [
+    schoolData.value.street,
+    schoolData.value.village,
+    schoolData.value.subDistrictName,
+    schoolData.value.districtName,
+    schoolData.value.provinceName,
+    schoolData.value.postalCode
+  ].filter(part => part);
+  
+  return addressParts.join(", ");
+};
+
+const formatNumber = (number) => {
+  return new Intl.NumberFormat('id-ID').format(number);
+};
+
+// Toggle program expansion
+const toggleProgram = (programId) => {
+  const program = programs.value.find((p) => p.id === programId);
+  if (program) {
+    program.expanded = !program.expanded;
+  }
+};
+
 // Smooth scroll function
 const scrollToSection = (sectionId) => {
-  isScrolling.value = true
-  activeTab.value = sectionId
-  
-  const element = document.getElementById(sectionId)
+  isScrolling.value = true;
+  activeTab.value = sectionId;
+
+  const element = document.getElementById(sectionId);
   if (element) {
     element.scrollIntoView({
-      behavior: 'smooth',
-      block: 'center' // Ubah dari 'start' ke 'center'
-    })
-    
-    setTimeout(() => {
-      isScrolling.value = false
-    }, 1000)
-  }
-}
+      behavior: "smooth",
+      block: "start",
+    });
 
-// Intersection Observer to update active tab based on scroll position
-onMounted(() => {
-  const sections = document.querySelectorAll('.section')
-  const options = {
-    threshold: 0.5,
-    rootMargin: '-100px 0px -100px 0px'
+    setTimeout(() => {
+      isScrolling.value = false;
+    }, 1000);
   }
+};
+
+// Setup Intersection Observer
+const setupIntersectionObserver = () => {
+  const sections = document.querySelectorAll(".section");
+  
+  // Pastikan sections sudah ada di DOM
+  if (sections.length === 0) {
+    console.warn("No sections found");
+    return;
+  }
+  
+  const options = {
+    threshold: 0,
+    rootMargin: "-50% 0px -50% 0px",
+  };
 
   const observer = new IntersectionObserver((entries) => {
-    // Skip update jika sedang smooth scrolling dari klik tab
-    if (isScrolling.value) return
-    
+    if (isScrolling.value) return;
+
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        activeTab.value = entry.target.id
+        activeTab.value = entry.target.id;
       }
-    })
-  }, options)
+    });
+  }, options);
 
   sections.forEach((section) => {
-    observer.observe(section)
-  })
-})
+    observer.observe(section);
+  });
+};
+
+// Intersection Observer
+onMounted(() => {
+  fetchSchoolData();
+});
 </script>

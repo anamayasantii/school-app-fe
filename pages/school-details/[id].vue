@@ -73,18 +73,34 @@
             <ShareIcon class="inline-block mr-1" />
           </button>
           <NuxtLink :to="`/reviews/${route.params.id}`">
-          <button
-            class="flex items-center space-x-2 px-4 py-2 rounded-[16px] border border-gray-300 hover:bg-gray-100"
-          >
-            <AddReviewIcon class="inline-block mr-2" />
-            <span class="text-sm text-gray-800">Add Review</span>
-          </button>
+            <button
+              class="flex items-center space-x-2 px-4 py-2 rounded-[16px] border border-gray-300 hover:bg-gray-100"
+            >
+              <AddReviewIcon class="inline-block mr-2" />
+              <span class="text-sm text-gray-800">Add Review</span>
+            </button>
           </NuxtLink>
           <button
-            class="flex items-center space-x-2 px-4 py-2 rounded-[16px] border border-gray-300 hover:bg-gray-100"
+            @click="toggleSave"
+            :disabled="isSaving"
+            class="flex items-center space-x-2 px-4 py-2 rounded-[16px] border transition-colors"
+            :class="[
+              isSaved 
+                ? 'bg-pink-500 border-pink-500 hover:bg-pink-600' 
+                : 'border-gray-300 hover:bg-gray-100',
+              isSaving ? 'opacity-50 cursor-not-allowed' : ''
+            ]"
           >
-            <SaveIcon class="inline-block mr-2" />
-            <span class="text-sm text-gray-800">Save</span>
+            <SaveIcon 
+              class="inline-block mr-2" 
+              :class="isSaved ? 'text-white' : ''"
+            />
+            <span 
+              class="text-sm"
+              :class="isSaved ? 'text-white' : 'text-gray-800'"
+            >
+              {{ isSaving ? 'Loading...' : (isSaved ? 'Saved' : 'Save') }}
+            </span>
           </button>
         </div>
       </div>
@@ -98,7 +114,6 @@
 
     <SchoolDetail/>
 
-    <RatingDetail />
     <ReviewDetail/>
   </div>
 </template>
@@ -106,12 +121,12 @@
 <script setup>
 import { useRoute } from "vue-router";
 import axios from "@/lib/axios";
+import Cookies from "js-cookie";
 import { ref, onMounted } from "vue";
 import ShareIcon from "~/assets/ShareIcon.vue";
 import AddReviewIcon from "~/assets/AddReviewIcon.vue";
 import SaveIcon from "~/assets/SaveIcon.vue";
 import SchoolImages from "@/components/school/ImagesSlider.vue";
-import RatingDetail from "~/components/review/RatingDetail.vue";
 import ReviewDetail from "~/components/review/ReviewDetail.vue";
 import SchoolDetail from "~/components/school/SchoolDetail.vue";
 
@@ -119,18 +134,103 @@ const route = useRoute();
 const school = ref(null);
 const loading = ref(true);
 const error = ref(false);
-const activeTab = ref('Overview'); // Set default tab
+const isSaved = ref(false);
+const isSaving = ref(false);
+const activeTab = ref('Overview');
 const tabs = ['Overview', 'Location', 'Official Contact', 'Facility', 'Education Program', 'Pricing', 'Reviews'];
 
+// Fetch school detail
 const fetchSchoolData = async () => {
   try {
     const response = await axios.get(`/school-details/${route.params.id}`);
     school.value = response.data.data || {};
     loading.value = false;
+    
+    // Check if school is saved after fetching school data
+    await checkIfSaved();
   } catch (err) {
     console.error("Error fetching data:", err);
     error.value = true;
     loading.value = false;
+  }
+};
+
+// Check if school is already saved
+const checkIfSaved = async () => {
+  try {
+    const token = Cookies.get('token');
+    
+    if (!token) {
+      isSaved.value = false;
+      return;
+    }
+    
+    const response = await axios.get('/school-details/saved', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    if (response.data.status === 'success') {
+      const savedSchools = response.data.data;
+      isSaved.value = savedSchools.some(s => s.id === parseInt(route.params.id));
+    }
+  } catch (err) {
+    console.error("Error checking saved status:", err);
+    // Don't show error to user, just assume not saved
+    isSaved.value = false;
+  }
+};
+
+// Toggle save/unsave
+const toggleSave = async () => {
+  const token = Cookies.get('token');
+  
+  if (!token) {
+    alert('Anda harus login terlebih dahulu untuk menyimpan sekolah');
+    // TODO: Redirect to login page
+    // router.push('/login');
+    return;
+  }
+  
+  isSaving.value = true;
+  
+  try {
+    const response = await axios.post('/school-details/save', 
+      {
+        schoolDetailId: parseInt(route.params.id)
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }
+    );
+    
+    if (response.data.status === 'success') {
+      // Toggle the saved state
+      isSaved.value = !isSaved.value;
+      
+      // Show success message
+      const message = isSaved.value 
+        ? 'Sekolah berhasil disimpan' 
+        : 'Sekolah berhasil dihapus dari daftar simpanan';
+      
+      // TODO: Replace with toast notification
+      alert(message);
+    }
+  } catch (err) {
+    console.error("Error toggling save:", err);
+    
+    // Handle specific error messages
+    if (err.response?.status === 401) {
+      alert('Sesi Anda telah berakhir, silakan login kembali');
+      // TODO: Redirect to login
+    } else {
+      alert(err.response?.data?.message || 'Gagal menyimpan sekolah. Silakan coba lagi.');
+    }
+  } finally {
+    isSaving.value = false;
   }
 };
 

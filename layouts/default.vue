@@ -1,9 +1,7 @@
 <template>
   <div class="flex flex-col min-h-screen">
     <!-- Header dengan spesifikasi Figma -->
-    <header
-      class="w-full h-[120px] border-b border-[#F2ECE3] pt-8 pb-8 px-60"
-    >
+    <header class="w-full h-[120px] border-b border-[#F2ECE3] pt-8 pb-8 px-60">
       <!-- Inner container untuk logo, navbar, dan tombol login -->
       <div class="w-full h-10 flex items-center justify-between">
         <!-- Logo Section -->
@@ -18,9 +16,105 @@
         </div>
 
         <!-- Navigation Section -->
-        <nav class="flex items-center space-x-8 text-xs">
+        <nav class="items-center flex space-x-8 text-xs relative">
           <a href="/" class="text-[#76685A]"> Home </a>
-          <a href="/explore-school" class="text-[#76685A]"> Explore School </a>
+
+          <!-- Explore School with Dropdown -->
+          <div
+            class="relative"
+            @mouseenter="isDropdownOpen = true"
+            @mouseleave="isDropdownOpen = false"
+          >
+            <button
+              class="text-[#76685A] flex items-center gap-1 hover:text-[#5a4d42] transition-colors"
+              @click="isDropdownOpen = !isDropdownOpen"
+            >
+              Explore School
+              <svg
+                class="w-3 h-3 transition-transform duration-200"
+                :class="{ 'rotate-180': isDropdownOpen }"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <transition
+              enter-active-class="transition ease-out duration-200"
+              enter-from-class="opacity-0 translate-y-1"
+              enter-to-class="opacity-100 translate-y-0"
+              leave-active-class="transition ease-in duration-150"
+              leave-from-class="opacity-100 translate-y-0"
+              leave-to-class="opacity-0 translate-y-1"
+            >
+              <div
+                v-if="isDropdownOpen"
+                class="absolute left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-100 py-2 z-50"
+              >
+                <div v-if="loading" class="px-4 py-3 text-gray-400 text-xs">
+                  Loading...
+                </div>
+
+                <div v-else-if="error" class="px-4 py-3 text-red-500 text-xs">
+                  {{ error }}
+                </div>
+
+                <template v-else>
+                  <nuxt-link
+                    v-for="level in educationLevels.filter(
+                      (l) => l.name !== 'SPK SMA'
+                    )"
+                    :key="level.id"
+                    :to="`/schools/${level.name.toLowerCase()}`"
+                    class="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors group"
+                    @click="isDropdownOpen = false"
+                  >
+                    <!-- Logo SVG Component dengan v-if -->
+                    <div
+                      class="w-5 h-5 mr-3 text-[#76685A] group-hover:text-[#5a4d42] flex-shrink-0"
+                    >
+                      <IconSD
+                        v-if="level.name === 'SD'"
+                        class="w-full h-full"
+                      />
+                      <IconSMP
+                        v-else-if="level.name === 'SMP'"
+                        class="w-full h-full"
+                      />
+                      <IconSMA
+                        v-else-if="level.name === 'SMA'"
+                        class="w-full h-full"
+                      />
+                      <IconSMK
+                        v-else-if="level.name === 'SMK'"
+                        class="w-full h-full"
+                      />
+                      <IconUniversity
+                        v-else-if="level.name === 'Universitas'"
+                        class="w-full h-full"
+                      />
+                      <IconSD v-else class="w-full h-full" />
+                    </div>
+
+                    <span
+                      class="text-[#76685A] text-xs group-hover:text-[#5a4d42]"
+                    >
+                      {{ level.name }}
+                    </span>
+                  </nuxt-link>
+                </template>
+              </div>
+            </transition>
+          </div>
+
           <a href="/about-us" class="text-[#76685A]"> About Us </a>
           <a href="/ranking" class="text-[#76685A]"> Ranking </a>
         </nav>
@@ -48,12 +142,12 @@
                 class="bg-black rounded-full flex items-center justify-center mr-3"
               >
                 <nuxt-link to="/">
-            <img
-              src="assets/images/logo-footer.png"
-              alt="School Advisor"
-              class="h-10"
-            />
-          </nuxt-link>
+                  <img
+                    src="assets/images/logo-footer.png"
+                    alt="School Advisor"
+                    class="h-10"
+                  />
+                </nuxt-link>
               </div>
             </div>
 
@@ -263,6 +357,37 @@
 
 <script setup>
 import AuthMenu from "@/components/header/AuthMenu.vue";
+import { ref, onMounted } from "vue";
+import axios from "@/lib/axios";
+import IconSD from "@/assets/IconSd.vue";
+import IconSMP from "@/assets/IconSmp.vue";
+import IconSMA from "@/assets/IconSma.vue";
+import IconSMK from "@/assets/IconSmk.vue";
+import IconUniversity from "@/assets/IconKuliah.vue";
+
+const isDropdownOpen = ref(false);
+const educationLevels = ref([]);
+const loading = ref(false);
+const error = ref(null);
+
+const fetchEducationLevels = async () => {
+  loading.value = true;
+  error.value = null;
+
+  try {
+    const response = await axios.get("/education-levels");
+    educationLevels.value = response.data.data;
+  } catch (err) {
+    error.value = "Failed to load education levels";
+    console.error("Error fetching education levels:", err);
+  } finally {
+    loading.value = false;
+  }
+};
+
+onMounted(() => {
+  fetchEducationLevels();
+});
 </script>
 
 <style scoped>
@@ -304,5 +429,28 @@ header {
   nav {
     display: none; /* Hide navigation on mobile, you might want to add a mobile menu */
   }
+}
+
+.absolute.left-0 {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.absolute.left-0::-webkit-scrollbar {
+  width: 4px;
+}
+
+.absolute.left-0::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.absolute.left-0::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+
+.absolute.left-0::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
 }
 </style>
