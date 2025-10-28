@@ -25,8 +25,8 @@
 
         <!-- Form -->
         <form @submit.prevent="handleSubmit" class="p-6">
-          <!-- Row 1: Nama Lengkap & Tanggal Lahir -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <!-- Row 1: Nama Lengkap & Tanggal Lahir (Tanggal Lahir hidden for parent) -->
+          <div :class="isParent ? 'mb-6' : 'grid grid-cols-1 md:grid-cols-2 gap-6 mb-6'">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">
                 Nama Lengkap
@@ -38,7 +38,7 @@
                 required
               />
             </div>
-            <div>
+            <div v-if="!isParent">
               <label class="block text-sm font-medium text-gray-700 mb-2">
                 Tanggal Lahir
               </label>
@@ -52,8 +52,8 @@
             </div>
           </div>
 
-          <!-- Row 2: NISN -->
-          <div class="mb-6">
+          <!-- Row 2: NISN (hidden for parent) -->
+          <div v-if="!isParent" class="mb-6">
             <label class="block text-sm font-medium text-gray-700 mb-2">
               NISN/NIM
             </label>
@@ -133,8 +133,9 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import axios from '@/lib/axios'
+import Cookies from 'js-cookie'
 
 // Props
 const props = defineProps({
@@ -161,6 +162,15 @@ const formData = ref({
   birthDate: '',
   phone: '',
   address: ''
+})
+
+// Computed property to check if user is parent
+const isParent = computed(() => {
+  // Primary: Check roles array from API
+  if (props.userData?.roles && Array.isArray(props.userData.roles)) {
+    return props.userData.roles.includes('parent')
+  }
+  return false
 })
 
 // Watch for userData changes to populate form
@@ -190,46 +200,71 @@ const handleSubmit = async () => {
   error.value = ''
   
   try {
-    // Prepare data to send (exclude email since it's readonly)
+    // Get token from cookies
+    const token = Cookies.get('token')
+    
+    if (!token) {
+      error.value = 'Sesi Anda telah berakhir, silakan login kembali'
+      emit('error', error.value)
+      isSubmitting.value = false
+      return
+    }
+    
+    // Prepare data to send
     const updateData = {
-      fullname: formData.value.fullname,
-      nisn: formData.value.nisn,
-      birthDate: formData.value.birthDate,
-      phone: formData.value.phone,
-      address: formData.value.address
+      fullname: formData.value.fullname || null,
+      email: formData.value.email || null,
+      phoneNo: formData.value.phone || null,
+      address: formData.value.address || null,
+      image: null // Will be implemented later
     }
 
-    // Make API call to update user profile
-    const response = await axios.put('/user', updateData)
+    // Only include NISN and birthDate if user is not parent
+    if (!isParent.value) {
+      updateData.nisn = formData.value.nisn || null
+      updateData.dateOfBirth = formData.value.birthDate || null
+    }
+
+    console.log('Submitting profile update:', updateData)
+    console.log('Using token:', token ? 'Token exists' : 'No token')
+    console.log('User role:', props.userData?.role)
+
+    // Make API call to update user profile with token
+    const response = await axios.put('/user', updateData, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
     
-    // Emit success event with response data
-    emit('success', response.data)
-    
-    // Close modal
-    emit('close')
-    
-    // You can add a success notification here if needed
-    console.log('Profile updated successfully:', response.data)
+    if (response.data.status === 'success') {
+      // Emit submit event to parent (ProfileSettings)
+      // Parent will handle refresh and close modal
+      emit('submit', formData.value)
+      
+      console.log('Profile updated successfully:', response.data)
+    }
     
   } catch (err) {
     console.error('Error updating profile:', err)
+    console.error('Error response:', err.response)
     
     // Handle different error scenarios
     if (err.response) {
       // Server responded with error status
-      const errorMessage = err.response.data?.message || 'Terjadi kesalahan saat menyimpan data'
-      error.value = errorMessage
-      emit('error', errorMessage)
+      if (err.response.status === 401) {
+        error.value = 'Sesi Anda telah berakhir, silakan login kembali'
+      } else {
+        error.value = err.response.data?.message || 'Terjadi kesalahan saat menyimpan data'
+      }
+      emit('error', error.value)
     } else if (err.request) {
       // Request made but no response received
-      const errorMessage = 'Tidak dapat terhubung ke server. Periksa koneksi internet Anda.'
-      error.value = errorMessage
-      emit('error', errorMessage)
+      error.value = 'Tidak dapat terhubung ke server. Periksa koneksi internet Anda.'
+      emit('error', error.value)
     } else {
       // Something else happened
-      const errorMessage = 'Terjadi kesalahan yang tidak diketahui'
-      error.value = errorMessage
-      emit('error', errorMessage)
+      error.value = 'Terjadi kesalahan yang tidak diketahui'
+      emit('error', error.value)
     }
   } finally {
     isSubmitting.value = false

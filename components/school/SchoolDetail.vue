@@ -49,7 +49,7 @@
           <div id="overview" class="section mb-12">
             <div class="mb-8">
               <h2 class="text-2xl font-bold text-gray-900 mb-4">
-                Quick Overview
+                Ringkasan
               </h2>
               <p class="text-gray-700 leading-relaxed mb-6">
                 {{ schoolData.name }} adalah sekolah {{ schoolData.statusName.toLowerCase() }} 
@@ -138,7 +138,7 @@
 
           <!-- Location Section -->
           <div id="location" class="section mb-12">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Location</h2>
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Lokasi</h2>
 
             <!-- Map Placeholder -->
             <div
@@ -181,19 +181,9 @@
             </div>
           </div>
 
-          <!-- Ranking Section -->
-          <div id="ranking" class="section mb-12">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Ranking</h2>
-            <div class="bg-gray-50 rounded-lg p-6 text-center">
-              <p class="text-gray-600">
-                Rating: {{ schoolData.rating }} ({{ schoolData.reviewers }} reviewers)
-              </p>
-            </div>
-          </div>
-
           <!-- Facilities Section -->
           <div id="facilities" class="section mb-12">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Facilities</h2>
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Fasilitas</h2>
             <div v-if="schoolData.facilities && schoolData.facilities.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div
                 v-for="(facility, index) in schoolData.facilities"
@@ -219,7 +209,7 @@
 
           <!-- Cost Section -->
           <div id="cost" class="section mb-12">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Cost</h2>
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Biaya</h2>
             <div class="bg-white border rounded-lg p-8">
               <div class="mb-4">
                 <span class="text-sm font-medium text-gray-600"
@@ -240,7 +230,7 @@
           <!-- Programs Section -->
           <div id="programs" class="section mb-12">
             <h2 class="text-2xl font-bold text-gray-900 mb-6">
-              Education Programs
+              Program Edukasi
             </h2>
             <div class="space-y-4">
               <div
@@ -319,7 +309,7 @@
 
           <!-- Contact Section -->
           <div id="contact" class="section mb-12">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Contact</h2>
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Kontak</h2>
             <div v-if="schoolData.contacts && schoolData.contacts.length > 0" class="space-y-4">
               <div
                 v-for="(contact, index) in schoolData.contacts"
@@ -402,13 +392,12 @@ const schoolData = ref({});
 const route = useRoute();
 
 const tabs = [
-  { id: "overview", name: "Overview" },
-  { id: "location", name: "Location" },
-  { id: "ranking", name: "Ranking" },
-  { id: "facilities", name: "Facilities" },
-  { id: "cost", name: "Cost" },
-  { id: "programs", name: "Programs" },
-  { id: "contact", name: "Contact" },
+  { id: "overview", name: "Ringkasan" },
+  { id: "location", name: "Lokasi" },
+  { id: "facilities", name: "Fasilitas" },
+  { id: "cost", name: "Biaya" },
+  { id: "programs", name: "Program" },
+  { id: "contact", name: "Kontak" },
 ];
 
 const programs = ref([

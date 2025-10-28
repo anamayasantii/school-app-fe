@@ -23,7 +23,7 @@
               href="/schools" 
               class="hover:text-blue-600 transition-colors duration-200"
             >
-              Explore School
+              Jelajahi Sekolah
             </a>
           </li>
           <li class="text-gray-400">
@@ -33,10 +33,10 @@
           </li>
           <li>
             <a 
-              href="/schools" 
+              :href="getEducationLevelPath()" 
               class="hover:text-blue-600 transition-colors duration-200"
             >
-              {{ school.educationLevelName }}
+              {{ getEducationLevelFullName() }}
             </a>
           </li>
           <li class="text-gray-400">
@@ -50,57 +50,50 @@
         </ol>
       </nav>
 
-      <h1 class="text-3xl font-bold">{{ school.name }}</h1>
-      <div class="flex items-center my-2 justify-between">
-        <div class="flex">
-          {{ school.rating }}
-          <svg
-            v-for="star in 5"
-            :key="star"
-            class="size-6"
-            viewBox="0 0 24 24"
-            :fill="star <= (school.rating || 0) ? '#FFB800' : '#28190C'"
-            :opacity="star <= (school.rating || 0) ? 1 : 0.12"
-          >
-            <path
-              d="M12 3.8l2.5 5.1 5.7.8-4.1 4 1 5.7L12 16.9 6.9 19.4l1-5.7-4.1-4 5.7-.8L12 3.8z"
-            />
-          </svg>
-          <span class="text-gray-500">({{ school.reviewers }} Reviews)</span>
+      <!-- School Header Section -->
+      <div class="flex justify-between items-start mb-2">
+        <!-- School Name and Rating -->
+        <div class="flex-1">
+          <h1 class="text-3xl font-bold mb-2">{{ school.name }}</h1>
+          <div class="flex items-center">
+            <span class="mr-2">{{ school.rating }}</span>
+            <div class="flex items-center">
+              <svg
+                v-for="star in 5"
+                :key="star"
+                class="size-6"
+                viewBox="0 0 24 24"
+                :fill="star <= (school.rating || 0) ? '#FFB800' : '#28190C'"
+                :opacity="star <= (school.rating || 0) ? 1 : 0.12"
+              >
+                <path
+                  d="M12 3.8l2.5 5.1 5.7.8-4.1 4 1 5.7L12 16.9 6.9 19.4l1-5.7-4.1-4 5.7-.8L12 3.8z"
+                />
+              </svg>
+            </div>
+            <span class="text-gray-500 ml-2">({{ school.reviewers }} Reviews)</span>
+          </div>
         </div>
-        <div class="flex items-center space-x-4">
-          <button class="text-sm text-blue-500 hover:text-blue-700">
-            <ShareIcon class="inline-block mr-1" />
+
+        <!-- Action Buttons - Now aligned with school name -->
+        <div class="flex items-center mt-1">
+          <!-- Share Button -->
+          <button class="text-gray-600 hover:text-blue-600 transition-colors duration-200 p-2 rounded-full hover:bg-gray-100">
+            <ShareIcon class="w-10 h-10" />
           </button>
-          <NuxtLink :to="`/reviews/${route.params.id}`">
-            <button
-              class="flex items-center space-x-2 px-4 py-2 rounded-[16px] border border-gray-300 hover:bg-gray-100"
-            >
-              <AddReviewIcon class="inline-block mr-2" />
-              <span class="text-sm text-gray-800">Add Review</span>
-            </button>
-          </NuxtLink>
+          
+          <!-- Save Button -->
           <button
             @click="toggleSave"
             :disabled="isSaving"
-            class="flex items-center space-x-2 px-4 py-2 rounded-[16px] border transition-colors"
-            :class="[
-              isSaved 
-                ? 'bg-pink-500 border-pink-500 hover:bg-pink-600' 
-                : 'border-gray-300 hover:bg-gray-100',
-              isSaving ? 'opacity-50 cursor-not-allowed' : ''
-            ]"
+            class="transition-all duration-200 p-2 rounded-full hover:bg-gray-100"
+            :class="isSaving ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'"
           >
             <SaveIcon 
-              class="inline-block mr-2" 
-              :class="isSaved ? 'text-white' : ''"
+              :filled="isSaved"
+              :color="isSaved ? '#082519' : '#9CA3AF'"
+              class="w-10 h-10"
             />
-            <span 
-              class="text-sm"
-              :class="isSaved ? 'text-white' : 'text-gray-800'"
-            >
-              {{ isSaving ? 'Loading...' : (isSaved ? 'Saved' : 'Save') }}
-            </span>
           </button>
         </div>
       </div>
@@ -138,6 +131,33 @@ const isSaved = ref(false);
 const isSaving = ref(false);
 const activeTab = ref('Overview');
 const tabs = ['Overview', 'Location', 'Official Contact', 'Facility', 'Education Program', 'Pricing', 'Reviews'];
+
+// Education level mapping
+const educationLevelMap = {
+  'SD': { full: 'Sekolah Dasar', path: 'sd' },
+  'SMP': { full: 'Sekolah Menengah Pertama', path: 'smp' },
+  'SMA': { full: 'Sekolah Menengah Atas', path: 'sma' },
+  'SMK': { full: 'Sekolah Menengah Kejuruan', path: 'smk' },
+  'Universitas': { full: 'Universitas', path: 'universitas' },
+};
+
+// Get full education level name
+const getEducationLevelFullName = () => {
+  if (!school.value?.educationLevelName) return '';
+  
+  const levelKey = school.value.educationLevelName.toUpperCase();
+  return educationLevelMap[levelKey]?.full || school.value.educationLevelName;
+};
+
+// Get education level path
+const getEducationLevelPath = () => {
+  if (!school.value?.educationLevelName) return '/schools';
+  
+  const levelKey = school.value.educationLevelName.toUpperCase();
+  const path = educationLevelMap[levelKey]?.path || school.value.educationLevelName.toLowerCase();
+  
+  return `/schools/${path}`;
+};
 
 // Fetch school detail
 const fetchSchoolData = async () => {

@@ -13,8 +13,8 @@ komponen navigasi tab
         :class="[
           'flex items-center gap-2 px-3 py-3 rounded-lg text-sm font-medium transition-colors',
           activeTab === tab.value
-            ? 'bg-[#1D2B29] text-white'
-            : 'text-[#6C7370] hover:bg-gray-200',
+            ? 'bg-[#212529] text-[#F8F9FA]'
+            : 'text-[#082519] hover:bg-[#fafbfb]',
         ]"
       >
         <span class="text-base w-4 h-4" v-html="tab.icon"></span>
@@ -33,8 +33,8 @@ komponen navigasi tab
         :class="[
           'flex items-center justify-center gap-1.5 px-3 py-3 rounded-lg text-xs font-medium transition-colors whitespace-nowrap flex-1',
           activeTab === tab.value
-            ? 'bg-[#1F1F1F] text-[#FFFFFF]'
-            : 'text-[#1F1F1F] hover:bg-gray-200',
+            ? 'bg-[#212529] text-[#F8F9FA]'
+            : 'text-[#082519] hover:bg-[#fafbfb]',
         ]"
       >
         <span class="text-sm w-4 h-4" v-html="tab.icon"></span>

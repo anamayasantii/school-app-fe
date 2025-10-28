@@ -68,48 +68,98 @@
                 </div>
 
                 <template v-else>
-                  <nuxt-link
-                    v-for="level in educationLevels.filter(
-                      (l) => l.name !== 'SPK SMA'
-                    )"
-                    :key="level.id"
-                    :to="`/schools/${level.name.toLowerCase()}`"
-                    class="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors group"
-                    @click="isDropdownOpen = false"
-                  >
-                    <!-- Logo SVG Component dengan v-if -->
-                    <div
-                      class="w-5 h-5 mr-3 text-[#76685A] group-hover:text-[#5a4d42] flex-shrink-0"
-                    >
-                      <IconSD
-                        v-if="level.name === 'SD'"
-                        class="w-full h-full"
-                      />
-                      <IconSMP
-                        v-else-if="level.name === 'SMP'"
-                        class="w-full h-full"
-                      />
-                      <IconSMA
-                        v-else-if="level.name === 'SMA'"
-                        class="w-full h-full"
-                      />
-                      <IconSMK
-                        v-else-if="level.name === 'SMK'"
-                        class="w-full h-full"
-                      />
-                      <IconUniversity
-                        v-else-if="level.name === 'Universitas'"
-                        class="w-full h-full"
-                      />
-                      <IconSD v-else class="w-full h-full" />
+                  <!-- Container dengan display flex -->
+                  <div class="flex p-2 min-h-[120px]">
+                    <!-- Kolom Kiri (3 item: SD, SMP, SMA) -->
+                    <div class="w-1/2 pr-1">
+                      <div class="flex flex-col gap-1">
+                        <nuxt-link
+                          to="/schools/sd"
+                          class="flex items-center px-3 py-2 hover:bg-gray-50 transition-colors group rounded-md"
+                          @click="isDropdownOpen = false"
+                        >
+                          <div
+                            class="w-4 h-4 mr-2 text-[#76685A] group-hover:text-[#5a4d42] flex-shrink-0"
+                          >
+                            <IconSD class="w-full h-full" />
+                          </div>
+                          <span
+                            class="text-[#76685A] text-xs group-hover:text-[#5a4d42]"
+                            >SD</span
+                          >
+                        </nuxt-link>
+
+                        <nuxt-link
+                          to="/schools/smp"
+                          class="flex items-center px-3 py-2 hover:bg-gray-50 transition-colors group rounded-md"
+                          @click="isDropdownOpen = false"
+                        >
+                          <div
+                            class="w-4 h-4 mr-2 text-[#76685A] group-hover:text-[#5a4d42] flex-shrink-0"
+                          >
+                            <IconSMP class="w-full h-full" />
+                          </div>
+                          <span
+                            class="text-[#76685A] text-xs group-hover:text-[#5a4d42]"
+                            >SMP</span
+                          >
+                        </nuxt-link>
+
+                        <nuxt-link
+                          to="/schools/sma"
+                          class="flex items-center px-3 py-2 hover:bg-gray-50 transition-colors group rounded-md"
+                          @click="isDropdownOpen = false"
+                        >
+                          <div
+                            class="w-4 h-4 mr-2 text-[#76685A] group-hover:text-[#5a4d42] flex-shrink-0"
+                          >
+                            <IconSMA class="w-full h-full" />
+                          </div>
+                          <span
+                            class="text-[#76685A] text-xs group-hover:text-[#5a4d42]"
+                            >SMA</span
+                          >
+                        </nuxt-link>
+                      </div>
                     </div>
 
-                    <span
-                      class="text-[#76685A] text-xs group-hover:text-[#5a4d42]"
-                    >
-                      {{ level.name }}
-                    </span>
-                  </nuxt-link>
+                    <!-- Kolom Kanan (2 item: SMK, Universitas) -->
+                    <div class="w-1/2 pl-1">
+                      <div class="flex flex-col gap-1">
+                        <nuxt-link
+                          to="/schools/smk"
+                          class="flex items-center px-3 py-2 hover:bg-gray-50 transition-colors group rounded-md"
+                          @click="isDropdownOpen = false"
+                        >
+                          <div
+                            class="w-4 h-4 mr-2 text-[#76685A] group-hover:text-[#5a4d42] flex-shrink-0"
+                          >
+                            <IconSMK class="w-full h-full" />
+                          </div>
+                          <span
+                            class="text-[#76685A] text-xs group-hover:text-[#5a4d42]"
+                            >SMK</span
+                          >
+                        </nuxt-link>
+
+                        <nuxt-link
+                          to="/schools/universitas"
+                          class="flex items-center px-3 py-2 hover:bg-gray-50 transition-colors group rounded-md"
+                          @click="isDropdownOpen = false"
+                        >
+                          <div
+                            class="w-4 h-4 mr-2 text-[#76685A] group-hover:text-[#5a4d42] flex-shrink-0"
+                          >
+                            <IconUniversity class="w-full h-full" />
+                          </div>
+                          <span
+                            class="text-[#76685A] text-xs group-hover:text-[#5a4d42]"
+                            >Universitas</span
+                          >
+                        </nuxt-link>
+                      </div>
+                    </div>
+                  </div>
                 </template>
               </div>
             </transition>

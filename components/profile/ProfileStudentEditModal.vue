@@ -44,7 +44,7 @@
               </label>
               <div class="relative">
                 <input
-                  v-model="formData.birthDate"
+                  v-model="formData.dateOfBirth"
                   type="date"
                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                 />
@@ -70,7 +70,7 @@
           </div>
 
           <!-- Row 3: Email & No. Telp -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">
                 Email
@@ -88,12 +88,32 @@
                 No. Telp
               </label>
               <input
-                v-model="formData.phone"
+                v-model="formData.phoneNo"
                 type="tel"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                 placeholder="Masukkan nomor telepon"
               />
             </div>
+          </div>
+
+          <!-- Row 4: Sekolah (readonly for reference) -->
+          <div class="mb-8">
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              Sekolah
+            </label>
+            <input
+              v-model="formData.schoolName"
+              type="text"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-500 bg-gray-50"
+              readonly
+              disabled
+            />
+            <p class="text-xs text-gray-500 mt-1">Hubungi admin untuk mengubah sekolah</p>
+          </div>
+
+          <!-- Error Message -->
+          <div v-if="error" class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p class="text-sm text-red-600">{{ error }}</p>
           </div>
 
           <!-- Buttons -->
@@ -139,12 +159,16 @@ const emit = defineEmits(['close', 'submit'])
 
 // State
 const isSubmitting = ref(false)
+const error = ref('')
 const formData = ref({
   fullname: '',
   nisn: '',
-  birthDate: '',
+  dateOfBirth: '',
   email: '',
-  phone: ''
+  phoneNo: '',
+  schoolName: '',
+  schoolDetailId: null,
+  schoolValidation: null
 })
 
 // Watch for studentData changes to populate form
@@ -153,18 +177,48 @@ watch(() => props.studentData, (newData) => {
     formData.value = {
       fullname: newData.fullname || '',
       nisn: newData.nisn || '',
-      birthDate: newData.birthDate || '',
+      dateOfBirth: newData.birthDate || '', // birthDate from parent
       email: newData.email || '',
-      phone: newData.phone || ''
+      phoneNo: newData.phone || '', // phone from parent
+      schoolName: newData.schoolName || '',
+      schoolDetailId: newData.schoolDetailId || null,
+      schoolValidation: newData.schoolValidation || null
     }
   }
 }, { immediate: true, deep: true })
 
+// Clear error when modal opens
+watch(() => props.isOpen, (isOpen) => {
+  if (isOpen) {
+    error.value = ''
+  }
+})
+
 // Methods
 const handleSubmit = async () => {
   isSubmitting.value = true
+  error.value = ''
+  
   try {
-    emit('submit', formData.value)
+    // Prepare data to emit to parent
+    const submitData = {
+      fullname: formData.value.fullname,
+      dateOfBirth: formData.value.dateOfBirth,
+      nisn: formData.value.nisn,
+      email: formData.value.email,
+      phoneNo: formData.value.phoneNo,
+      schoolDetailId: formData.value.schoolDetailId,
+      schoolValidation: formData.value.schoolValidation
+    }
+    
+    console.log('Emitting student data:', submitData)
+    
+    // Emit to parent component
+    emit('submit', submitData)
+    
+  } catch (err) {
+    console.error('Error preparing student data:', err)
+    error.value = 'Terjadi kesalahan saat menyiapkan data'
   } finally {
     isSubmitting.value = false
   }
