@@ -237,7 +237,6 @@ const handleSubmit = async () => {
         sameSite: 'strict'
       })
       
-      // ✅ TAMBAH INI: Fetch user setelah login
       const authStore = useAuthStore()
       await authStore.fetchUser()
       

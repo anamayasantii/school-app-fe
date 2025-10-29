@@ -56,119 +56,85 @@ const data = {
   ],
   navMain: [
     {
-      title: "Playground",
-      url: "#",
+      title: "Home",
+      url: "/dashboard",
       icon: SquareTerminal,
-      isActive: true,
-      items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
     },
     {
-      title: "Models",
+      title: "User",
       url: "#",
       icon: Bot,
       items: [
         {
-          title: "Genesis",
-          url: "#",
+          title: "User Lists",
+          url: "/dashboard/user-lists",
         },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
+        // {
+        //   title: "Add School",
+        //   url: "#",
+        // },
       ],
     },
     {
-      title: "Documentation",
+      title: "School",
       url: "#",
       icon: BookOpen,
       items: [
         {
-          title: "Introduction",
+          title: "School Lists",
           url: "#",
         },
         {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
+          title: "Add School",
           url: "#",
         },
       ],
     },
     {
-      title: "Settings",
+      title: "Review",
       url: "#",
       icon: Settings2,
       items: [
         {
-          title: "General",
+          title: "Review Lists",
           url: "#",
         },
         {
-          title: "Team",
+          title: "Requests",
           url: "#",
         },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
+
       ],
     },
   ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
-  ],
+  // projects: [
+  //   {
+  //     name: "Design Engineering",
+  //     url: "#",
+  //     icon: Frame,
+  //   },
+  //   {
+  //     name: "Sales & Marketing",
+  //     url: "#",
+  //     icon: PieChart,
+  //   },
+  //   {
+  //     name: "Travel",
+  //     url: "#",
+  //     icon: Map,
+  //   },
+  // ],
 }
 </script>
 
 <template>
   <Sidebar v-bind="props">
-    <SidebarHeader>
+    <!-- <SidebarHeader>
       <TeamSwitcher :teams="data.teams" />
-    </SidebarHeader>
+    </SidebarHeader> -->
     <SidebarContent>
       <NavMain :items="data.navMain" />
-      <NavProjects :projects="data.projects" />
+      <!-- <NavProjects :projects="data.projects" /> -->
     </SidebarContent>
     <SidebarFooter>
       <NavUser :user="data.user" />

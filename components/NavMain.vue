@@ -35,14 +35,24 @@ defineProps<{
   <SidebarGroup>
     <SidebarGroupLabel>Platform</SidebarGroupLabel>
     <SidebarMenu>
-      <Collapsible
-        v-for="item in items"
-        :key="item.title"
-        as-child
-        :default-open="item.isActive"
-        class="group/collapsible"
-      >
-        <SidebarMenuItem>
+      <SidebarMenuItem v-for="item in items" :key="item.title">
+        <!-- Jika tidak ada sub-items, render sebagai link biasa -->
+        <SidebarMenuButton 
+          v-if="!item.items || item.items.length === 0" 
+          as-child
+        >
+          <a :href="item.url">
+            <component :is="item.icon" v-if="item.icon" />
+            <span>{{ item.title }}</span>
+          </a>
+        </SidebarMenuButton>
+
+        <!-- Jika ada sub-items, render sebagai dropdown -->
+        <Collapsible
+          v-else
+          :default-open="item.isActive"
+          class="group/collapsible"
+        >
           <CollapsibleTrigger as-child>
             <SidebarMenuButton :tooltip="item.title">
               <component :is="item.icon" v-if="item.icon" />
@@ -61,8 +71,8 @@ defineProps<{
               </SidebarMenuSubItem>
             </SidebarMenuSub>
           </CollapsibleContent>
-        </SidebarMenuItem>
-      </Collapsible>
+        </Collapsible>
+      </SidebarMenuItem>
     </SidebarMenu>
   </SidebarGroup>
 </template>
