@@ -82,7 +82,7 @@ const data = {
       items: [
         {
           title: "School Lists",
-          url: "#",
+          url: "/dashboard/school-lists",
         },
         {
           title: "Add School",
@@ -100,10 +100,13 @@ const data = {
           url: "#",
         },
         {
-          title: "Requests",
+          title: "Review Requests",
           url: "#",
         },
-
+        {
+          title: "Review Rejects",
+          url: "#",
+        },
       ],
     },
   ],

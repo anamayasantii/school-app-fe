@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import {
   BadgeCheck,
   Bell,
@@ -28,16 +28,38 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar'
-
-const props = defineProps<{
-  user: {
-    name: string
-    email: string
-    avatar: string
-  }
-}>()
+import Cookies from 'js-cookie'
+import { useAuthStore } from '@/store/auth'
+import { computed } from 'vue'
 
 const { isMobile } = useSidebar()
+const authStore = useAuthStore()
+
+// Computed untuk mendapatkan data user dari store
+const userData = computed(() => {
+  if (!authStore.user) {
+    return {
+      name: '',
+      email: '',
+      avatar: null
+    }
+  }
+
+  return {
+    name: authStore.user.fullname || '',
+    email: authStore.user.email || '',
+    avatar: authStore.user.image || null
+  }
+})
+
+const handleLogout = async () => {
+  try {
+    Cookies.remove('token')
+    await navigateTo('dashboard/login')
+  } catch (error) {
+    console.error('Logout failed:', error)
+  }
+}
 </script>
 
 <template>
@@ -50,14 +72,14 @@ const { isMobile } = useSidebar()
             class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
           >
             <Avatar class="h-8 w-8 rounded-lg">
-              <AvatarImage :src="user.avatar" :alt="user.name" />
+              <AvatarImage v-if="userData.avatar" :src="userData.avatar" :alt="userData.name" />
               <AvatarFallback class="rounded-lg">
-                CN
+                {{ userData.name.charAt(0).toUpperCase() || 'U' }}
               </AvatarFallback>
             </Avatar>
             <div class="grid flex-1 text-left text-sm leading-tight">
-              <span class="truncate font-semibold">{{ user.name }}</span>
-              <span class="truncate text-xs">{{ user.email }}</span>
+              <span class="truncate font-semibold">{{ userData.name }}</span>
+              <span class="truncate text-xs">{{ userData.email }}</span>
             </div>
             <ChevronsUpDown class="ml-auto size-4" />
           </SidebarMenuButton>
@@ -68,7 +90,7 @@ const { isMobile } = useSidebar()
           align="end"
           :side-offset="4"
         >
-          <DropdownMenuItem>
+          <DropdownMenuItem @click="handleLogout">
             <LogOut />
             Log out
           </DropdownMenuItem>

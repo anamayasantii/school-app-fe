@@ -44,35 +44,13 @@
           </NuxtLink>
         </div>
 
-        <h1
-          class="text-3xl font-manrope-extrabold md:text-6xl mb-4 py-4"
-        >
+        <h1 class="text-3xl font-manrope-extrabold md:text-6xl mb-4 py-4">
           Pencarian sekolah lebih
           <br />
           sederhana dan mudah.
         </h1>
-
         <div class="flex justify-center mb-12">
-          <div class="search-container">
-            <svg
-              class="search-icon h-6 w-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              ></path>
-            </svg>
-            <input
-              type="text"
-              placeholder="Cari sekolah mana pun"
-              class="search-input"
-            />
-          </div>
+          <SearchSchool />
         </div>
       </div>
     </section>
@@ -105,7 +83,7 @@
 
 <script setup>
 import SchoolTypes from "~/components/school/SchoolTypes.vue";
-//import FeaturedSchools from "~/components/school/FeaturedSchools.vue";
+import SearchSchool from "~/components/school/SearchSchool.vue";
 import Leaderboard from "~/components/school/Leaderboard.vue";
 import RecentReviews from "~/components/review/RecentReviews.vue";
 import IndexSchools from "~/components/home/index.vue";
@@ -216,52 +194,52 @@ const currentYear = new Date().getFullYear();
 }
 
 .search-container {
-      width: 690px;
-      height: 45px;
-      border-radius: 32px;
-      background-color: #FBFBFB;
-      padding: 24px;
-      display: flex;
-      align-items: center;
-      gap: 24px;
-    }
-    
-    .search-input {
-      flex: 1;
-      background: transparent;
-      border: none;
-      outline: none;
-      font-size: 16px;
-    }
-    
-    .search-input::placeholder {
-      color: #082519;
-    }
-    
-    .search-icon {
-      color: #082519;
-      flex-shrink: 0;
-    }
-    
-    /* Responsive design */
-    @media (max-width: 768px) {
-      .search-container {
-        width: 100%;
-        max-width: 500px;
-        height: 64px;
-        gap: 16px;
-      }
-    }
-    
-    @media (max-width: 480px) {
-      .search-container {
-        height: 56px;
-        padding: 16px;
-        gap: 12px;
-      }
-      
-      .search-input {
-        font-size: 14px;
-      }
-    }
+  width: 690px;
+  height: 45px;
+  border-radius: 32px;
+  background-color: #fbfbfb;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
+
+.search-input::placeholder {
+  color: #082519;
+}
+
+.search-icon {
+  color: #082519;
+  flex-shrink: 0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .search-container {
+    width: 100%;
+    max-width: 500px;
+    height: 64px;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-container {
+    height: 56px;
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .search-input {
+    font-size: 14px;
+  }
+}
 </style>

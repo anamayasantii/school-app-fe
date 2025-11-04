@@ -7,9 +7,7 @@
         <ol class="flex items-center space-x-2 text-sm text-gray-600">
           <li>
             <a 
-              href="/" 
-              class="hover:text-blue-600 transition-colors duration-200"
-            >
+              href="/">
               Home
             </a>
           </li>
@@ -20,9 +18,7 @@
           </li>
           <li>
             <a 
-              href="/schools" 
-              class="hover:text-blue-600 transition-colors duration-200"
-            >
+              href="/schools">
               Jelajahi Sekolah
             </a>
           </li>
@@ -33,9 +29,7 @@
           </li>
           <li>
             <a 
-              :href="getEducationLevelPath()" 
-              class="hover:text-blue-600 transition-colors duration-200"
-            >
+              :href="getEducationLevelPath()">
               {{ getEducationLevelFullName() }}
             </a>
           </li>

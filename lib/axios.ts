@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const instance = axios.create({
-    baseURL: 'http://103.150.226.108/api',
+    baseURL: process.env.NUXT_API_BASE_URL || 'http://103.150.226.108/api',
     validateStatus: (status) => {
         if(status >= 200 && status < 300){
             return true

@@ -4,7 +4,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
       <!-- Education Level Header -->
       <nav class="mt-8 px-6 font-manrope-medium">
-        <ol class="flex items-center space-x-2 text-sm text-[#76685A]">
+        <ol class="flex items-center space-x-2 text-sm text-[#6C757D]">
           <li><a href="/">Beranda</a></li>
           <li><span class="mx-2">></span></li>
           <li><a href="/">Jelajahi Sekolah</a></li>
@@ -93,7 +93,7 @@
           >
             <div
               :class="[
-                'p-6 bg-[#F2ECE3] border border-[#28190C]/[0.12] rounded-xl transition duration-300 hover:bg-[#f1e6da] h-full',
+                'p-6 border border-[#E9ECEF] rounded-xl transition duration-300 hover:bg-[#f8f9fa] h-full',
                 selectedStatus === status.name
                   ? 'border-[#28190C]/[0.12] bg-[#F2ECE]'
                   : 'border-[#28190C]/[0.12] hover:border-[#28190C]/[0.12]',
@@ -125,7 +125,7 @@
                 <div class="flex-1">
                   <h3
                     :class="[
-                      'font-manrope-bold text-[#28190C] text-lg mb-2',
+                      'text-lg mb-2',
                       selectedStatus === status.name ? 'text-[#28190C]' : '',
                     ]"
                   >
@@ -138,7 +138,7 @@
                     }}
                   </h3>
                   <p
-                    class="text-sm text-[#28190C]/70 font-manrope-regular leading-relaxed"
+                    class="text-sm text-[#6C757D] font-manrope-regular leading-relaxed"
                   >
                     <span v-if="status.name === 'Negeri'"
                       >Didanai pemerintah, gratis atau biaya rendah.</span
@@ -158,7 +158,7 @@
       </div>
 
       <!-- Search Input -->
-      <div class="p-6 pb-0">
+      <!-- <div class="p-6 pb-0">
         <div class="relative max-w-full mb-6 font-manrope-medium">
           <div
             class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
@@ -187,7 +187,7 @@
             placeholder="Cari nama sekolah atau informasi ujian..."
           />
         </div>
-      </div>
+      </div> -->
 
       <!-- Location Filters -->
       <div
