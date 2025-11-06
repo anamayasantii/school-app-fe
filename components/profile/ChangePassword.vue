@@ -163,33 +163,28 @@ import { ref, computed } from 'vue'
 import axios from '@/lib/axios'
 import Cookies from 'js-cookie'
 
-// Form data
 const form = ref({
   currentPassword: '',
   newPassword: '',
   confirmPassword: ''
 })
 
-// Form state
 const isSubmitting = ref(false)
 const errors = ref({})
 
-// Password visibility
 const showCurrentPassword = ref(false)
 const showNewPassword = ref(false)
 const showConfirmPassword = ref(false)
 
-// Computed
 const isFormValid = computed(() => {
   return form.value.currentPassword && 
          form.value.newPassword && 
          form.value.confirmPassword &&
          form.value.newPassword === form.value.confirmPassword &&
          form.value.newPassword.length >= 8 &&
-         getPasswordStrength() >= 2 // Minimal medium strength
+         getPasswordStrength() >= 2
 })
 
-// Password strength calculator
 const getPasswordStrength = () => {
   const password = form.value.newPassword
   let strength = 0
@@ -239,16 +234,13 @@ const getPasswordStrengthTextColor = () => {
   }
 }
 
-// Methods
 const validateForm = () => {
   errors.value = {}
 
-  // Validate current password
   if (!form.value.currentPassword) {
     errors.value.currentPassword = 'Kata sandi saat ini wajib diisi'
   }
 
-  // Validate new password
   if (!form.value.newPassword) {
     errors.value.newPassword = 'Kata sandi baru wajib diisi'
   } else if (form.value.newPassword.length < 8) {
@@ -257,14 +249,12 @@ const validateForm = () => {
     errors.value.newPassword = 'Kata sandi terlalu lemah. Gunakan kombinasi huruf, angka, dan simbol'
   }
 
-  // Validate confirm password
   if (!form.value.confirmPassword) {
     errors.value.confirmPassword = 'Konfirmasi kata sandi wajib diisi'
   } else if (form.value.newPassword !== form.value.confirmPassword) {
     errors.value.confirmPassword = 'Konfirmasi kata sandi tidak cocok'
   }
 
-  // Check if new password is different from current
   if (form.value.currentPassword === form.value.newPassword) {
     errors.value.newPassword = 'Kata sandi baru harus berbeda dari kata sandi saat ini'
   }
@@ -281,7 +271,6 @@ const handleSubmit = async () => {
   errors.value = {}
 
   try {
-    // Get token from cookies
     const token = Cookies.get('token')
     
     if (!token) {
@@ -292,7 +281,6 @@ const handleSubmit = async () => {
 
     console.log('Submitting password change...')
 
-    // API call to change password
     const response = await axios.put('/user', {
       current_password: form.value.currentPassword,
       new_password: form.value.newPassword,
@@ -305,19 +293,15 @@ const handleSubmit = async () => {
 
     console.log('Password change response:', response.data)
 
-    // Check if response is successful
     if (response.data.status === 'success') {
-      // Show success message
       alert('Kata sandi berhasil diperbarui!')
       
-      // Reset form
       form.value = {
         currentPassword: '',
         newPassword: '',
         confirmPassword: ''
       }
 
-      // Emit success event
       emit('passwordChanged', response.data)
 
     } else {
@@ -328,19 +312,14 @@ const handleSubmit = async () => {
     console.error('Error changing password:', error)
     console.error('Error response:', error.response)
     
-    // Handle different types of errors
     if (error.response) {
-      // Server responded with error
       const errorMessage = error.response.data?.message || 'Gagal memperbarui kata sandi'
       const statusCode = error.response.status
       
       if (statusCode === 400) {
-        // Validation errors from server
         if (error.response.data?.errors) {
-          // If server returns field-specific errors
           const serverErrors = error.response.data.errors
           
-          // Map server error fields to our form fields
           if (serverErrors.current_password) {
             errors.value.currentPassword = Array.isArray(serverErrors.current_password) 
               ? serverErrors.current_password[0] 
@@ -357,11 +336,9 @@ const handleSubmit = async () => {
               : serverErrors.new_password_confirmation
           }
         } else {
-          // Generic validation error
           alert(errorMessage)
         }
       } else if (statusCode === 401) {
-        // Unauthorized - wrong current password or session expired
         if (errorMessage.toLowerCase().includes('current password') || 
             errorMessage.toLowerCase().includes('kata sandi saat ini')) {
           errors.value.currentPassword = 'Kata sandi saat ini salah'
@@ -369,20 +346,15 @@ const handleSubmit = async () => {
           alert('Sesi Anda telah berakhir, silakan login kembali')
         }
       } else if (statusCode === 403) {
-        // Forbidden
         alert('Anda tidak memiliki akses untuk mengubah kata sandi')
       } else if (statusCode === 422) {
-        // Unprocessable Entity - validation error
         alert(errorMessage)
       } else {
-        // Other server errors
         alert(errorMessage)
       }
     } else if (error.request) {
-      // Network error
       alert('Tidak dapat terhubung ke server. Periksa koneksi internet Anda.')
     } else {
-      // Other errors
       alert(error.message || 'Terjadi kesalahan yang tidak diketahui')
     }
   } finally {
@@ -390,6 +362,5 @@ const handleSubmit = async () => {
   }
 }
 
-// Emits
 const emit = defineEmits(['passwordChanged'])
 </script>

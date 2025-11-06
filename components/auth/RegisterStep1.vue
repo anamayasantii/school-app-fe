@@ -79,11 +79,8 @@
 
 <script setup>
 import { ref } from 'vue'
+import backgroundImg from '~/assets/images/pre-register.jpg'
 
-// Import image from assets
-import backgroundImg from '~/assets/images/register1.jpg'
-
-// Props dari parent component (register.vue)
 const props = defineProps({
   currentStep: {
     type: Number,
@@ -95,27 +92,20 @@ const props = defineProps({
   }
 })
 
-// Emits ke parent component
 const emit = defineEmits(['next', 'save-data'])
-
-// State
 const selectedRole = ref(props.formData?.role || '')
 const backgroundImage = backgroundImg
 
-// Methods
 const continueToNextStep = (role) => {
   selectedRole.value = role
   
-  // Emit save data ke parent
   emit('save-data', { role })
   
-  // Emit next step ke parent  
   emit('next')
 }
 </script>
 
 <style scoped>
-/* Custom styles if needed beyond Tailwind */
 .bg-cover {
   background-size: cover;
 }
@@ -128,7 +118,6 @@ const continueToNextStep = (role) => {
   background-repeat: no-repeat;
 }
 
-/* Smooth transitions for interactive elements */
 button:focus {
   outline: 2px solid #3B82F6;
   outline-offset: 2px;

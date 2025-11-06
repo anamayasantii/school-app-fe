@@ -31,13 +31,10 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "@/lib/axios";
-
-// Components
 import RankingHeader from "./RankingHeader.vue";
 import RankingFilters from "./RankingFilters.vue";
 import RankingList from "./RankingList.vue";
 
-// Reactive data
 const schools = ref([]);
 const isLoading = ref(false);
 const activeTab = ref("sd");
@@ -50,24 +47,20 @@ const filters = ref({
   page: 1,
 });
 
-// Handle education level change
 const handleEducationLevelChange = (level) => {
   activeTab.value = level;
   filters.value.educationLevel = level;
-  // Reset location filters when changing education level
   filters.value.province = "";
   filters.value.district = "";
   filters.value.subDistrict = "";
   fetchSchools();
 };
 
-// Handle filters update
 const handleFiltersUpdate = (newFilters) => {
   filters.value = { ...filters.value, ...newFilters };
   fetchSchools();
 };
 
-// Fetch schools from real API
 const fetchSchools = async () => {
   isLoading.value = true;
 
@@ -77,7 +70,6 @@ const fetchSchools = async () => {
       educationLevelName: filters.value.educationLevel,
     };
 
-    // Add location filters if selected
     if (filters.value.province) {
       params.provinceName = filters.value.province;
     }
@@ -91,7 +83,6 @@ const fetchSchools = async () => {
     const response = await axios.get("/ranking/school-details", { params });
 
     if (response.data.status === "success") {
-      // Limit to top 8 schools for ranking page
       schools.value = response.data.data.slice(0, 8);
     } else {
       schools.value = [];
@@ -105,7 +96,6 @@ const fetchSchools = async () => {
   }
 };
 
-// Initialize data on mount
 onMounted(() => {
   fetchSchools();
 });

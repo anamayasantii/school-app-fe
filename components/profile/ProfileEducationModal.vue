@@ -164,7 +164,6 @@
 <script setup>
 import { ref, watch } from 'vue'
 
-// Props
 const props = defineProps({
   isOpen: {
     type: Boolean,
@@ -172,7 +171,7 @@ const props = defineProps({
   },
   mode: {
     type: String,
-    default: 'add', // 'add' or 'edit'
+    default: 'add',
     validator: (value) => ['add', 'edit'].includes(value)
   },
   educationData: {
@@ -181,10 +180,8 @@ const props = defineProps({
   }
 })
 
-// Emits
 const emit = defineEmits(['close', 'submit', 'delete'])
 
-// State
 const isSubmitting = ref(false)
 const formData = ref({
   level: '',
@@ -195,7 +192,6 @@ const formData = ref({
   isCurrentlyStudying: false
 })
 
-// Watch for educationData changes to populate form (for edit mode)
 watch(() => props.educationData, (newData) => {
   if (newData && Object.keys(newData).length > 0) {
     formData.value = {
@@ -209,7 +205,6 @@ watch(() => props.educationData, (newData) => {
   }
 }, { immediate: true, deep: true })
 
-// Reset form when modal opens in add mode
 watch(() => props.isOpen, (isOpen) => {
   if (isOpen && props.mode === 'add') {
     formData.value = {
@@ -223,7 +218,6 @@ watch(() => props.isOpen, (isOpen) => {
   }
 })
 
-// Methods
 const handleSubmit = async () => {
   isSubmitting.value = true
   try {

@@ -18,13 +18,10 @@ import { computed } from 'vue'
 import { useAuthStore } from '@/store/auth'
 
 const authStore = useAuthStore()
-
-// ✅ HAPUS onMounted, cukup computed aja
 const isLoggedIn = computed(() => authStore.isLoggedIn)
 </script>
 
 <style scoped>
-/* Login button sesuai spesifikasi Figma */
 .login-button {
   width: 110px;
   height: 38px;
@@ -33,7 +30,7 @@ const isLoggedIn = computed(() => authStore.isLoggedIn)
   border-radius: 32px;
   border: 1px solid rgba(40, 25, 12, 0.12);
   background: transparent;
-  color: #28190C; /* text-gray-500 */
+  color: #28190C;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
@@ -41,7 +38,7 @@ const isLoggedIn = computed(() => authStore.isLoggedIn)
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px; /* Sesuai spesifikasi gap dari Figma */
+  gap: 10px;
   overflow: hidden;
 }
 
@@ -52,8 +49,7 @@ const isLoggedIn = computed(() => authStore.isLoggedIn)
   ring-offset: 2px;
 }
 
-/* Existing styles */
 .profile-menu {
-  margin-right: 30px; /* Memperbesar jarak dari tombol login */
+  margin-right: 30px;
 }
 </style>

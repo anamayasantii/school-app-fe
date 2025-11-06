@@ -43,7 +43,6 @@ import { useAuthStore } from "@/store/auth";
 
 const authStore = useAuthStore();
 
-// Cek apakah user punya foto profil
 const hasProfileImage = computed(() => {
   return authStore.user && authStore.user.image;
 });

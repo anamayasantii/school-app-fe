@@ -33,12 +33,9 @@ const searchQuery = ref('')
 const currentPage = ref(1)
 const totalPages = ref(1)
 const limit = ref(10)
-
-// Delete confirmation dialog
 const showDeleteDialog = ref(false)
 const userToDelete = ref(null)
 
-// Helper function to get first and last name
 const getFirstName = (fullname) => {
   if (!fullname) return '-'
   const names = fullname.trim().split(' ')
@@ -51,20 +48,16 @@ const getLastName = (fullname) => {
   return names.length > 1 ? names.slice(1).join(' ') : '-'
 }
 
-// Helper function to get username (from email)
 const getUsername = (email) => {
   if (!email) return '-'
   return email.split('@')[0]
 }   
 
-// Helper function to get role display
 const getRoleDisplay = (roles) => {
   if (!roles || roles.length === 0) return '-'
-  // Capitalize first letter
   return roles[0].charAt(0).toUpperCase() + roles[0].slice(1)
 }
 
-// Helper function to get NISN
 const getNISN = (user) => {
   return user.nisn || '-'
 }
@@ -94,7 +87,6 @@ const fetchUsers = async (page = 1) => {
     
     console.log('Response:', response.data)
     
-    // Cek apakah data adalah array (data kosong) atau object (ada hasil)
     if (Array.isArray(response.data.data)) {
       users.value = []
       currentPage.value = 1
@@ -159,10 +151,8 @@ const handleDelete = async () => {
       }
     })
     
-    // Refresh list after delete
     await fetchUsers(currentPage.value)
     
-    // Close dialog
     showDeleteDialog.value = false
     userToDelete.value = null
     
@@ -184,7 +174,6 @@ const cancelDelete = () => {
   userToDelete.value = null
 }
 
-// Generate page numbers for pagination
 const pageNumbers = computed(() => {
   const pages = []
   const maxVisible = 3

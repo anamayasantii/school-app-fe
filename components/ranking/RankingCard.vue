@@ -174,10 +174,8 @@ const props = defineProps({
   },
 });
 
-// Fungsi untuk handle error gambar (jika masih diperlukan untuk fallback)
 const handleImageError = (event) => {
   event.target.style.display = "none";
-  // Kita tidak perlu mengubah src karena sudah menggunakan v-if/v-else
 };
 
 const getRankColor = (rank) => {
@@ -198,9 +196,8 @@ const getGradeColor = (accreditationCode) => {
 };
 
 const viewDetails = (school) => {
-  // Navigate to school detail page or emit event
   console.log("View details for:", school.schoolName);
-  // You can add navigation logic here
+  // add navigation logic here
   // navigateTo(`/school/${school.schoolId}`)
 };
 </script>

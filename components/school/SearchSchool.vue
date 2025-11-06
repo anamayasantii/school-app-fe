@@ -139,7 +139,6 @@ const handleFocus = () => {
 };
 
 const handleBlur = () => {
-  // Delay blur to allow click on dropdown items
   setTimeout(() => {
     isFocused.value = false;
   }, 200);
@@ -150,18 +149,15 @@ const closeDropdown = () => {
 };
 
 const handleSearch = async () => {
-  // Clear previous timeout
   if (searchTimeout) {
     clearTimeout(searchTimeout);
   }
 
-  // If search query is empty, clear results
   if (!searchQuery.value.trim()) {
     schools.value = [];
     return;
   }
 
-  // Debounce search
   searchTimeout = setTimeout(async () => {
     isLoading.value = true;
     try {
@@ -189,7 +185,6 @@ const handleSearch = async () => {
   }, 500);
 };
 
-// Watch for clicks outside
 watch(showDropdown, (newVal) => {
   if (!newVal) {
     schools.value = [];
@@ -214,7 +209,6 @@ watch(showDropdown, (newVal) => {
   }
 }
 
-/* Responsive design */
 @media (max-width: 768px) {
   .relative {
     max-width: 500px;

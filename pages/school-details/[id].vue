@@ -11,33 +11,21 @@
               Home
             </a>
           </li>
-          <li class="text-gray-400">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-            </svg>
-          </li>
+          <span class="mx-2">›</span>
           <li>
             <a 
               href="/schools">
               Jelajahi Sekolah
             </a>
           </li>
-          <li class="text-gray-400">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-            </svg>
-          </li>
+          <span class="mx-2">›</span>
           <li>
             <a 
               :href="getEducationLevelPath()">
               {{ getEducationLevelFullName() }}
             </a>
           </li>
-          <li class="text-gray-400">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-            </svg>
-          </li>
+          <span class="mx-2">›</span>
           <li class="text-gray-800 font-medium truncate max-w-xs" aria-current="page">
             {{ school.name }}
           </li>
@@ -111,7 +99,6 @@ import axios from "@/lib/axios";
 import Cookies from "js-cookie";
 import { ref, onMounted } from "vue";
 import ShareIcon from "~/assets/ShareIcon.vue";
-import AddReviewIcon from "~/assets/AddReviewIcon.vue";
 import SaveIcon from "~/assets/SaveIcon.vue";
 import SchoolImages from "@/components/school/ImagesSlider.vue";
 import ReviewDetail from "~/components/review/ReviewDetail.vue";
@@ -126,7 +113,6 @@ const isSaving = ref(false);
 const activeTab = ref('Overview');
 const tabs = ['Overview', 'Location', 'Official Contact', 'Facility', 'Education Program', 'Pricing', 'Reviews'];
 
-// Education level mapping
 const educationLevelMap = {
   'SD': { full: 'Sekolah Dasar', path: 'sd' },
   'SMP': { full: 'Sekolah Menengah Pertama', path: 'smp' },
@@ -135,7 +121,6 @@ const educationLevelMap = {
   'Universitas': { full: 'Universitas', path: 'universitas' },
 };
 
-// Get full education level name
 const getEducationLevelFullName = () => {
   if (!school.value?.educationLevelName) return '';
   
@@ -143,7 +128,6 @@ const getEducationLevelFullName = () => {
   return educationLevelMap[levelKey]?.full || school.value.educationLevelName;
 };
 
-// Get education level path
 const getEducationLevelPath = () => {
   if (!school.value?.educationLevelName) return '/schools';
   
@@ -153,14 +137,12 @@ const getEducationLevelPath = () => {
   return `/schools/${path}`;
 };
 
-// Fetch school detail
 const fetchSchoolData = async () => {
   try {
     const response = await axios.get(`/school-details/${route.params.id}`);
     school.value = response.data.data || {};
     loading.value = false;
     
-    // Check if school is saved after fetching school data
     await checkIfSaved();
   } catch (err) {
     console.error("Error fetching data:", err);
@@ -169,7 +151,6 @@ const fetchSchoolData = async () => {
   }
 };
 
-// Check if school is already saved
 const checkIfSaved = async () => {
   try {
     const token = Cookies.get('token');
@@ -191,19 +172,17 @@ const checkIfSaved = async () => {
     }
   } catch (err) {
     console.error("Error checking saved status:", err);
-    // Don't show error to user, just assume not saved
     isSaved.value = false;
   }
 };
 
-// Toggle save/unsave
 const toggleSave = async () => {
   const token = Cookies.get('token');
   
   if (!token) {
     alert('Anda harus login terlebih dahulu untuk menyimpan sekolah');
     // TODO: Redirect to login page
-    // router.push('/login');
+    router.push('/login');
     return;
   }
   
@@ -222,10 +201,8 @@ const toggleSave = async () => {
     );
     
     if (response.data.status === 'success') {
-      // Toggle the saved state
       isSaved.value = !isSaved.value;
       
-      // Show success message
       const message = isSaved.value 
         ? 'Sekolah berhasil disimpan' 
         : 'Sekolah berhasil dihapus dari daftar simpanan';
@@ -236,7 +213,6 @@ const toggleSave = async () => {
   } catch (err) {
     console.error("Error toggling save:", err);
     
-    // Handle specific error messages
     if (err.response?.status === 401) {
       alert('Sesi Anda telah berakhir, silakan login kembali');
       // TODO: Redirect to login

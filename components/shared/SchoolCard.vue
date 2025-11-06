@@ -83,7 +83,7 @@
           </div>
 
           <span class="ml-2 text-sm text-[#082519]">
-            ({{ school.reviewers }} Reviews)
+            ({{ school.reviewers }} Ulasan)
           </span>
         </div>
       </div>

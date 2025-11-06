@@ -151,7 +151,6 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import axios from '@/lib/axios'
 import Cookies from 'js-cookie'
 
-// Reactive data
 const activeMenu = ref(null)
 const savedSchools = ref([])
 const isLoading = ref(false)
@@ -159,7 +158,6 @@ const error = ref(null)
 const removingId = ref(null)
 const isRemoving = ref(false)
 
-// Fetch saved schools from API
 const fetchSavedSchools = async () => {
   isLoading.value = true
   error.value = null
@@ -193,7 +191,6 @@ const fetchSavedSchools = async () => {
   }
 }
 
-// Helper: Get school image
 const getSchoolImage = (school) => {
   if (school.galleryImages && school.galleryImages.length > 0) {
     return school.galleryImages[0]
@@ -201,12 +198,10 @@ const getSchoolImage = (school) => {
   return '/images/placeholder-school.jpg'
 }
 
-// Helper: Handle image error
 const handleImageError = (event) => {
   event.target.src = '/images/placeholder-school.jpg'
 }
 
-// Helper: Get location string
 const getLocation = (school) => {
   const parts = []
   if (school.street) parts.push(school.street)
@@ -217,7 +212,6 @@ const getLocation = (school) => {
   return location.length > 40 ? location.substring(0, 37) + '...' : location
 }
 
-// Helper: Get accreditation color
 const getGradeColor = (accreditationCode) => {
   const colorMap = {
     Unggulan: "bg-[#FFB800]/[0.16] text-[#FFB800]",
@@ -228,7 +222,6 @@ const getGradeColor = (accreditationCode) => {
   return colorMap[accreditationCode] || "bg-blue-100 text-blue-800"
 }
 
-// Methods
 const toggleMenu = (index) => {
   activeMenu.value = activeMenu.value === index ? null : index
 }
@@ -249,7 +242,6 @@ const removeFromSaved = async (school, index) => {
   try {
     const token = Cookies.get('token')
     
-    // Call API to unsave (toggle)
     await axios.post('/school-details/save', 
       {
         schoolDetailId: school.id
@@ -261,10 +253,8 @@ const removeFromSaved = async (school, index) => {
       }
     )
     
-    // Remove from local array
     savedSchools.value.splice(index, 1)
     
-    // Emit event for parent component
     emit('schoolRemoved', school)
   } catch (err) {
     console.error('Remove school error:', err)
@@ -289,10 +279,8 @@ const removeAllSaved = async () => {
     //   headers: { 'Authorization': `Bearer ${token}` }
     // })
     
-    // For now, clear local array
     savedSchools.value = []
     
-    // Emit event for parent component
     emit('allRemoved')
   } catch (err) {
     console.error('Remove all schools error:', err)
@@ -302,14 +290,12 @@ const removeAllSaved = async () => {
   }
 }
 
-// Close menu when clicking outside
 const handleClickOutside = (event) => {
   if (activeMenu.value !== null && !event.target.closest('.relative')) {
     closeMenu()
   }
 }
 
-// Lifecycle
 onMounted(() => {
   fetchSavedSchools()
   document.addEventListener('click', handleClickOutside)
@@ -319,10 +305,8 @@ onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside)
 })
 
-// Emits
 const emit = defineEmits(['schoolRemoved', 'allRemoved', 'schoolViewed'])
 
-// Expose methods for parent component
 defineExpose({
   fetchSavedSchools,
   removeFromSaved,

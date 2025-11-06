@@ -130,11 +130,8 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import axios from '@/lib/axios'
+import backgroundImg from '~/assets/images/register.jpg'
 
-// Import image from assets
-import backgroundImg from '~/assets/images/register1.jpg'
-
-// Props dari parent component
 const props = defineProps({
   currentStep: {
     type: Number,
@@ -146,49 +143,38 @@ const props = defineProps({
   }
 })
 
-// Emits ke parent component
 const emit = defineEmits(['prev', 'save-data'])
-
-// Reactive data
 const backgroundImage = backgroundImg
 const showPassword = ref(false)
 const isLoading = ref(false)
 
-// Form reactive object
 const form = reactive({
   fullname: props.formData?.fullname || '',
   email: props.formData?.email || '',
   password: props.formData?.password || ''
 })
 
-// Methods
 const handleSubmit = async () => {
   try {
     isLoading.value = true
     
-    // Combine role dari step sebelumnya dengan form data
     const registrationData = {
-      ...props.formData, // role dari step 1
+      ...props.formData,
       fullname: form.fullname,
       email: form.email,
       password: form.password
     }
     
-    // Emit save data ke parent
     emit('save-data', registrationData)
     
-    // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500))
     
-    // TODO: Panggil API register di sini atau di parent
     const response = await axios.post('/register', registrationData)
     
-    // Redirect ke login setelah berhasil
     await navigateTo('/auth/login')
     
   } catch (error) {
     console.error('Registration failed:', error)
-    // TODO: Handle error (show toast, etc)
   } finally {
     isLoading.value = false
   }
@@ -196,7 +182,6 @@ const handleSubmit = async () => {
 </script>
 
 <style scoped>
-/* Custom styles */
 .bg-cover {
   background-size: cover;
 }
@@ -209,7 +194,6 @@ const handleSubmit = async () => {
   background-repeat: no-repeat;
 }
 
-/* Focus styles for better accessibility */
 input:focus {
   outline: none;
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
@@ -220,7 +204,6 @@ button:focus {
   outline-offset: 2px;
 }
 
-/* Loading animation */
 @keyframes spin {
   to {
     transform: rotate(360deg);
@@ -231,7 +214,6 @@ button:focus {
   animation: spin 1s linear infinite;
 }
 
-/* Smooth transitions for all interactive elements */
 input, button {
   transition: all 0.2s ease-in-out;
 }

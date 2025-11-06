@@ -239,7 +239,3 @@ const handleFileDelete = () => {
   formData.value.fileName = ''
 }
 </script>
-
-<style scoped>
-/* Custom styling jika diperlukan */
-</style>

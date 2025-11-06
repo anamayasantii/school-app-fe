@@ -144,21 +144,20 @@ import { useRouter, useRoute } from "vue-router";
 const schools = ref([]);
 const currentPage = ref(1);
 const totalPages = ref(0);
-const limit = 12; // Jumlah sekolah per halaman
-const searchQuery = ref(""); // Kolom untuk pencarian
-const isLoading = ref(false); // Status loading
+const limit = 12;
+const searchQuery = ref("");
+const isLoading = ref(false)
 const router = useRouter();
 const route = useRoute();
 
-// Fungsi untuk memanggil API dan fetch data sekolah
 async function fetchSchools(page) {
-  isLoading.value = true; // Start loading
+  isLoading.value = true;
   try {
     const response = await axios.get("/school-details", {
       params: {
         page,
         limit,
-        search: searchQuery.value, // Parameter pencarian
+        search: searchQuery.value,
       },
     });
 
@@ -169,11 +168,10 @@ async function fetchSchools(page) {
   } catch (error) {
     console.error("Error fetching schools:", error);
   } finally {
-    isLoading.value = false; // End loading
+    isLoading.value = false;
   }
 }
 
-// Fungsi untuk mencari sekolah
 function searchSchools() {
   currentPage.value = 1; // Reset ke halaman pertama
   router.push({ query: { search: searchQuery.value } }); // Update URL dengan query

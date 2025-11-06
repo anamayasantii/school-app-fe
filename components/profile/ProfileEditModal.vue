@@ -137,7 +137,6 @@ import { ref, watch, computed } from 'vue'
 import axios from '@/lib/axios'
 import Cookies from 'js-cookie'
 
-// Props
 const props = defineProps({
   isOpen: {
     type: Boolean,
@@ -149,10 +148,8 @@ const props = defineProps({
   }
 })
 
-// Emits
 const emit = defineEmits(['close', 'submit', 'success', 'error'])
 
-// State
 const isSubmitting = ref(false)
 const error = ref('')
 const formData = ref({
@@ -164,16 +161,13 @@ const formData = ref({
   address: ''
 })
 
-// Computed property to check if user is parent
 const isParent = computed(() => {
-  // Primary: Check roles array from API
   if (props.userData?.roles && Array.isArray(props.userData.roles)) {
     return props.userData.roles.includes('parent')
   }
   return false
 })
 
-// Watch for userData changes to populate form
 watch(() => props.userData, (newData) => {
   if (newData) {
     formData.value = {
@@ -187,20 +181,17 @@ watch(() => props.userData, (newData) => {
   }
 }, { immediate: true, deep: true })
 
-// Clear error when modal opens
 watch(() => props.isOpen, (isOpen) => {
   if (isOpen) {
     error.value = ''
   }
 })
 
-// Methods
 const handleSubmit = async () => {
   isSubmitting.value = true
   error.value = ''
   
   try {
-    // Get token from cookies
     const token = Cookies.get('token')
     
     if (!token) {
@@ -210,7 +201,6 @@ const handleSubmit = async () => {
       return
     }
     
-    // Prepare data to send
     const updateData = {
       fullname: formData.value.fullname || null,
       email: formData.value.email || null,
@@ -219,7 +209,6 @@ const handleSubmit = async () => {
       image: null // Will be implemented later
     }
 
-    // Only include NISN and birthDate if user is not parent
     if (!isParent.value) {
       updateData.nisn = formData.value.nisn || null
       updateData.dateOfBirth = formData.value.birthDate || null
@@ -229,7 +218,6 @@ const handleSubmit = async () => {
     console.log('Using token:', token ? 'Token exists' : 'No token')
     console.log('User role:', props.userData?.role)
 
-    // Make API call to update user profile with token
     const response = await axios.put('/user', updateData, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -237,8 +225,6 @@ const handleSubmit = async () => {
     })
     
     if (response.data.status === 'success') {
-      // Emit submit event to parent (ProfileSettings)
-      // Parent will handle refresh and close modal
       emit('submit', formData.value)
       
       console.log('Profile updated successfully:', response.data)
@@ -248,9 +234,7 @@ const handleSubmit = async () => {
     console.error('Error updating profile:', err)
     console.error('Error response:', err.response)
     
-    // Handle different error scenarios
     if (err.response) {
-      // Server responded with error status
       if (err.response.status === 401) {
         error.value = 'Sesi Anda telah berakhir, silakan login kembali'
       } else {
@@ -258,11 +242,9 @@ const handleSubmit = async () => {
       }
       emit('error', error.value)
     } else if (err.request) {
-      // Request made but no response received
       error.value = 'Tidak dapat terhubung ke server. Periksa koneksi internet Anda.'
       emit('error', error.value)
     } else {
-      // Something else happened
       error.value = 'Terjadi kesalahan yang tidak diketahui'
       emit('error', error.value)
     }

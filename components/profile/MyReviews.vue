@@ -163,10 +163,8 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 
-// Reactive data
 const activeMenu = ref(null);
 
-// Sample reviews data
 const reviews = ref([
   {
     schoolName: "Akademi Timedoor",
@@ -198,7 +196,6 @@ const reviews = ref([
   },
 ]);
 
-// Methods
 const toggleMenu = (index) => {
   activeMenu.value = activeMenu.value === index ? null : index;
 };
@@ -230,14 +227,12 @@ const formatDate = (dateString) => {
   });
 };
 
-// Close menu when clicking outside
 const handleClickOutside = (event) => {
   if (activeMenu.value !== null && !event.target.closest("button")) {
     closeMenu();
   }
 };
 
-// Lifecycle
 onMounted(() => {
   document.addEventListener("click", handleClickOutside);
 });
@@ -246,10 +241,8 @@ onUnmounted(() => {
   document.removeEventListener("click", handleClickOutside);
 });
 
-// Emits
 const emit = defineEmits(["reviewEdited", "reviewDeleted"]);
 
-// Expose methods for parent component
 defineExpose({
   editReview,
   deleteReview,

@@ -6,9 +6,9 @@
       <nav class="mt-8 px-6 font-manrope-medium">
         <ol class="flex items-center space-x-2 text-sm text-[#6C757D]">
           <li><a href="/">Beranda</a></li>
-          <li><span class="mx-2">></span></li>
-          <li><a href="/">Jelajahi Sekolah</a></li>
-          <li><span class="mx-2">></span></li>
+          <li><span class="mx-2">›</span></li>
+          <li><a href="">Jelajahi Sekolah</a></li>
+          <li><span class="mx-2">›</span></li>
           <li :class="selectedStatus ? 'text-[#76685A]' : 'text-[#28190C]'">
             {{
               level === "sd"
@@ -26,7 +26,7 @@
           </li>
           <!-- Status Breadcrumb -->
           <template v-if="selectedStatus">
-            <li><span class="mx-2">></span></li>
+            <li><span class="mx-2">›</span></li>
             <li class="text-[#28190C]">
               {{
                 selectedStatus === "SPK"
@@ -192,7 +192,7 @@
       <!-- Location Filters -->
       <div
         v-if="filterVisible"
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 p-6 pt-0"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 p-6 pt-7"
       >
         <!-- Province Filter -->
         <div

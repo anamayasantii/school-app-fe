@@ -188,7 +188,6 @@ const props = defineProps({
 
 const emit = defineEmits(["updateFilters", "changeEducationLevel"]);
 
-// Local data for dropdown options
 const provinces = ref([]);
 const districts = ref([]);
 const subDistricts = ref([]);
@@ -231,7 +230,6 @@ const educationTabs = [
   },
 ];
 
-// Fetch provinces from real API
 const fetchProvinces = async () => {
   try {
     const response = await axios.get("/provinces");
@@ -247,11 +245,10 @@ const fetchProvinces = async () => {
   }
 };
 
-// Fetch districts based on province from real API
 const fetchDistricts = async (provinceName) => {
   try {
     const response = await axios.get("/districts", {
-      params: { provinceName: provinceName }, // ✅ Fixed parameter name
+      params: { provinceName: provinceName },
     });
     if (response.data.status === "success") {
       districts.value = response.data.data;
@@ -265,11 +262,10 @@ const fetchDistricts = async (provinceName) => {
   }
 };
 
-// Fetch sub districts based on district from real API
 const fetchSubDistricts = async (districtName) => {
   try {
     const response = await axios.get("/sub-districts", {
-      params: { districtName: districtName }, // ✅ Fixed parameter name
+      params: { districtName: districtName },
     });
     if (response.data.status === "success") {
       subDistricts.value = response.data.data;
@@ -285,29 +281,25 @@ const fetchSubDistricts = async (districtName) => {
 
 const onProvinceChange = async (event) => {
   const province = event.target.value;
-  // Update filters
   emit("updateFilters", {
     province: province,
-    district: "", // Reset district
-    subDistrict: "", // Reset sub district
+    district: "", 
+    subDistrict: "", 
   });
-  // Fetch districts for selected province
   if (province) {
     await fetchDistricts(province);
   } else {
     districts.value = [];
   }
-  subDistricts.value = []; // Clear sub districts when province changes
+  subDistricts.value = [];
 };
 
 const onDistrictChange = async (event) => {
   const district = event.target.value;
-  // Update filters
   emit("updateFilters", {
     district: district,
-    subDistrict: "", // Reset sub district
+    subDistrict: "",
   });
-  // Fetch sub districts for selected district
   if (district) {
     await fetchSubDistricts(district);
   } else {
@@ -317,13 +309,11 @@ const onDistrictChange = async (event) => {
 
 const onSubDistrictChange = (event) => {
   const subDistrict = event.target.value;
-  // Update filters
   emit("updateFilters", {
     subDistrict: subDistrict,
   });
 };
 
-// Initialize provinces on mount
 onMounted(() => {
   fetchProvinces();
 });

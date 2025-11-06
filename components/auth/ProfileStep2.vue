@@ -175,25 +175,22 @@
 </template>
 
 <script setup>
-import backgroundImage from '~/assets/images/register1.jpg'
+import backgroundImage from '~/assets/images/complete2.jpg'
 import { ref, computed, watch, onMounted } from 'vue'
 import { useAuthStore } from '@/store/auth'
 import axios from '@/lib/axios'
 
-// Props
 const props = defineProps({
   currentStep: Number,
   formData: Object
 })
 
-// Emits
 const emit = defineEmits(['next', 'prev', 'save'])
 
 const authStore = useAuthStore()
 const fileInput = ref(null)
 const currentStep = props.currentStep || 2
 
-// Form data local
 const form = ref({
   schoolDetailId: '',
   schoolValidation: null
@@ -201,7 +198,6 @@ const form = ref({
 
 const selectedFile = ref(null)
 
-// School search states
 const schoolSearchQuery = ref('')
 const schoolOptions = ref([])
 const selectedSchool = ref(null)
@@ -209,7 +205,6 @@ const showDropdown = ref(false)
 const isSearching = ref(false)
 const searchTimeout = ref(null)
 
-// Computed
 const userRole = computed(() => {
   return authStore.user?.role || 'student'
 })
@@ -218,7 +213,6 @@ const isFormValid = computed(() => {
   return form.value.schoolDetailId && selectedFile.value
 })
 
-// Methods
 const triggerFileInput = () => {
   fileInput.value.click()
 }
@@ -247,29 +241,24 @@ const removeFile = () => {
   }
 }
 
-// School search methods
 const handleSchoolSearch = async () => {
   const query = schoolSearchQuery.value.trim()
   
-  // Clear previous timeout
   if (searchTimeout.value) {
     clearTimeout(searchTimeout.value)
   }
   
-  // Reset if query is empty
   if (!query) {
     schoolOptions.value = []
     showDropdown.value = false
     return
   }
   
-  // If user cleared the input, reset selected school
   if (selectedSchool.value && query !== selectedSchool.value.schoolName) {
     selectedSchool.value = null
     form.value.schoolDetailId = ''
   }
   
-  // Debounce search
   searchTimeout.value = setTimeout(async () => {
     isSearching.value = true
     showDropdown.value = true
@@ -288,7 +277,7 @@ const handleSchoolSearch = async () => {
     } finally {
       isSearching.value = false
     }
-  }, 300) // 300ms debounce
+  }, 300)
 }
 
 const fetchSchoolById = async (schoolId) => {
@@ -313,7 +302,6 @@ const selectSchool = (school) => {
 }
 
 const handleBlur = () => {
-  // Delay hiding dropdown to allow click on options
   setTimeout(() => {
     showDropdown.value = false
   }, 150)
@@ -322,10 +310,8 @@ const handleBlur = () => {
 const handleNext = () => {
   if (!isFormValid.value) return
   
-  // Save data to parent
   emit('save', form.value, 2)
   
-  // Go to next step
   emit('next')
 }
 
@@ -333,25 +319,21 @@ const handlePrev = () => {
   emit('prev')
 }
 
-// Watchers
 watch(() => props.formData?.step2, async (newData) => {
   if (newData) {
     form.value.schoolDetailId = newData.schoolDetailId || ''
     
-    // Restore file
     if (newData.schoolValidation) {
       selectedFile.value = newData.schoolValidation
       form.value.schoolValidation = newData.schoolValidation
     }
     
-    // Restore school selection
     if (newData.schoolDetailId && !selectedSchool.value) {
       await fetchSchoolById(newData.schoolDetailId)
     }
   }
 }, { immediate: true })
 
-// Cleanup timeout on unmount
 onUnmounted(() => {
   if (searchTimeout.value) {
     clearTimeout(searchTimeout.value)

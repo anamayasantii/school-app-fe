@@ -92,23 +92,22 @@ const currentYear = new Date().getFullYear();
 </script>
 
 <style scoped>
-/* Button sesuai spesifikasi Figma */
 .figma-button {
   width: 360px;
   height: 46px;
   padding: 12px 24px;
   gap: 16px;
   border-radius: 80px;
-  background-color: #28190c; /* Dark brown background sesuai gambar */
+  background-color: #28190c;
   border: none;
-  color: #ffffff; /* White text */
+  color: #ffffff;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   display: flex;
   align-items: center;
-  justify-content: center; /* Space between text and arrow */
+  justify-content: center;
   text-align: left;
   white-space: nowrap;
   overflow: hidden;
@@ -142,30 +141,25 @@ const currentYear = new Date().getFullYear();
 }
 
 .arrow-1 {
-  /* Panah utama - terlihat normal */
   opacity: 1;
   transform: translateX(0);
 }
 
 .arrow-2 {
-  /* Panah kedua - tersembunyi di sebelah kiri */
   opacity: 0;
   transform: translateX(-20px);
 }
 
 .figma-button:hover .arrow-1 {
-  /* Saat hover, panah pertama bergerak ke kanan dan menghilang */
   opacity: 0;
   transform: translateX(20px);
 }
 
 .figma-button:hover .arrow-2 {
-  /* Saat hover, panah kedua muncul dari kiri dan bergerak ke posisi normal */
   opacity: 1;
   transform: translateX(0);
 }
 
-/* Keyframe animation untuk efek yang lebih smooth */
 @keyframes slideRight {
   0% {
     transform: translateX(0);
@@ -177,8 +171,6 @@ const currentYear = new Date().getFullYear();
     transform: translateX(6px);
   }
 }
-
-/* Responsive adjustments */
 @media (max-width: 480px) {
   .figma-button {
     width: 100%;
@@ -188,7 +180,6 @@ const currentYear = new Date().getFullYear();
   }
 }
 
-/* Additional custom styles if needed */
 .hero-gradient {
   background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
 }

@@ -408,7 +408,6 @@ const programs = ref([
   },
 ]);
 
-// Fetch school data from API
 const fetchSchoolData = async () => {
   try {
     loading.value = true;
@@ -425,13 +424,11 @@ const fetchSchoolData = async () => {
   } finally {
     loading.value = false;
     
-    // Setup Intersection Observer SETELAH data selesai dimuat dan DOM sudah di-render
     await nextTick();
     setupIntersectionObserver();
   }
 };
 
-// Helper functions
 const getFullAddress = () => {
   const addressParts = [
     schoolData.value.street,
@@ -449,7 +446,6 @@ const formatNumber = (number) => {
   return new Intl.NumberFormat('id-ID').format(number);
 };
 
-// Toggle program expansion
 const toggleProgram = (programId) => {
   const program = programs.value.find((p) => p.id === programId);
   if (program) {
@@ -457,7 +453,6 @@ const toggleProgram = (programId) => {
   }
 };
 
-// Smooth scroll function
 const scrollToSection = (sectionId) => {
   isScrolling.value = true;
   activeTab.value = sectionId;
@@ -475,11 +470,9 @@ const scrollToSection = (sectionId) => {
   }
 };
 
-// Setup Intersection Observer
 const setupIntersectionObserver = () => {
   const sections = document.querySelectorAll(".section");
-  
-  // Pastikan sections sudah ada di DOM
+
   if (sections.length === 0) {
     console.warn("No sections found");
     return;
@@ -505,7 +498,6 @@ const setupIntersectionObserver = () => {
   });
 };
 
-// Intersection Observer
 onMounted(() => {
   fetchSchoolData();
 });

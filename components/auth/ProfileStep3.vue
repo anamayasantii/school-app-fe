@@ -114,39 +114,32 @@
 </template>
 
 <script setup>
-import backgroundImage from '~/assets/images/register1.jpg'
+import backgroundImage from '~/assets/images/conslusion.jpg'
 import { ref, computed, watch } from 'vue'
 import { useAuthStore } from '@/store/auth'
 import axios from '@/lib/axios'
 
-// Props
 const props = defineProps({
   currentStep: Number,
   formData: Object
 })
 
-// Emits
 const emit = defineEmits(['prev', 'submit'])
-
 const authStore = useAuthStore()
 const isSubmitting = ref(false)
 const currentStep = props.currentStep || 3
 const schoolName = ref('')
 
-// Computed
 const userRole = computed(() => {
   const roles = authStore.user?.roles
   
-  // Handle array of roles (sama seperti di FormStepOne)
   if (Array.isArray(roles)) {
     return roles.includes('parent') ? 'parent' : 'student'
   }
   
-  // Handle string role (fallback)
   return roles || 'student'
 })
 
-// Update computed previewData
 const previewData = computed(() => {
   const step1 = props.formData?.step1 || {}
   const step2 = props.formData?.step2 || {}
@@ -164,7 +157,6 @@ const previewData = computed(() => {
   }
 })
 
-// Methods
 const handlePrev = () => {
   emit('prev')
 }
@@ -173,7 +165,6 @@ const handleSubmit = async () => {
   isSubmitting.value = true
   
   try {
-    // Emit submit dengan semua data
     await emit('submit', {
       step1: props.formData?.step1,
       step2: props.formData?.step2,
@@ -186,7 +177,6 @@ const handleSubmit = async () => {
   }
 }
 
-// Method fetch nama sekolah
 const fetchSchoolName = async (schoolId) => {
   try {
     const response = await axios.get(`/school-details/${schoolId}`)
@@ -198,7 +188,6 @@ const fetchSchoolName = async (schoolId) => {
   }
 }
 
-// Watch untuk fetch nama sekolah
 watch(() => props.formData?.step2?.schoolDetailId, (newId) => {
   if (newId) {
     fetchSchoolName(newId)

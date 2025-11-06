@@ -96,7 +96,6 @@
 import { computed, ref } from 'vue'
 import ProfileEducationModal from './ProfileEducationModal.vue'
 
-// Props
 const props = defineProps({
   educationData: {
     type: Array,
@@ -104,20 +103,16 @@ const props = defineProps({
   }
 })
 
-// Emits
 const emit = defineEmits(['add', 'edit', 'delete'])
 
-// Modal state
 const isEducationModalOpen = ref(false)
-const modalMode = ref('add') // 'add' or 'edit'
+const modalMode = ref('add')
 const selectedEducation = ref({})
 
-// Computed
 const educationHistory = computed(() => {
   return props.educationData || []
 })
 
-// Methods
 const handleAdd = () => {
   modalMode.value = 'add'
   selectedEducation.value = {}

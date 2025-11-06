@@ -142,7 +142,6 @@
 <script setup>
 import { ref, watch } from 'vue'
 
-// Props
 const props = defineProps({
   isOpen: {
     type: Boolean,
@@ -154,10 +153,8 @@ const props = defineProps({
   }
 })
 
-// Emits
 const emit = defineEmits(['close', 'submit'])
 
-// State
 const isSubmitting = ref(false)
 const error = ref('')
 const formData = ref({
@@ -171,15 +168,14 @@ const formData = ref({
   schoolValidation: null
 })
 
-// Watch for studentData changes to populate form
 watch(() => props.studentData, (newData) => {
   if (newData) {
     formData.value = {
       fullname: newData.fullname || '',
       nisn: newData.nisn || '',
-      dateOfBirth: newData.birthDate || '', // birthDate from parent
+      dateOfBirth: newData.birthDate || '',
       email: newData.email || '',
-      phoneNo: newData.phone || '', // phone from parent
+      phoneNo: newData.phone || '',
       schoolName: newData.schoolName || '',
       schoolDetailId: newData.schoolDetailId || null,
       schoolValidation: newData.schoolValidation || null
@@ -187,20 +183,17 @@ watch(() => props.studentData, (newData) => {
   }
 }, { immediate: true, deep: true })
 
-// Clear error when modal opens
 watch(() => props.isOpen, (isOpen) => {
   if (isOpen) {
     error.value = ''
   }
 })
 
-// Methods
 const handleSubmit = async () => {
   isSubmitting.value = true
   error.value = ''
   
   try {
-    // Prepare data to emit to parent
     const submitData = {
       fullname: formData.value.fullname,
       dateOfBirth: formData.value.dateOfBirth,
@@ -213,7 +206,6 @@ const handleSubmit = async () => {
     
     console.log('Emitting student data:', submitData)
     
-    // Emit to parent component
     emit('submit', submitData)
     
   } catch (err) {

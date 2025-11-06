@@ -201,21 +201,18 @@ import { ref, onMounted, computed } from "vue";
 import axios from "@/lib/axios";
 import { useRoute } from "vue-router";
 
-// Get route params
 const route = useRoute();
 
-// Reactive data
 const reviews = ref([]);
 const questions = ref({});
-const totalResults = ref(0);  // Total results from API
-const startIndex = computed(() => (page.value - 1) * 12 + 1);  // Index mulai
-const endIndex = computed(() => Math.min(page.value * 12, totalResults.value));  // Index selesai
+const totalResults = ref(0);
+const startIndex = computed(() => (page.value - 1) * 12 + 1);
+const endIndex = computed(() => Math.min(page.value * 12, totalResults.value));
 const page = ref(1);  // Current page
-const totalPages = ref(1);  // Total pages
-const sortBy = ref('Newest');  // Current sort option
-const isSortDropdownOpen = ref(false);  // Control dropdown visibility
+const totalPages = ref(1);
+const sortBy = ref('Newest');
+const isSortDropdownOpen = ref(false); 
 
-// Format date
 const formatDate = (dateString) => {
   return new Date(dateString).toLocaleDateString("id-ID", {
     day: "numeric",
@@ -224,7 +221,6 @@ const formatDate = (dateString) => {
   });
 };
 
-// Get initials
 const getInitials = (username) => {
   if (!username) return "U";
   const nameParts = username.split(" ");
@@ -234,18 +230,15 @@ const getInitials = (username) => {
   return initials || "U";
 };
 
-// Get question name from API data
 const getQuestionName = (questionId) => {
   return questions.value[questionId] || `Question ${questionId}`;
 };
 
-// Fetch questions from API
 const fetchQuestions = async () => {
   try {
     const response = await axios.get("/questions");
     const questionsData = response.data.data;
 
-    // Convert array to object for easy lookup
     questions.value = questionsData.reduce((acc, question) => {
       acc[question.id] = question.question;
       return acc;
@@ -255,7 +248,6 @@ const fetchQuestions = async () => {
   }
 };
 
-// Fetch reviews
 const fetchReviews = async (pageNumber = 1, sortOption = 'Newest') => {
   try {
     const response = await axios.get(`/all-reviews?page=${pageNumber}&sort=${sortOption}`);
@@ -268,22 +260,19 @@ const fetchReviews = async (pageNumber = 1, sortOption = 'Newest') => {
   }
 };
 
-// Function to change page
 const changePage = (newPage) => {
-  if (newPage < 1 || newPage > totalPages.value) return; // Cek batas halaman
-  fetchReviews(newPage); // Ambil data review untuk halaman baru
+  if (newPage < 1 || newPage > totalPages.value) return;
+  fetchReviews(newPage); 
 };
 
-// Toggle Sort By dropdown
 const toggleSortDropdown = () => {
   isSortDropdownOpen.value = !isSortDropdownOpen.value;
 };
 
-// Change sort option and fetch data
 const changeSort = (option) => {
   sortBy.value = option;
-  fetchReviews(page.value, option);  // Fetch with new sort option
-  isSortDropdownOpen.value = false;  // Close dropdown
+  fetchReviews(page.value, option);
+  isSortDropdownOpen.value = false;
 };
 
 const getYear = (dateString) => {
@@ -292,7 +281,6 @@ const getYear = (dateString) => {
   return date.getFullYear();
 };
 
-// Fetch on mount
 onMounted(async () => {
   await fetchQuestions();
   await fetchReviews();
@@ -304,7 +292,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Styling untuk tombol paginasi */
 button:disabled {
   cursor: not-allowed;
 }

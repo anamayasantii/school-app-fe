@@ -161,7 +161,6 @@ import axios from "@/lib/axios";
 const reviews = ref([]);
 const currentPage = ref(0);
 
-// Fetch reviews
 const fetchReviews = async () => {
   try {
     const response = await axios.get("/reviews/recent");
@@ -174,7 +173,6 @@ const fetchReviews = async () => {
   }
 };
 
-// Show only 2 reviews at a time (for 2-column grid)
 const visibleReviews = computed(() => {
   const start = currentPage.value * 2;
   return reviews.value.slice(start, start + 2);

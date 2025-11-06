@@ -147,19 +147,15 @@ const isLoading = ref(true);
 const error = ref(null);
 const currentIndex = ref(0);
 
-// Auto-slide interval
 let autoSlideInterval = null;
 
-// Computed property untuk mendapatkan array gambar
 const currentImages = computed(() => {
   if (!school.value) return [];
 
-  // Jika ada galleryImages, gunakan itu
   if (school.value.galleryImages && school.value.galleryImages.length > 0) {
     return school.value.galleryImages;
   }
 
-  // Jika hanya ada satu gambar utama
   if (school.value.image) {
     return [school.value.image];
   }
@@ -167,7 +163,6 @@ const currentImages = computed(() => {
   return [];
 });
 
-// Navigation methods
 const nextImage = () => {
   if (currentImages.value.length > 1) {
     currentIndex.value = (currentIndex.value + 1) % currentImages.value.length;
@@ -183,12 +178,11 @@ const previousImage = () => {
   }
 };
 
-// Auto-slide functionality
 const startAutoSlide = () => {
   if (currentImages.value.length > 1) {
     autoSlideInterval = setInterval(() => {
       nextImage();
-    }, 5000); // Slide every 5 seconds
+    }, 5000);
   }
 };
 
@@ -199,7 +193,6 @@ const stopAutoSlide = () => {
   }
 };
 
-// Keyboard navigation
 const handleKeydown = (event) => {
   if (event.key === "ArrowLeft") {
     previousImage();
@@ -214,7 +207,6 @@ const fetchSchoolData = async () => {
     school.value = response.data.data || {};
     isLoading.value = false;
 
-    // Start auto-slide after data is loaded
     startAutoSlide();
   } catch (err) {
     console.error("Error fetching data:", err);
@@ -225,13 +217,11 @@ const fetchSchoolData = async () => {
 
 onMounted(() => {
   fetchSchoolData();
-  // Add keyboard event listener
   window.addEventListener("keydown", handleKeydown);
 });
 
 onUnmounted(() => {
   stopAutoSlide();
-  // Remove keyboard event listener
   window.removeEventListener("keydown", handleKeydown);
 });
 </script>

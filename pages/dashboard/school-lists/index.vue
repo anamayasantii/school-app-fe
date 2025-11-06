@@ -32,8 +32,6 @@ const searchQuery = ref('')
 const currentPage = ref(1)
 const totalPages = ref(1)
 const limit = ref(12)
-
-// Delete confirmation dialog
 const showDeleteDialog = ref(false)
 const schoolToDelete = ref(null)
 
@@ -53,14 +51,11 @@ const fetchSchools = async (page = 1) => {
     console.log('Response:', response.data)
     console.log('Search query:', searchQuery.value)
     
-    // Cek apakah data adalah array (data kosong) atau object (ada hasil)
     if (Array.isArray(response.data.data)) {
-      // Data kosong
       schools.value = []
       currentPage.value = 1
       totalPages.value = 1
     } else if (response.data.data && response.data.data.datas) {
-      // Ada hasil
       schools.value = response.data.data.datas
       currentPage.value = response.data.data.meta.current_page
       totalPages.value = response.data.data.meta.last_page
@@ -108,10 +103,8 @@ const handleDelete = async () => {
   try {
     await axios.delete(`/school-details/${schoolToDelete.value.id}`)
     
-    // Refresh list after delete
     await fetchSchools(currentPage.value)
     
-    // Close dialog
     showDeleteDialog.value = false
     schoolToDelete.value = null
     
@@ -127,7 +120,6 @@ const cancelDelete = () => {
   schoolToDelete.value = null
 }
 
-// Generate page numbers for pagination
 const pageNumbers = computed(() => {
   const pages = []
   const maxVisible = 3

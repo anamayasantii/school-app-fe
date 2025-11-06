@@ -62,7 +62,6 @@ import IconSMA from '@/assets/IconSma.vue'
 import IconSMK from '@/assets/IconSmk.vue'
 import IconUniversity from '@/assets/IconKuliah.vue'
 
-// Data langsung untuk setiap level
 const topRowLevels = ref([
   {
     id: 'sd',

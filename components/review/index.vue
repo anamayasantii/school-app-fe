@@ -44,29 +44,24 @@ const props = defineProps({
   },
 });
 
-// Current step state
 const currentStep = ref(1);
 
-// Data dari semua step
 const reviewData = ref({
   step1: null,
   step2: null,
   step3: null,
 });
 
-// Handle Step 1 Next
 const handleStep1Next = (data) => {
   reviewData.value.step1 = data;
   currentStep.value = 2;
 };
 
-// Handle Step 2 Next
 const handleStep2Next = (data) => {
   reviewData.value.step2 = data;
   currentStep.value = 3;
 };
 
-// Handle Final Submit
 const handleSubmit = async () => {
   try {
     // Gabungkan semua data
@@ -77,27 +72,10 @@ const handleSubmit = async () => {
     };
 
     console.log("Data yang akan dikirim:", fullReviewData);
-
-    // Kirim ke API
-    // const response = await $fetch('/api/reviews/create', {
-    //   method: 'POST',
-    //   body: fullReviewData
-    // })
-
-    // Jika berhasil, pindah ke success screen
     currentStep.value = 4;
-
-    // Optional: Reset form setelah beberapa detik
-    // setTimeout(() => {
-    //   navigateTo(`/school-details/${props.schoolId}`)
-    // }, 3000)
   } catch (error) {
     console.error("Error submitting review:", error);
-    // Handle error (bisa tambahkan toast notification)
   }
 };
 </script>
 
-<style scoped>
-/* Custom styling jika diperlukan */
-</style>

@@ -68,13 +68,10 @@
 <script setup>
 import axios from 'axios';
 
-// Reactive data
 const selectedEducationLevel = ref('sd');
 const schools = ref([]);
 const loading = ref(false);
 const error = ref(null);
-
-// Map education level untuk filter (huruf besar)
 const educationLevelDisplayMap = {
   'sd': 'SD',
   'smp': 'SMP', 
@@ -83,7 +80,6 @@ const educationLevelDisplayMap = {
   'universitas': 'Universitas'
 };
 
-// Computed filtered schools
 const filteredSchools = computed(() => {
   if (!schools.value || schools.value.length === 0) {
     return [];
@@ -96,7 +92,6 @@ const filteredSchools = computed(() => {
   );
 });
 
-// Fetch schools from API
 const fetchSchools = async () => {
   loading.value = true;
   error.value = null;
@@ -108,7 +103,6 @@ const fetchSchools = async () => {
       }
     });
     
-    // Ambil data dari response.data.data.datas
     schools.value = response.data?.data?.datas || [];
     
   } catch (err) {
@@ -120,13 +114,11 @@ const fetchSchools = async () => {
   }
 };
 
-// Handle education level change
 const handleEducationLevelChange = (level) => {
   selectedEducationLevel.value = level;
-  fetchSchools(); // Fetch ulang data ketika tab berubah
+  fetchSchools();
 };
 
-// Fetch initial data saat component di-mount
 onMounted(() => {
   fetchSchools();
 });

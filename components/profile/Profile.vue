@@ -400,21 +400,13 @@ import ProfileEditModal from "~/components/profile/ProfileEditModal.vue";
 import ProfileStudentEditModal from "./ProfileStudentEditModal.vue";
 import EducationHistory from "./EducationHistory.vue";
 import Cookies from "js-cookie";
-
-// Import axios
 import axios from "@/lib/axios";
 
-// Store
 const authStore = useAuthStore();
-
-// Refs
 const fileInput = ref(null);
-
-// Modal state
 const isEditModalOpen = ref(false);
 const isStudentEditModalOpen = ref(false);
 
-// Computed properties for role checking
 const isStudent = computed(() => {
   return authStore.user?.roles?.includes("student") || false;
 });
@@ -423,7 +415,6 @@ const isParent = computed(() => {
   return authStore.user?.roles?.includes("parent") || false;
 });
 
-// Computed properties
 const profileData = computed(() => {
   if (!authStore.user) {
     return {
@@ -439,7 +430,6 @@ const profileData = computed(() => {
     };
   }
 
-  // Helper function untuk mendapatkan nama sekolah
   const getSchoolName = (schoolDetails) => {
     if (!schoolDetails) return "";
 
@@ -455,7 +445,7 @@ const profileData = computed(() => {
   return {
     fullname: authStore.user.fullname || "",
     nisn: authStore.user.nisn || "",
-    roles: authStore.user.roles || [], // ✅ Pass roles array langsung
+    roles: authStore.user.roles || [], 
     schoolDetails: getSchoolName(authStore.user.schoolDetails),
     email: authStore.user.email || "",
     birthDate: authStore.user.dateOfBirth || "",
@@ -465,11 +455,9 @@ const profileData = computed(() => {
   };
 });
 
-// Student data for parents (dari API response)
 const studentData = computed(() => {
   if (!isParent.value || !authStore.user?.child) return {};
 
-  // Ambil data anak pertama (bisa disesuaikan jika ada multiple children)
   const child = authStore.user.child[0];
   if (!child) return {};
 
@@ -484,14 +472,12 @@ const studentData = computed(() => {
   };
 });
 
-// Education history for all roles
 const educationHistory = computed(() => {
   // TODO: Fetch from API - bisa dari endpoint terpisah atau bagian dari user data
   // Sementara return empty array, nanti bisa diisi dari API
   return [];
 });
 
-// Methods
 const formatDate = (date) => {
   if (!date) return "-";
 
@@ -511,13 +497,11 @@ const handleFileUpload = async (event) => {
   const file = event.target.files[0];
   if (!file) return;
 
-  // Validasi ukuran file (2MB)
   if (file.size > 2 * 1024 * 1024) {
     alert("Ukuran file maksimal 2MB");
     return;
   }
 
-  // Validasi tipe file
   const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
   if (!allowedTypes.includes(file.type)) {
     alert("Format file harus PNG atau JPEG");
@@ -535,12 +519,10 @@ const handleFileUpload = async (event) => {
 };
 
 const handleEdit = () => {
-  // Edit profile - open modal
   isEditModalOpen.value = true;
 };
 
 const handleEditStudent = () => {
-  // Edit student data for parents
   isStudentEditModalOpen.value = true;
 };
 
@@ -554,7 +536,6 @@ const handleCloseStudentModal = () => {
 
 const handleSubmitEdit = async (formData) => {
   try {
-    // Ambil token dari cookies
     const token = Cookies.get("token");
 
     if (!token) {
@@ -562,11 +543,9 @@ const handleSubmitEdit = async (formData) => {
       return;
     }
 
-    // Prepare request body based on role
     let requestBody = {};
 
     if (isStudent.value) {
-      // Student request body
       requestBody = {
         fullname: formData.fullname || null,
         email: formData.email || null,
@@ -577,7 +556,6 @@ const handleSubmitEdit = async (formData) => {
         image: null, // Will be implemented later
       };
     } else if (isParent.value) {
-      // Parent request body (without child for parent's own profile)
       requestBody = {
         fullname: formData.fullname || null,
         email: formData.email || null,
@@ -593,7 +571,6 @@ const handleSubmitEdit = async (formData) => {
     );
     console.log("Request body:", requestBody);
 
-    // Call API to update profile
     const response = await axios.put("/user", requestBody, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -601,13 +578,10 @@ const handleSubmitEdit = async (formData) => {
     });
 
     if (response.data.status === "success") {
-      // Refresh user data
       await authStore.fetchUser();
 
-      // Close modal
       isEditModalOpen.value = false;
 
-      // Show success message
       alert("Profil berhasil diupdate!");
     }
   } catch (error) {
@@ -624,7 +598,6 @@ const handleSubmitEdit = async (formData) => {
 
 const handleSubmitStudentEdit = async (formData) => {
   try {
-    // Ambil token dari cookies
     const token = Cookies.get("token");
 
     if (!token) {
@@ -632,7 +605,6 @@ const handleSubmitStudentEdit = async (formData) => {
       return;
     }
 
-    // Parent request body with child data
     const requestBody = {
       fullname: profileData.value.fullname || null,
       email: profileData.value.email || null,
@@ -657,7 +629,6 @@ const handleSubmitStudentEdit = async (formData) => {
     );
     console.log("Request body:", requestBody);
 
-    // Call API to update student profile
     const response = await axios.put("/user", requestBody, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -665,13 +636,10 @@ const handleSubmitStudentEdit = async (formData) => {
     });
 
     if (response.data.status === "success") {
-      // Refresh user data
       await authStore.fetchUser();
 
-      // Close modal
       isStudentEditModalOpen.value = false;
 
-      // Show success message
       alert("Profil siswa berhasil diupdate!");
     }
   } catch (error) {
@@ -686,7 +654,6 @@ const handleSubmitStudentEdit = async (formData) => {
   }
 };
 
-// Education History Handlers
 const handleAddEducation = () => {
   console.log("Add education");
   // TODO: Implement add education modal/functionality
@@ -698,14 +665,11 @@ const handleEditEducation = (data) => {
   // data contains { education, index }
 };
 
-// Lifecycle
 onMounted(async () => {
-  // Pastikan user data sudah diload
   if (!authStore.user) {
     await authStore.fetchUser();
   }
 
-  // Debug: Cek token
   const token = Cookies.get("token");
   console.log("Token available:", token ? "Yes" : "No");
   console.log("User data:", authStore.user);

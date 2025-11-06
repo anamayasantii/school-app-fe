@@ -1,38 +1,192 @@
 <template>
   <div class="flex flex-col min-h-screen">
-    <!-- Header dengan spesifikasi Figma -->
-    <header class="w-full h-[120px] border-b border-[#F2ECE3] pt-8 pb-8 px-60">
-      <!-- Inner container untuk logo, navbar, dan tombol login -->
-      <div class="w-full h-10 flex items-center justify-between">
+    <!-- Header -->
+    <header class="w-full border-b border-gray-200 bg-white">
+      <div
+        class="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between"
+      >
         <!-- Logo Section -->
         <div class="flex items-center">
-          <nuxt-link to="/">
-            <img
-              src="assets/images/logo-footer.png"
-              alt="School Advisor"
-              class="h-10"
-            />
+          <nuxt-link to="/" class="flex items-center">
+            <div class="w-8 h-8 mr-2">
+              <Logo/>
+            </div>
           </nuxt-link>
         </div>
 
-        <!-- Navigation Section -->
-        <nav class="items-center flex space-x-8 text-xs relative">
-          <a href="/" class="text-[#76685A]"> Home </a>
+        <!-- Right Section: Navigation, Language & Auth -->
+        <div class="flex items-center space-x-6">
+          <!-- Navigation Section -->
+          <nav class="flex items-center space-x-6 text-sm">
+            <a href="/" class="text-gray-700 hover:text-gray-900"> Beranda </a>
 
-          <!-- Explore School with Dropdown -->
+            <!-- Jelajahi with Dropdown -->
+            <div
+              class="relative"
+              @mouseenter="isDropdownOpen = true"
+              @mouseleave="isDropdownOpen = false"
+            >
+              <button
+                class="text-gray-700 hover:text-gray-900 flex items-center gap-1"
+                @click="isDropdownOpen = !isDropdownOpen"
+              >
+                Jelajahi
+                <svg
+                  class="w-4 h-4 transition-transform duration-200"
+                  :class="{ 'rotate-180': isDropdownOpen }"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
+
+              <!-- Dropdown Menu -->
+              <transition
+                enter-active-class="transition ease-out duration-200"
+                enter-from-class="opacity-0 translate-y-1"
+                enter-to-class="opacity-100 translate-y-0"
+                leave-active-class="transition ease-in duration-150"
+                leave-from-class="opacity-100 translate-y-0"
+                leave-to-class="opacity-0 translate-y-1"
+              >
+                <div
+                  v-if="isDropdownOpen"
+                  class="absolute left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-100 py-2 z-50"
+                >
+                  <div v-if="loading" class="px-4 py-3 text-gray-400 text-sm">
+                    Loading...
+                  </div>
+
+                  <div v-else-if="error" class="px-4 py-3 text-red-500 text-sm">
+                    {{ error }}
+                  </div>
+
+                  <template v-else>
+                    <div class="flex p-2 min-h-[120px]">
+                      <!-- Kolom Kiri -->
+                      <div class="w-1/2 pr-1">
+                        <div class="flex flex-col gap-1">
+                          <nuxt-link
+                            to="/schools/sd"
+                            class="flex items-center px-3 py-2 hover:bg-gray-50 transition-colors group rounded-md"
+                            @click="isDropdownOpen = false"
+                          >
+                            <div
+                              class="w-4 h-4 mr-2 text-gray-700 group-hover:text-gray-900 flex-shrink-0"
+                            >
+                              <IconSD class="w-full h-full" />
+                            </div>
+                            <span
+                              class="text-gray-700 text-sm group-hover:text-gray-900"
+                              >SD</span
+                            >
+                          </nuxt-link>
+
+                          <nuxt-link
+                            to="/schools/smp"
+                            class="flex items-center px-3 py-2 hover:bg-gray-50 transition-colors group rounded-md"
+                            @click="isDropdownOpen = false"
+                          >
+                            <div
+                              class="w-4 h-4 mr-2 text-gray-700 group-hover:text-gray-900 flex-shrink-0"
+                            >
+                              <IconSMP class="w-full h-full" />
+                            </div>
+                            <span
+                              class="text-gray-700 text-sm group-hover:text-gray-900"
+                              >SMP</span
+                            >
+                          </nuxt-link>
+
+                          <nuxt-link
+                            to="/schools/sma"
+                            class="flex items-center px-3 py-2 hover:bg-gray-50 transition-colors group rounded-md"
+                            @click="isDropdownOpen = false"
+                          >
+                            <div
+                              class="w-4 h-4 mr-2 text-gray-700 group-hover:text-gray-900 flex-shrink-0"
+                            >
+                              <IconSMA class="w-full h-full" />
+                            </div>
+                            <span
+                              class="text-gray-700 text-sm group-hover:text-gray-900"
+                              >SMA</span
+                            >
+                          </nuxt-link>
+                        </div>
+                      </div>
+
+                      <!-- Kolom Kanan -->
+                      <div class="w-1/2 pl-1">
+                        <div class="flex flex-col gap-1">
+                          <nuxt-link
+                            to="/schools/smk"
+                            class="flex items-center px-3 py-2 hover:bg-gray-50 transition-colors group rounded-md"
+                            @click="isDropdownOpen = false"
+                          >
+                            <div
+                              class="w-4 h-4 mr-2 text-gray-700 group-hover:text-gray-900 flex-shrink-0"
+                            >
+                              <IconSMK class="w-full h-full" />
+                            </div>
+                            <span
+                              class="text-gray-700 text-sm group-hover:text-gray-900"
+                              >SMK</span
+                            >
+                          </nuxt-link>
+
+                          <nuxt-link
+                            to="/schools/universitas"
+                            class="flex items-center px-3 py-2 hover:bg-gray-50 transition-colors group rounded-md"
+                            @click="isDropdownOpen = false"
+                          >
+                            <div
+                              class="w-4 h-4 mr-2 text-gray-700 group-hover:text-gray-900 flex-shrink-0"
+                            >
+                              <IconUniversity class="w-full h-full" />
+                            </div>
+                            <span
+                              class="text-gray-700 text-sm group-hover:text-gray-900"
+                              >Universitas</span
+                            >
+                          </nuxt-link>
+                        </div>
+                      </div>
+                    </div>
+                  </template>
+                </div>
+              </transition>
+            </div>
+
+            <a href="/about-us" class="text-gray-700 hover:text-gray-900">
+              Tentang Kami
+            </a>
+            <a href="/ranking" class="text-gray-700 hover:text-gray-900">
+              Peringkat Sekolah
+            </a>
+          </nav>
+
+          <!-- Language Selector -->
           <div
             class="relative"
-            @mouseenter="isDropdownOpen = true"
-            @mouseleave="isDropdownOpen = false"
+            @mouseenter="isLangOpen = true"
+            @mouseleave="isLangOpen = false"
           >
             <button
-              class="text-[#76685A] flex items-center gap-1 hover:text-[#5a4d42] transition-colors"
-              @click="isDropdownOpen = !isDropdownOpen"
+              class="flex items-center gap-1 text-gray-700 hover:text-gray-900"
+              @click="isLangOpen = !isLangOpen"
             >
-              Explore School
+              <IndoFlag/>
               <svg
-                class="w-3 h-3 transition-transform duration-200"
-                :class="{ 'rotate-180': isDropdownOpen }"
+                class="w-4 h-4 transition-transform duration-200"
+                :class="{ 'rotate-180': isLangOpen }"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -46,7 +200,7 @@
               </svg>
             </button>
 
-            <!-- Dropdown Menu -->
+            <!-- Language Dropdown -->
             <transition
               enter-active-class="transition ease-out duration-200"
               enter-from-class="opacity-0 translate-y-1"
@@ -56,121 +210,28 @@
               leave-to-class="opacity-0 translate-y-1"
             >
               <div
-                v-if="isDropdownOpen"
-                class="absolute left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-100 py-2 z-50"
+                v-if="isLangOpen"
+                class="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-xl border border-gray-100 py-2 z-50"
               >
-                <div v-if="loading" class="px-4 py-3 text-gray-400 text-xs">
-                  Loading...
-                </div>
-
-                <div v-else-if="error" class="px-4 py-3 text-red-500 text-xs">
-                  {{ error }}
-                </div>
-
-                <template v-else>
-                  <!-- Container dengan display flex -->
-                  <div class="flex p-2 min-h-[120px]">
-                    <!-- Kolom Kiri (3 item: SD, SMP, SMA) -->
-                    <div class="w-1/2 pr-1">
-                      <div class="flex flex-col gap-1">
-                        <nuxt-link
-                          to="/schools/sd"
-                          class="flex items-center px-3 py-2 hover:bg-gray-50 transition-colors group rounded-md"
-                          @click="isDropdownOpen = false"
-                        >
-                          <div
-                            class="w-4 h-4 mr-2 text-[#76685A] group-hover:text-[#5a4d42] flex-shrink-0"
-                          >
-                            <IconSD class="w-full h-full" />
-                          </div>
-                          <span
-                            class="text-[#76685A] text-xs group-hover:text-[#5a4d42]"
-                            >SD</span
-                          >
-                        </nuxt-link>
-
-                        <nuxt-link
-                          to="/schools/smp"
-                          class="flex items-center px-3 py-2 hover:bg-gray-50 transition-colors group rounded-md"
-                          @click="isDropdownOpen = false"
-                        >
-                          <div
-                            class="w-4 h-4 mr-2 text-[#76685A] group-hover:text-[#5a4d42] flex-shrink-0"
-                          >
-                            <IconSMP class="w-full h-full" />
-                          </div>
-                          <span
-                            class="text-[#76685A] text-xs group-hover:text-[#5a4d42]"
-                            >SMP</span
-                          >
-                        </nuxt-link>
-
-                        <nuxt-link
-                          to="/schools/sma"
-                          class="flex items-center px-3 py-2 hover:bg-gray-50 transition-colors group rounded-md"
-                          @click="isDropdownOpen = false"
-                        >
-                          <div
-                            class="w-4 h-4 mr-2 text-[#76685A] group-hover:text-[#5a4d42] flex-shrink-0"
-                          >
-                            <IconSMA class="w-full h-full" />
-                          </div>
-                          <span
-                            class="text-[#76685A] text-xs group-hover:text-[#5a4d42]"
-                            >SMA</span
-                          >
-                        </nuxt-link>
-                      </div>
-                    </div>
-
-                    <!-- Kolom Kanan (2 item: SMK, Universitas) -->
-                    <div class="w-1/2 pl-1">
-                      <div class="flex flex-col gap-1">
-                        <nuxt-link
-                          to="/schools/smk"
-                          class="flex items-center px-3 py-2 hover:bg-gray-50 transition-colors group rounded-md"
-                          @click="isDropdownOpen = false"
-                        >
-                          <div
-                            class="w-4 h-4 mr-2 text-[#76685A] group-hover:text-[#5a4d42] flex-shrink-0"
-                          >
-                            <IconSMK class="w-full h-full" />
-                          </div>
-                          <span
-                            class="text-[#76685A] text-xs group-hover:text-[#5a4d42]"
-                            >SMK</span
-                          >
-                        </nuxt-link>
-
-                        <nuxt-link
-                          to="/schools/universitas"
-                          class="flex items-center px-3 py-2 hover:bg-gray-50 transition-colors group rounded-md"
-                          @click="isDropdownOpen = false"
-                        >
-                          <div
-                            class="w-4 h-4 mr-2 text-[#76685A] group-hover:text-[#5a4d42] flex-shrink-0"
-                          >
-                            <IconUniversity class="w-full h-full" />
-                          </div>
-                          <span
-                            class="text-[#76685A] text-xs group-hover:text-[#5a4d42]"
-                            >Universitas</span
-                          >
-                        </nuxt-link>
-                      </div>
-                    </div>
-                  </div>
-                </template>
+                <button
+                  @click="changeLang('id')"
+                  class="w-full flex items-center px-4 py-2 hover:bg-gray-50 transition-colors"
+                >
+                  <IndoFlag/>
+                  <span class="ml-2 text-sm">Indonesia</span>
+                </button>
+                <button
+                  @click="changeLang('en')"
+                  class="w-full flex items-center px-4 py-2 hover:bg-gray-50 transition-colors"
+                >
+                  <EngFlag/>
+                  <span class="ml-2 text-sm">English</span>
+                </button>
               </div>
             </transition>
           </div>
 
-          <a href="/about-us" class="text-[#76685A]"> About Us </a>
-          <a href="/ranking" class="text-[#76685A]"> Ranking </a>
-        </nav>
-
-        <!-- Auth Menu Section -->
-        <div class="flex items-center">
+          <!-- Auth Menu -->
           <AuthMenu />
         </div>
       </div>
@@ -414,8 +475,12 @@ import IconSMP from "@/assets/IconSmp.vue";
 import IconSMA from "@/assets/IconSma.vue";
 import IconSMK from "@/assets/IconSmk.vue";
 import IconUniversity from "@/assets/IconKuliah.vue";
+import Logo from "~/assets/Logo.vue";
+import IndoFlag from "~/assets/IndoFlag.vue";
+import EngFlag from "~/assets/EngFlag.vue";
 
 const isDropdownOpen = ref(false);
+const isLangOpen = ref(false);
 const educationLevels = ref([]);
 const loading = ref(false);
 const error = ref(null);
@@ -435,72 +500,47 @@ const fetchEducationLevels = async () => {
   }
 };
 
+const changeLang = (lang) => {
+  console.log("Change language to:", lang);
+  // Implementasi ganti bahasa
+  isLangOpen.value = false;
+};
+
 onMounted(() => {
   fetchEducationLevels();
 });
 </script>
 
 <style scoped>
-/* Ensure header stays fixed height and proper spacing */
 header {
-  height: 100px; /* Fixed height sesuai Figma */
-  max-width: 1920px; /* Max width sesuai Figma */
-  margin: 0 auto; /* Center the header */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsive adjustments */
-@media (max-width: 1536px) {
-  header {
-    padding-left: 8rem; /* Reduce padding on smaller screens */
-    padding-right: 8rem;
-  }
-}
-
-@media (max-width: 1024px) {
-  header {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
-
-  nav {
-    gap: 1rem; /* Reduce spacing on tablets */
-  }
-}
-
-@media (max-width: 768px) {
-  header {
-    padding-left: 1rem;
-    padding-right: 1rem;
-    height: 80px; /* Smaller height on mobile */
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-  }
-
-  nav {
-    display: none; /* Hide navigation on mobile, you might want to add a mobile menu */
-  }
-}
-
-.absolute.left-0 {
+.absolute.left-0,
+.absolute.right-0 {
   max-height: 400px;
   overflow-y: auto;
 }
 
-.absolute.left-0::-webkit-scrollbar {
+.absolute.left-0::-webkit-scrollbar,
+.absolute.right-0::-webkit-scrollbar {
   width: 4px;
 }
 
-.absolute.left-0::-webkit-scrollbar-track {
+.absolute.left-0::-webkit-scrollbar-track,
+.absolute.right-0::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 4px;
 }
 
-.absolute.left-0::-webkit-scrollbar-thumb {
+.absolute.left-0::-webkit-scrollbar-thumb,
+.absolute.right-0::-webkit-scrollbar-thumb {
   background: #d1d5db;
   border-radius: 4px;
 }
 
-.absolute.left-0::-webkit-scrollbar-thumb:hover {
+.absolute.left-0::-webkit-scrollbar-thumb:hover,
+.absolute.right-0::-webkit-scrollbar-thumb:hover {
   background: #9ca3af;
 }
 </style>

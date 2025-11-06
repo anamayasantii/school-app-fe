@@ -114,23 +114,20 @@
 </template>
 
 <script setup>
-import backgroundImage from '~/assets/images/register1.jpg'
+import backgroundImage from '~/assets/images/complete1.jpg'
 import { ref, computed, watch, onMounted } from 'vue'
 import { useAuthStore } from '@/store/auth'
 
-// Props
 const props = defineProps({
   currentStep: Number,
   formData: Object
 })
 
-// Emits
 const emit = defineEmits(['next', 'prev', 'save'])
 
 const authStore = useAuthStore()
 const currentStep = props.currentStep || 1
 
-// Form data local
 const form = ref({
   fullname: '',
   dateOfBirth: '',
@@ -138,16 +135,13 @@ const form = ref({
   relation: ''
 })
 
-// Computed
 const userRole = computed(() => {
   const roles = authStore.user?.roles
   
-  // Handle array of roles
   if (Array.isArray(roles)) {
     return roles.includes('parent') ? 'parent' : 'student'
   }
   
-  // Handle string role (fallback)
   return roles || 'student'
 })
 
@@ -161,14 +155,11 @@ const isFormValid = computed(() => {
   return requiredFields.every(field => form.value[field])
 })
 
-// Methods
 const handleNext = () => {
   if (!isFormValid.value) return
   
-  // Save data to parent
   emit('save', form.value, 1)
   
-  // Go to next step
   emit('next')
 }
 
@@ -176,14 +167,12 @@ const handlePrev = () => {
   emit('prev')
 }
 
-// Watchers
 watch(() => props.formData?.step1, (newData) => {
   if (newData) {
     Object.assign(form.value, newData)
   }
 }, { immediate: true })
 
-// Initialize
 onMounted(() => {
   if (userRole.value === 'student' && authStore.user?.fullname) {
     form.value.fullname = authStore.user.fullname

@@ -121,7 +121,6 @@ import {
   BookmarkIcon, 
   StarIcon, 
   LogOutIcon,
-  TriangleAlertIcon 
 } from 'lucide-vue-next'
 
 // Props
@@ -133,15 +132,12 @@ const props = defineProps({
 })
 
 const authStore = useAuthStore()
-// const authStore = useAuthStore() // Jika menggunakan Pinia
 const router = useRouter()
 
-// Reactive data
 const activeTab = ref(props.initialTab)
 const showLogoutModal = ref(false)
 const isLoggingOut = ref(false)
 
-// Menu items configuration
 const menuItems = [
   {
     id: 'profile',
@@ -170,7 +166,6 @@ const menuItems = [
   }
 ]
 
-// Methods
 const setActiveTab = (tabId) => {
   if (tabId === 'logout') {
     showLogoutModal.value = true
@@ -182,29 +177,10 @@ const setActiveTab = (tabId) => {
 const confirmLogout = async () => {
   try {
     isLoggingOut.value = true
-    
-    // Opsi 1: Jika menggunakan auth store/module Nuxt
-    //await $auth.logout()
-    
-    // Opsi 2: Jika menggunakan Pinia store
     authStore.logout()
-    
-    // Opsi 3: Jika menggunakan custom composable
-    // const { logout } = useAuth()
-    // await logout()
-    
-    // Redirect ke halaman login atau home
     await router.push('/')
-    
-    // Optional: Show success message
-    // $toast.success('Berhasil keluar dari akun')
-    
   } catch (error) {
     console.error('Logout error:', error)
-    
-    // Handle error - bisa show toast error
-    // $toast.error('Gagal keluar dari akun. Silakan coba lagi.')
-    
   } finally {
     isLoggingOut.value = false
     showLogoutModal.value = false
@@ -215,17 +191,14 @@ const cancelLogout = () => {
   showLogoutModal.value = false
 }
 
-// Emits
 const emit = defineEmits(['tabChanged'])
 
-// Watch for tab changes
 watch(activeTab, (newTab) => {
   emit('tabChanged', newTab)
 })
 </script>
 
 <style scoped>
-/* Smooth transitions */
 .transition-colors {
   transition-property: color, background-color, border-color;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
