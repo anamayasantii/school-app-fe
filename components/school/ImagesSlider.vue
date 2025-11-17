@@ -43,10 +43,10 @@
         <!-- Loading state -->
         <div
           v-if="isLoading"
-          class="absolute inset-0 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center"
+          class="absolute inset-0 bg-[#FBFBFB] flex items-center justify-center"
         >
           <div
-            class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"
+            class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#082519]"
           ></div>
         </div>
 

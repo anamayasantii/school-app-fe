@@ -4,6 +4,7 @@ import axios from '@/lib/axios';
 
 definePageMeta({
   layout: 'dashboardLayout',
+  middleware: 'admin'
 })
 
 const selectedLevel = ref('sd')

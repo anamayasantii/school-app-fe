@@ -74,6 +74,11 @@
       <Leaderboard />
     </section>
 
+    <!-- School Highlight -->
+    <section class="py-16">
+      <SchoolHighlight />
+    </section>
+
     <!-- Recent Reviews -->
     <section class="py-16">
       <RecentReviews />
@@ -87,6 +92,7 @@ import SearchSchool from "~/components/school/SearchSchool.vue";
 import Leaderboard from "~/components/school/Leaderboard.vue";
 import RecentReviews from "~/components/review/RecentReviews.vue";
 import IndexSchools from "~/components/home/index.vue";
+import SchoolHighlight from "~/components/school/SchoolHighlight.vue";
 
 const currentYear = new Date().getFullYear();
 </script>

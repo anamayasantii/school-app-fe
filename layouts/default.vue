@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col min-h-screen">
     <!-- Header -->
-    <header class="w-full border-b border-gray-200 bg-white">
+    <header class="w-full border-b border-gray-200 bg-white sticky top-0 z-50">
       <div
         class="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between"
       >

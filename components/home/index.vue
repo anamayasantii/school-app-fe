@@ -36,9 +36,9 @@
       </div>
 
       <!-- Schools Grid -->
-      <div v-else-if="filteredSchools.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      <div v-else-if="schools.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         <SharedSchoolCard 
-          v-for="school in filteredSchools.slice(0, 6)" 
+          v-for="school in schools.slice(0, 6)" 
           :key="school.id" 
           :school="school" 
         />
@@ -53,10 +53,10 @@
       </div>
 
       <!-- Browse All Button -->
-      <div v-if="filteredSchools.length > 0" class="text-center">
+      <div v-if="schools.length > 0" class="text-center">
         <NuxtLink 
           :to="`/schools/${selectedEducationLevel}`"
-          class="inline-flex items-center px-6 py-3 bg-[#1D2B29] text-white font-medium rounded-lg hover:bg-[#2a3e3b] transition-colors"
+          class="inline-flex items-center px-6 py-3 border border-[#E9ECEF] text-[#082519] font-medium rounded-lg"
         >
           Browse All
         </NuxtLink>
@@ -66,40 +66,21 @@
 </template>
 
 <script setup>
-import axios from 'axios';
+import axios from '@/lib/axios';
 
 const selectedEducationLevel = ref('sd');
 const schools = ref([]);
 const loading = ref(false);
 const error = ref(null);
-const educationLevelDisplayMap = {
-  'sd': 'SD',
-  'smp': 'SMP', 
-  'sma': 'SMA',
-  'smk': 'SMK',
-  'universitas': 'Universitas'
-};
-
-const filteredSchools = computed(() => {
-  if (!schools.value || schools.value.length === 0) {
-    return [];
-  }
-  
-  const targetLevel = educationLevelDisplayMap[selectedEducationLevel.value];
-  
-  return schools.value.filter(school => 
-    school.educationLevelName === targetLevel
-  );
-});
 
 const fetchSchools = async () => {
   loading.value = true;
   error.value = null;
   
   try {
-    const response = await axios.get("http://103.150.226.108/api/school-details", {
+    const response = await axios.get("/school-details", {
       params: {
-        educationLevelName: selectedEducationLevel.value // sd, smp, sma, smk, universitas (lowercase)
+        educationLevelName: selectedEducationLevel.value
       }
     });
     

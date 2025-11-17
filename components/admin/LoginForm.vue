@@ -46,6 +46,18 @@ const handleSubmit = async () => {
       
       const authStore = useAuthStore()
       await authStore.fetchUser()
+
+      console.log('User data:', authStore.user)
+      console.log('User roles:', authStore.user?.role)
+      console.log('Has admin role?', authStore.user?.role?.includes('admin'))
+      
+      if (authStore.user?.role !== 'admin') {
+        Cookies.remove('token')
+        authStore.logout()
+        
+        errorMessage.value = 'Hanya admin yang bisa login di sini. Silakan login di /auth/login'
+        return
+      }
       
       await navigateTo('/dashboard')
     } else {

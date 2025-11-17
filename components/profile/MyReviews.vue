@@ -10,9 +10,17 @@
 
     <!-- Content -->
     <div class="p-6">
+      <!-- Loading State -->
+      <div v-if="loading" class="text-center py-16">
+        <div
+          class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"
+        ></div>
+        <p class="mt-4 text-gray-600">Memuat ulasan...</p>
+      </div>
+
       <!-- Reviews List -->
-      <div class="space-y-8">
-        <div v-for="(review, index) in reviews" :key="index">
+      <div v-else class="space-y-8">
+        <template v-for="(review, index) in reviews" :key="review.id">
           <!-- Review Header -->
           <div
             class="flex justify-between items-start mb-4 border-b border-gray-300 p-6"
@@ -21,9 +29,12 @@
               class="flex items-center space-x-2 border border-gray-300 rounded-full px-4 py-1"
             >
               <span class="text-sm">Ulasan untuk</span>
-              <div class="flex items-center space-x-2">
+              <NuxtLink
+                :to="`/school-details/${review.schoolDetailId}`"
+                class="flex items-center space-x-2"
+              >
                 <span class="text-sm font-medium text-gray-900 underline">{{
-                  review.schoolName
+                  review.schoolDetailName
                 }}</span>
                 <svg
                   width="20"
@@ -40,7 +51,7 @@
                     stroke-linejoin="round"
                   />
                 </svg>
-              </div>
+              </NuxtLink>
             </div>
 
             <!-- Actions Menu -->
@@ -102,59 +113,62 @@
 
             <!-- Date -->
             <span class="text-sm text-gray-500">{{
-              formatDate(review.date)
+              formatDate(review.createdAt)
             }}</span>
           </div>
 
           <!-- Review Text -->
           <p class="text-gray-700 leading-relaxed mb-6 p-6 pt-0">
-            {{ review.comment }}
+            {{ review.reviewText }}
           </p>
 
           <!-- Rating Categories -->
           <div class="grid grid-cols-5 gap-4 border-b border-gray-300 p-6">
-            <div
-              v-for="category in review.categories"
-              :key="category.name"
-              class="relative rounded-lg p-4 min-h-[90px] border border-gray-200"
+            <template
+              v-for="category in review.review_details"
+              :key="category.id"
             >
-              <!-- Nilai di pojok kiri atas -->
               <div
-                class="absolute top-3 left-3 text-md font-medium"
+                class="relative rounded-lg p-4 min-h-[90px] border border-gray-200"
               >
-                {{ category.score }}
-              </div>
+                <!-- Nilai di pojok kiri atas -->
+                <div class="absolute top-3 left-3 text-md font-medium">
+                  {{ parseInt(category.score) }}
+                </div>
 
-              <!-- Kategori di bawah tengah -->
-              <div
-                class="absolute bottom-3 left-1/2 transform -translate-x-1/2 text-sm text-gray-600 text-center"
-              >
-                {{ category.name }}
+                <!-- Kategori di bawah tengah -->
+                <div
+                  class="absolute bottom-3 left-1/2 transform -translate-x-1/2 text-sm text-gray-600 text-center"
+                >
+                  {{ category.question }}
+                </div>
               </div>
-            </div>
+            </template>
           </div>
-        </div>
-      </div>
+        </template>
 
-      <!-- Empty State -->
-      <div v-if="reviews.length === 0" class="text-center py-16">
-        <svg
-          class="w-16 h-16 text-gray-300 mx-auto mb-4"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-          />
-        </svg>
-        <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada ulasan</h3>
-        <p class="text-gray-600">
-          Ulasan yang Anda berikan akan muncul di sini
-        </p>
+        <!-- Empty State -->
+        <div v-if="reviews.length === 0" class="text-center py-16">
+          <svg
+            class="w-16 h-16 text-gray-300 mx-auto mb-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+            />
+          </svg>
+          <h3 class="text-lg font-medium text-gray-900 mb-2">
+            Belum ada ulasan
+          </h3>
+          <p class="text-gray-600">
+            Ulasan yang Anda berikan akan muncul di sini
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -162,39 +176,44 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
+import axios from "@/lib/axios";
+import Cookies from "js-cookie";
 
 const activeMenu = ref(null);
+const reviews = ref([]);
+const loading = ref(true);
+const error = ref(null);
 
-const reviews = ref([
-  {
-    schoolName: "Akademi Timedoor",
-    rating: 4.8,
-    date: "2025-08-22",
-    comment:
-      "Sekolah yang baik dengan fokus pada keterampilan praktis. Saya berharap ada lebih banyak pilihan elektif, tetapi kelas inti sangat kuat. Layanan dukungan juga dapat diandalkan. Sekolah yang baik dengan fokus p...",
-    categories: [
-      { name: "Fasilitas", score: 3 },
-      { name: "Pembelajaran", score: 5 },
-      { name: "Layanan", score: 5 },
-      { name: "Keamanan", score: 4 },
-      { name: "Aktivitas", score: 5 },
-    ],
-  },
-  {
-    schoolName: "Sekolah Interkultural Jakarta",
-    rating: 4.8,
-    date: "2025-08-22",
-    comment:
-      "Sekolah yang baik dengan fokus pada keterampilan praktis. Saya berharap ada lebih banyak pilihan elektif, tetapi kelas inti sangat kuat. Layanan dukungan juga dapat diandalkan. Sekolah yang baik dengan fokus p...",
-    categories: [
-      { name: "Fasilitas", score: 3 },
-      { name: "Pembelajaran", score: 5 },
-      { name: "Layanan", score: 5 },
-      { name: "Keamanan", score: 4 },
-      { name: "Aktivitas", score: 5 },
-    ],
-  },
-]);
+const fetchUserReviews = async () => {
+  loading.value = true;
+  error.value = null;
+
+  try {
+    const token = Cookies.get("token");
+
+    if (!token) {
+      error.value = "Anda harus login terlebih dahulu";
+      return;
+    }
+
+    const response = await axios.get("/reviews/user", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    reviews.value = response.data.data;
+  } catch (err) {
+    console.error("Error fetching reviews:", err);
+    error.value = err.response?.data?.message || "Gagal memuat ulasan";
+
+    if (err.response?.status === 401) {
+      error.value = "Sesi Anda telah berakhir, silakan login kembali";
+    }
+  } finally {
+    loading.value = false;
+  }
+};
 
 const toggleMenu = (index) => {
   activeMenu.value = activeMenu.value === index ? null : index;
@@ -211,7 +230,7 @@ const editReview = (review, index) => {
 };
 
 const deleteReview = (index) => {
-  const schoolName = reviews.value[index].schoolName;
+  const schoolName = reviews.value[index].schoolDetailName;
   if (confirm(`Hapus ulasan untuk "${schoolName}"?`)) {
     reviews.value.splice(index, 1);
   }
@@ -234,6 +253,7 @@ const handleClickOutside = (event) => {
 };
 
 onMounted(() => {
+  fetchUserReviews();
   document.addEventListener("click", handleClickOutside);
 });
 

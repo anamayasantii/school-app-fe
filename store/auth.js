@@ -5,18 +5,14 @@ import axios from '@/lib/axios'
 import Cookies from 'js-cookie'
 
 export const useAuthStore = defineStore('auth', () => {
-  // State
   const user = ref(null)
-  
-  // Getters
   const isLoggedIn = computed(() => {
   const token = Cookies.get('token')
-  console.log('Token:', token) // ✅ TAMBAH LOG INI
+  console.log('Token:', token)
   console.log('User:', user.value)
   return !!token && !!user.value
 })
 
-  // Actions
   const initAuth = async () => {
   await fetchUser()
 }
@@ -36,8 +32,14 @@ export const useAuthStore = defineStore('auth', () => {
       }
     })
     
+    console.log('Fetch user response:', response.data)
+    
     if (response.data.status === 'success') {
       user.value = response.data.data
+      
+      console.log('User set to:', user.value)
+      console.log('User roles:', user.value?.roles)
+      
       return user.value
     }
   } catch (error) {
@@ -51,9 +53,7 @@ export const useAuthStore = defineStore('auth', () => {
 }
 
   const logout = () => {
-  // Hapus cookie
   Cookies.remove('token')
-  // Clear user
   user.value = null
 }
 

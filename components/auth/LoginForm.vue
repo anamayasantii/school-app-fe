@@ -287,7 +287,14 @@ const handleSubmit = async () => {
       const authStore = useAuthStore();
       await authStore.fetchUser();
 
-      // await navigateTo('/profile/setup')
+      if (authStore.user?.role === 'admin') {
+        Cookies.remove('token');
+        authStore.logout();
+        
+        errorMessage.value = 'Akun admin tidak bisa login di sini. Silakan login di /dashboard/login';
+        return;
+      }
+
       await navigateTo("/");
     } else {
       errorMessage.value = response.data.message || "Login gagal";

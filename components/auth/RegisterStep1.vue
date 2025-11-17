@@ -79,7 +79,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import backgroundImg from '~/assets/images/pre-register.jpg'
+import backgroundImg from '~/assets/images/register1.jpg'
 
 const props = defineProps({
   currentStep: {
