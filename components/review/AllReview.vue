@@ -3,7 +3,7 @@
     <!-- Showing Results and Sort By -->
     <div class="flex justify-between items-center mb-6">
       <!-- Showing Results -->
-      <div class="text-md font-manrope-semibold text-gray-700">
+      <div class="text-md font-semibold text-gray-700">
         Showing {{ startIndex }} - {{ endIndex }} of {{ totalResults }} Results
       </div>
 

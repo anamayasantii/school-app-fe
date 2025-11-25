@@ -3,7 +3,7 @@
   <div class="mb-6 sm:mb-8">
     <!-- Mobile: Stack vertically -->
     <div
-      class="flex flex-col sm:hidden bg-white border border-[#E9ECEF] rounded-xl p-1 gap-1 w-full"
+      class="flex flex-col sm:hidden bg-white border border-border-gray rounded-xl p-1 gap-1 w-full"
     >
       <button
         v-for="tab in educationTabs"
@@ -23,7 +23,7 @@
 
     <!-- Desktop: Horizontal - FULL WIDTH VERSION -->
     <div
-      class="hidden sm:flex bg-white border border-[#E9ECEF] rounded-xl p-1 gap-1 w-full"
+      class="hidden sm:flex bg-white border border-border-gray rounded-xl p-1 gap-1 w-full"
     >
       <button
         v-for="tab in educationTabs"
@@ -46,9 +46,9 @@
     <!-- Province Filter -->
     <div class="flex-1">
       <div
-        class="relative flex items-center bg-white border border-[#E9ECEF] font-manrope-medium rounded-lg p-2 py-0.5"
+        class="relative flex items-center bg-white border border-border-gray font-medium rounded-lg p-2 py-0.5"
       >
-        <label class="text-sm text-[#6C757D] mr-2">Province:</label>
+        <label class="text-sm text-secondary-gray mr-2">Province:</label>
         <select
           :value="filters.province"
           @change="onProvinceChange"
@@ -86,9 +86,9 @@
     <!-- District Filter -->
     <div class="flex-1">
       <div
-        class="relative flex items-center bg-white border border-[#E9ECEF] font-manrope-medium rounded-lg p-2 py-0.5"
+        class="relative flex items-center bg-white border border-border-gray font-medium rounded-lg p-2 py-0.5"
       >
-        <label class="text-sm text-[#6C757D] mr-2">District:</label>
+        <label class="text-sm text-secondary-gray mr-2">District:</label>
         <select
           :value="filters.district"
           @change="onDistrictChange"
@@ -128,9 +128,9 @@
     <!-- Sub District Filter -->
     <div class="flex-1">
       <div
-        class="relative flex items-center bg-white border border-[#E9ECEF] font-manrope-medium rounded-lg p-2 py-0.5"
+        class="relative flex items-center bg-white border border-border-gray font-medium rounded-lg p-2 py-0.5"
       >
-        <label class="text-sm text-[#6C757D] mr-2 whitespace-nowrap"
+        <label class="text-sm text-secondary-gray mr-2 whitespace-nowrap"
           >Sub District:</label
         >
         <select

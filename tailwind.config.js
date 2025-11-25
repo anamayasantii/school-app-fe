@@ -13,12 +13,18 @@ export default {
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		fontFamily: {
-  			sans: [
-  				'var(--font-family)',
-  				'sans-serif'
-  			]
+  			sans: ['Poppins', 'sans-serif']
   		},
   		colors: {
+  			'primary-green': {
+  				DEFAULT: '#082519',
+  				dark: '#212529',
+  			},
+  			'secondary-gray': '#6C757D',
+  			'danger-red': '#F52936',
+  			'border-gray': '#E9ECEF',
+  			'bg-light': '#FBFBFB',
+  			
   			primary: {
   				DEFAULT: 'hsl(var(--primary))',
   				foreground: 'hsl(var(--primary-foreground))'
@@ -74,4 +80,3 @@ export default {
   },
   plugins: [require("tailwindcss-animate")],
 }
-

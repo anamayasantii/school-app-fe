@@ -3,8 +3,8 @@
     <!-- Main Content -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
       <!-- Education Level Header -->
-      <nav class="mt-8 px-6 font-manrope-medium">
-        <ol class="flex items-center space-x-2 text-sm text-[#6C757D]">
+      <nav class="mt-8 px-6 font-medium">
+        <ol class="flex items-center space-x-2 text-sm text-secondary-gray">
           <li><a href="/">Beranda</a></li>
           <li><span class="mx-2">›</span></li>
           <li><a href="">Jelajahi Sekolah</a></li>
@@ -65,7 +65,7 @@
             </div>
 
             <!-- Dynamic Title -->
-            <h2 class="font-manrope-bold text-2xl text-[#28190C]">
+            <h2 class="font-bold text-2xl text-[#28190C]">
               {{
                 level === "sd"
                   ? "Sekolah Dasar"
@@ -93,7 +93,7 @@
           >
             <div
               :class="[
-                'p-6 border border-[#E9ECEF] rounded-xl transition duration-300 hover:bg-[#f8f9fa] h-full',
+                'p-6 border border-border-gray rounded-xl transition duration-300 hover:bg-[#f8f9fa] h-full',
                 selectedStatus === status.name
                   ? 'border-[#28190C]/[0.12] bg-[#F2ECE]'
                   : 'border-[#28190C]/[0.12] hover:border-[#28190C]/[0.12]',
@@ -101,7 +101,7 @@
             >
               <div class="flex items-start space-x-4">
                 <!-- Icon Container -->
-                <div class="flex-shrink-0 font-manrope-bold">
+                <div class="flex-shrink-0 font-bold">
                   <!-- Negeri Icon Component -->
                   <IconType
                     v-if="status.name === 'Negeri'"
@@ -138,7 +138,7 @@
                     }}
                   </h3>
                   <p
-                    class="text-sm text-[#6C757D] font-manrope-regular leading-relaxed"
+                    class="text-sm text-secondary-gray font-regular leading-relaxed"
                   >
                     <span v-if="status.name === 'Negeri'"
                       >Didanai pemerintah, gratis atau biaya rendah.</span
@@ -159,7 +159,7 @@
 
       <!-- Search Input -->
       <!-- <div class="p-6 pb-0">
-        <div class="relative max-w-full mb-6 font-manrope-medium">
+        <div class="relative max-w-full mb-6 font-medium">
           <div
             class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
           >
@@ -196,7 +196,7 @@
       >
         <!-- Province Filter -->
         <div
-          class="relative flex items-center border border-[#28190C]/[0.12] font-manrope-medium rounded-lg p-2"
+          class="relative flex items-center border border-[#28190C]/[0.12] font-medium rounded-lg p-2"
         >
           <label class="text-sm text-[#76685A] mr-2">Provinsi:</label>
           <select
@@ -318,7 +318,7 @@
       </div>
 
       <div class="flex items-center justify-between mb-6 pb-4 px-6">
-        <div class="text-sm text-[#1D2B29] font-manrope-medium">
+        <div class="text-sm text-[#1D2B29] font-medium">
           <span v-if="schools.length > 0 && pagination.total > 0">
             Showing {{ pagination.to }} of {{ pagination.total }} result{{
               pagination.total !== 1 ? "s" : ""

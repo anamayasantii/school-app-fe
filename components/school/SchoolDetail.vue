@@ -1,7 +1,7 @@
 <template>
   <div class="flex min-h-screen">
     <!-- Left Sidebar Navigation -->
-    <div class="w-64 sticky top-0 h-screen overflow-y-auto bg-white">
+    <div class="w-64 sticky top-20 h-screen overflow-y-auto bg-white">
       <div class="p-4 relative">
         <!-- Garis vertikal abu-abu penuh -->
         <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-300"></div>
@@ -14,8 +14,8 @@
             :class="[
               'w-full text-left px-4 py-3 text-base transition-all duration-200 flex items-center relative',
               activeTab === tab.id
-                ? 'text-gray-900 font-semibold'
-                : 'text-gray-500 hover:text-gray-700',
+                ? 'text-primary-green font-semibold'
+                : 'text-secondary-gray hover:text-primary-green',
             ]"
           >
             <!-- Garis hitam HANYA untuk tinggi tab yang aktif -->
@@ -48,8 +48,8 @@
           <!-- Overview Section -->
           <div id="overview" class="section mb-12">
             <div class="mb-8">
-              <h2 class="text-2xl font-bold text-gray-900 mb-4">Ringkasan</h2>
-              <p class="text-gray-700 leading-relaxed mb-6">
+              <h2 class="text-2xl font-semibold text-primary-green mb-4">Ringkasan</h2>
+              <p class="text-[#212529] leading-relaxed mb-6">
                 {{ schoolData.name }} adalah sekolah
                 {{ schoolData.statusName.toLowerCase() }} yang berlokasi di
                 {{ schoolData.village }}, {{ schoolData.subDistrictName }},
@@ -57,7 +57,7 @@
                 pendidikan tingkat {{ schoolData.educationLevelName }} dengan
                 kurikulum {{ schoolData.curriculum }}.
               </p>
-              <p class="text-gray-700 leading-relaxed mb-8">
+              <p class="text-[#212529] leading-relaxed mb-8">
                 Sekolah ini memiliki {{ schoolData.numStudent }} siswa dan
                 {{ schoolData.numTeacher }} guru. Status akreditasi sekolah
                 adalah {{ schoolData.accreditationCode }} dengan kepemilikan
@@ -67,7 +67,7 @@
 
             <!-- Quick Stats -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div class="bg-white border rounded-lg p-6">
+              <div class="border border-border-gray rounded-lg p-6">
                 <svg
                   width="30"
                   height="30"
@@ -81,13 +81,13 @@
                   />
                 </svg>
 
-                <h3 class="text-xl font-bold text-[#082519] mb-1 mt-5">
+                <h3 class="text-xl font-semibold text-primary-green mb-1 mt-5">
                   {{ schoolData.accreditationCode }}
                 </h3>
-                <p class="text-sm text-[#6C757D]">Akreditasi</p>
+                <p class="text-sm text-secondary-gray">Akreditasi</p>
               </div>
 
-              <div class="bg-white border rounded-lg p-6">
+              <div class="border border-border-gray rounded-lg p-6">
                 <svg
                   width="30"
                   height="30"
@@ -101,15 +101,15 @@
                   />
                 </svg>
 
-                <h3 class="text-xl font-bold text-[#082519] mb-1 mt-5">
+                <h3 class="text-xl font-semibold text-primary-green mb-1 mt-5">
                   {{ schoolData.districtName }}
                 </h3>
-                <p class="text-sm text-[#6C757D]">
+                <p class="text-sm text-secondary-gray">
                   {{ schoolData.provinceName }}, Indonesia
                 </p>
               </div>
 
-              <div class="bg-white border rounded-lg p-6">
+              <div class="border border-border-gray rounded-lg p-6">
                 <svg
                   width="30"
                   height="30"
@@ -123,24 +123,24 @@
                   />
                 </svg>
 
-                <h3 class="text-xl font-bold text-[#082519] mb-1 mt-5">
+                <h3 class="text-xl font-semibold text-primary-green mb-1 mt-5">
                   <p>Belum Tersedia</p>
                 </h3>
-                <p class="text-sm text-[#6C757D]">Situs Resmi</p>
+                <p class="text-sm text-secondary-gray">Situs Resmi</p>
               </div>
             </div>
           </div>
 
           <!-- Location Section -->
           <div id="location" class="section mb-12">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Lokasi</h2>
+            <h2 class="text-2xl font-semibold text-primary-green mb-6">Lokasi</h2>
 
             <!-- Map Container -->
             <div id="map" class="rounded-lg mb-6 h-80 border"></div>
 
-            <div class="flex items-start p-4 bg-gray-50 rounded-lg">
+            <div class="flex items-start p-4 border border-border-gray rounded-lg">
               <svg
-                class="w-5 h-5 text-gray-500 mr-3 mt-0.5 flex-shrink-0"
+                class="w-5 h-5 text-primary-green mr-3 mt-0.5 flex-shrink-0"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -150,7 +150,7 @@
                   clip-rule="evenodd"
                 ></path>
               </svg>
-              <p class="text-gray-700">
+              <p class="text-primary-green font-medium">
                 {{ getFullAddress() }}
               </p>
             </div>
@@ -158,7 +158,7 @@
 
           <!-- Facilities Section -->
           <div id="facilities" class="section mb-12">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Fasilitas</h2>
+            <h2 class="text-2xl font-semibold text-primary-green mb-6">Fasilitas</h2>
             <div
               v-if="schoolData.facilities && schoolData.facilities.length > 0"
               class="grid grid-cols-1 md:grid-cols-2 gap-6"
@@ -166,7 +166,7 @@
               <div
                 v-for="(facility, index) in schoolData.facilities"
                 :key="index"
-                class="flex items-center p-3 bg-white border rounded-lg hover:shadow-sm transition-shadow"
+                class="flex items-center p-3 border border-border-gray rounded-lg"
               >
                 <svg
                   class="w-6 h-6 mr-4 text-gray-600"
@@ -177,33 +177,33 @@
                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                   ></path>
                 </svg>
-                <span class="text-gray-900">{{ facility }}</span>
+                <span class="text-primary-green">{{ facility }}</span>
               </div>
             </div>
-            <div v-else class="bg-gray-50 rounded-lg p-6 text-center">
-              <p class="text-gray-600">Informasi fasilitas belum tersedia</p>
+            <div v-else class="bg-bg-light rounded-lg p-6 text-center">
+              <p class="text-secondary-gray">Informasi fasilitas belum tersedia</p>
             </div>
           </div>
 
           <!-- Cost Section -->
           <div id="cost" class="section mb-12">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Biaya</h2>
-            <div class="bg-white border rounded-lg p-8">
+            <h2 class="text-2xl font-semibold text-primary-green mb-6">Biaya</h2>
+            <div class="border border-border-gray rounded-lg p-8">
               <div class="mb-4">
-                <span class="text-sm font-medium text-gray-600"
+                <span class="text-sm font-medium text-secondary-gray"
                   >Biaya Pendidikan</span
                 >
               </div>
               <div class="mb-6">
-                <h3 class="text-4xl font-bold text-gray-900">
+                <h3 class="text-3xl font-semibold text-primary-green">
                   {{
                     schoolData.tuitionFee
                       ? `Rp ${formatNumber(schoolData.tuitionFee)}`
-                      : "Tidak Tersedia"
+                      : "Belum Tersedia"
                   }}
                 </h3>
               </div>
-              <p class="text-gray-600">
+              <p class="text-secondary-gray text-sm">
                 Informasi biaya pendidikan tahunan untuk siswa.
               </p>
             </div>
@@ -211,25 +211,25 @@
 
           <!-- Related Schools Section -->
           <div id="related-schools" class="section mb-12">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">
+            <h2 class="text-2xl font-semibold text-primary-green mb-6">
               Sekolah Terkait
             </h2>
             <div class="space-y-4">
               <div
                 v-for="(school, index) in schoolData.relatedSchools"
                 :key="school.id"
-                class="border border-gray-200 rounded-lg bg-white"
+                class="border border-border-gray rounded-lg"
               >
                 <button
                   @click="toggleSchool(index)"
-                  class="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 transition-colors rounded-lg"
+                  class="w-full flex items-center justify-between p-4 text-left rounded-lg"
                 >
                   <div class="flex items-center">
                     <div
-                      class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center mr-4"
+                      class="w-10 h-10 bg-bg-light rounded-lg flex items-center justify-center mr-4"
                     >
                       <svg
-                        class="w-5 h-5 text-gray-600"
+                        class="w-5 h-5 text-secondary-gray"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -239,17 +239,17 @@
                       </svg>
                     </div>
                     <div class="text-left">
-                      <span class="font-semibold text-gray-900 block">
+                      <span class="font-semibold text-primary-green block">
                         {{ school.name }}
                       </span>
-                      <span class="text-sm text-gray-600">
+                      <span class="text-sm text-secondary-gray">
                         {{ school.educationLevelName }} •
                         {{ school.statusName }}
                       </span>
                     </div>
                   </div>
                   <svg
-                    class="w-5 h-5 text-gray-400 transition-transform"
+                    class="w-5 h-5 text-secondary-gray transition-transform"
                     :class="{ 'rotate-180': school.expanded }"
                     fill="none"
                     stroke="currentColor"
@@ -264,30 +264,30 @@
                   </svg>
                 </button>
                 <div v-show="school.expanded" class="px-4 pb-4">
-                  <div class="bg-gray-50 rounded-lg p-4">
+                  <div class="bg-bg-light rounded-lg p-4">
                     <div
-                      class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700"
+                      class="grid grid-cols-1 md:grid-cols-2 gap-4 text-secondary-gray"
                     >
                       <div>
-                        <p class="font-medium text-sm text-gray-600">
+                        <p class="font-medium text-sm text-secondary-gray">
                           Kode Institusi
                         </p>
                         <p>{{ school.institutionCode }}</p>
                       </div>
                       <div>
-                        <p class="font-medium text-sm text-gray-600">
+                        <p class="font-medium text-sm secondary-gray">
                           Kepala Sekolah
                         </p>
                         <p>{{ school.principal }}</p>
                       </div>
                       <div>
-                        <p class="font-medium text-sm text-gray-600">
+                        <p class="font-medium text-sm secondary-gray">
                           Jumlah Siswa
                         </p>
                         <p>{{ school.numStudent }}</p>
                       </div>
                       <div>
-                        <p class="font-medium text-sm text-gray-600">
+                        <p class="font-medium text-sm text-secondary-gray">
                           Tingkat Pendidikan
                         </p>
                         <p>{{ school.educationLevelName }}</p>
@@ -302,9 +302,9 @@
                 !schoolData.relatedSchools ||
                 schoolData.relatedSchools.length === 0
               "
-              class="bg-gray-50 rounded-lg p-6 text-center"
+              class="bg-bg-light rounded-lg p-6 text-center"
             >
-              <p class="text-gray-600">
+              <p class="text-secondary-gray">
                 Tidak ada sekolah terkait yang tersedia
               </p>
             </div>
@@ -312,15 +312,15 @@
 
           <!-- Contact Section -->
           <div id="contact" class="section mb-12">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Kontak</h2>
+            <h2 class="text-2xl font-semibold text-primary-green mb-6">Kontak</h2>
             <div v-if="schoolData.contacts" class="space-y-4">
               <div
                 v-if="schoolData.contacts.phone"
-                class="bg-white border rounded-lg p-4 flex items-center justify-between hover:shadow-md transition-shadow cursor-pointer"
+                class="border rounded-lg p-4 flex items-center justify-between hover:shadow-md transition-shadow cursor-pointer"
               >
                 <div class="flex items-center">
                   <svg
-                    class="w-5 h-5 text-gray-500 mr-4"
+                    class="w-5 h-5 text-secondary-gray mr-4"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -328,12 +328,12 @@
                       d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"
                     ></path>
                   </svg>
-                  <span class="text-gray-900">{{
+                  <span class="text-primary-green">{{
                     schoolData.contacts.phone
                   }}</span>
                 </div>
                 <svg
-                  class="w-4 h-4 text-gray-400"
+                  class="w-4 h-4 text-secondary-gray"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -348,11 +348,11 @@
               </div>
               <div
                 v-if="schoolData.contacts.email"
-                class="bg-white border rounded-lg p-4 flex items-center justify-between hover:shadow-md transition-shadow cursor-pointer"
+                class="border rounded-lg p-4 flex items-center justify-between hover:shadow-md transition-shadow cursor-pointer"
               >
                 <div class="flex items-center">
                   <svg
-                    class="w-5 h-5 text-gray-500 mr-4"
+                    class="w-5 h-5 text-secondary-gray mr-4"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -363,12 +363,12 @@
                       d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"
                     ></path>
                   </svg>
-                  <span class="text-gray-900">{{
+                  <span class="text-primary-green">{{
                     schoolData.contacts.email
                   }}</span>
                 </div>
                 <svg
-                  class="w-4 h-4 text-gray-400"
+                  class="w-4 h-4 text-secondary-gray"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -383,32 +383,32 @@
               </div>
             </div>
             <div v-else class="space-y-4">
-              <div class="bg-gray-50 rounded-lg p-6 text-center">
-                <p class="text-gray-600">Informasi kontak belum tersedia</p>
+              <div class="bg-bg-light rounded-lg p-6 text-center">
+                <p class="text-secondary-gray">Informasi kontak belum tersedia</p>
               </div>
             </div>
 
             <!-- School Information -->
-            <div class="mt-8 bg-gray-50 rounded-lg p-6">
-              <h3 class="text-lg font-semibold text-gray-900 mb-4">
+            <div class="mt-8 bg-bg-light rounded-lg p-6">
+              <h3 class="text-lg font-semibold text-primary-green mb-4">
                 Informasi Sekolah
               </h3>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <p class="text-sm text-gray-600">Kepala Sekolah</p>
-                  <p class="text-gray-900">{{ schoolData.principal }}</p>
+                  <p class="text-sm text-secondary-gray">Kepala Sekolah</p>
+                  <p class="text-primary-green">{{ schoolData.principal }}</p>
                 </div>
                 <div>
-                  <p class="text-sm text-gray-600">Operator</p>
-                  <p class="text-gray-900">{{ schoolData.operator }}</p>
+                  <p class="text-sm text-secondary-gray">Operator</p>
+                  <p class="text-primary-green">{{ schoolData.operator }}</p>
                 </div>
                 <div>
-                  <p class="text-sm text-gray-600">Kode Institusi</p>
-                  <p class="text-gray-900">{{ schoolData.institutionCode }}</p>
+                  <p class="text-sm text-secondary-gray">Kode Institusi</p>
+                  <p class="text-primary-green">{{ schoolData.institutionCode }}</p>
                 </div>
                 <div>
-                  <p class="text-sm text-gray-600">Izin Operasional</p>
-                  <p class="text-gray-900">
+                  <p class="text-sm text-secondary-gray">Izin Operasional</p>
+                  <p class="text-primary-green">
                     {{ schoolData.operationalLicense }}
                   </p>
                 </div>

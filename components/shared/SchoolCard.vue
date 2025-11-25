@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded-xl bg-white border border-[#E9ECEF]">
+  <div class="rounded-xl bg-white border border-border-gray">
     <NuxtLink :to="`/school-details/${school.id}`" class="block cursor-pointer">
       <div class="relative overflow-hidden rounded-t-xl bg-gray-100">
         <!-- Actual Image -->
@@ -77,12 +77,12 @@
               />
             </svg>
 
-            <span class="ml-1 text-sm text-[#082519] font-medium">
+            <span class="ml-1 text-sm text-primary-green font-medium">
               {{ school.rating }}
             </span>
           </div>
 
-          <span class="ml-2 text-sm text-[#082519]">
+          <span class="ml-2 text-sm text-primary-green">
             ({{ school.reviewers }} Ulasan)
           </span>
         </div>

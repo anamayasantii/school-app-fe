@@ -29,7 +29,7 @@
           <div v-else class="w-40 h-30 flex items-center justify-center">
             <div class="text-center">
               <svg
-                class="w-30 h-20 mx-auto text-[#212529]"
+                class="w-30 h-20 mx-auto text-primary-green-dark"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -41,7 +41,7 @@
                   d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                 ></path>
               </svg>
-              <p class="text-[#212529] text-xs mt-1">{{ school.schoolName }}</p>
+              <p class="text-primary-green-dark text-xs mt-1">{{ school.schoolName }}</p>
             </div>
           </div>
         </div>

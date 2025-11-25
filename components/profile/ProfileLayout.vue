@@ -1,14 +1,18 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div class="mb-8">
-        <h1 class="text-2xl font-bold text-gray-900">Pengaturan</h1>
+  <div class="min-h-screen bg-[#FBFBFB]">
+    <!-- Header Pengaturan dengan background putih full -->
+    <div class="bg-white border-b border-gray-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h1 class="text-2xl font-semibold text-primary-green">Pengaturan</h1>
       </div>
+    </div>
 
+    <!-- Content Area -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div class="flex gap-8">
         <!-- Sidebar Menu -->
         <div class="w-64 flex-shrink-0">
-          <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
             <nav class="space-y-1 p-2">
               <button
                 v-for="item in menuItems"
@@ -16,10 +20,10 @@
                 :class="[
                   'w-full flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-colors text-left',
                   activeTab === item.id
-                    ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700'
+                    ? 'bg-[#F8F9FA] text-primary-green'
                     : item.id === 'logout'
-                    ? 'text-red-600 hover:bg-red-50 hover:text-red-700'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                    ? 'text-[#F52228] hover:bg-red-50'
+                    : 'text-secondary-gray hover:bg-bg-light hover:text-primary-green'
                 ]"
                 @click="setActiveTab(item.id)"
                 :disabled="isLoggingOut && item.id === 'logout'"
@@ -29,10 +33,10 @@
                   :class="[
                     'w-5 h-5 mr-3',
                     activeTab === item.id 
-                      ? 'text-blue-700' 
+                      ? 'text-primary-green' 
                       : item.id === 'logout'
-                      ? 'text-red-500'
-                      : 'text-gray-400'
+                      ? 'text-[#F52228]'
+                      : 'text-secondary-gray'
                   ]"
                 />
                 <span v-if="isLoggingOut && item.id === 'logout'">
@@ -70,7 +74,7 @@
                 <LogOutIcon class="h-6 w-6 text-red-600" />
               </div>
               <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                <h3 class="text-lg leading-6 font-medium text-primary-green">
                   Konfirmasi Keluar
                 </h3>
                 <div class="mt-2">
@@ -115,13 +119,11 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useAuthStore } from '~/store/auth'
-import { 
-  UserIcon, 
-  KeyIcon, 
-  BookmarkIcon, 
-  StarIcon, 
-  LogOutIcon,
-} from 'lucide-vue-next'
+import UserIcon from "~/assets/UserIcon.vue";
+import KeyIcon from "~/assets/KeyIcon.vue";
+import BookmarkIcon from "~/assets/BookmarkIcon.vue";
+import ReviewIcon from "~/assets/ReviewIcon.vue";
+import LogOutIcon from "~/assets/LogOutIcon.vue";
 
 // Props
 const props = defineProps({
@@ -157,7 +159,7 @@ const menuItems = [
   {
     id: 'reviews',
     name: 'Ulasan Saya',
-    icon: StarIcon,
+    icon: ReviewIcon,
   },
   {
     id: 'logout',

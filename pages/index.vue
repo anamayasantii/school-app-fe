@@ -44,7 +44,7 @@
           </NuxtLink>
         </div>
 
-        <h1 class="text-3xl font-manrope-extrabold md:text-6xl mb-4 py-4">
+        <h1 class="text-3xl font-semibold md:text-6xl mb-4 py-4">
           Pencarian sekolah lebih
           <br />
           sederhana dan mudah.
@@ -104,7 +104,7 @@ const currentYear = new Date().getFullYear();
   padding: 12px 24px;
   gap: 16px;
   border-radius: 80px;
-  background-color: #28190c;
+  background-color: #082519;
   border: none;
   color: #ffffff;
   font-size: 16px;

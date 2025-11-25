@@ -1,10 +1,10 @@
 <template>
-  <div class="container mx-auto py-6 px-16">
+  <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-6 px-16">
     <!-- Content Section -->
     <div v-if="school">
       <!-- Breadcrumb Navigation -->
       <nav class="mb-4" aria-label="Breadcrumb">
-        <ol class="flex items-center space-x-2 text-sm text-gray-600">
+        <ol class="flex items-center space-x-2 text-sm text-secondary-gray">
           <li>
             <a href="/"> Home </a>
           </li>
@@ -20,7 +20,7 @@
           </li>
           <span class="mx-2">›</span>
           <li
-            class="text-gray-800 font-medium truncate max-w-xs"
+            class="text-primary-green font-medium truncate max-w-xs"
             aria-current="page"
           >
             {{ school.name }}
@@ -32,13 +32,13 @@
       <div class="flex justify-between items-start mb-2">
         <!-- School Name and Rating -->
         <div class="flex-1">
-          <h1 class="text-3xl font-bold mb-2">{{ school.name }}</h1>
+          <h1 class="text-2xl font-semibold mb-2">{{ school.name }}</h1>
           <div class="flex items-center">
             <span
-              class="mr-2 bg-[#fff3d6] text-[#ffb901] px-3 py-1 rounded-full font-semibold"
+              class="mr-2 bg-[#fff3d6] text-[#ffb901] text-sm px-3 py-1 rounded-full font-semibold"
               >{{ school.accreditationCode }}</span
             >
-            <span class="mr-2">Akreditasi</span>
+            <span class="mr-2 font-medium text-primary-green">Akreditasi</span>
             <span class="mr-6 ml-6"
               ><svg
                 width="2"
@@ -51,7 +51,7 @@
               </svg>
             </span>
             <span class="mr-1"><Star /></span>
-            <span class="mr-2">{{ school.rating }}</span>
+            <span class="mr-2 font-medium">{{ school.rating }}</span>
 
             <template v-if="school.rating > 4.5">
               <span class="mr-6 ml-6"
@@ -79,7 +79,7 @@
                   />
                 </svg>
               </span>
-              <span class="mr-2"
+              <span class="mr-2 font-medium text-primary-green"
                 >Direkomendasikan oleh sebagian besar pengguna</span
               >
             </template>
@@ -106,7 +106,7 @@
           >
             <SaveIcon
               :filled="isSaved"
-              :color="isSaved ? '#082519' : '#9CA3AF'"
+              :color="isSaved ? 'primary-green' : '#9CA3AF'"
               class="w-10 h-10"
             />
           </button>

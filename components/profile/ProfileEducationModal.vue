@@ -34,22 +34,15 @@
             </label>
             <div class="relative">
               <select
-                v-model="formData.level"
+                v-model="formData.educationLevelId"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 appearance-none bg-white"
                 required
+                :disabled="loadingLevels"
               >
-                <option value="" disabled>Contoh: Sekolah Menengah</option>
-                <option value="Taman Kanak-kanak">Taman Kanak-kanak</option>
-                <option value="Sekolah Dasar">Sekolah Dasar</option>
-                <option value="Sekolah Menengah Pertama">Sekolah Menengah Pertama</option>
-                <option value="Sekolah Menengah Akhir">Sekolah Menengah Akhir</option>
-                <option value="Diploma I">Diploma I</option>
-                <option value="Diploma II">Diploma II</option>
-                <option value="Diploma III">Diploma III</option>
-                <option value="Diploma IV">Diploma IV</option>
-                <option value="Sarjana (S1)">Sarjana (S1)</option>
-                <option value="Magister (S2)">Magister (S2)</option>
-                <option value="Doktor (S3)">Doktor (S3)</option>
+                <option value="" disabled>{{ loadingLevels ? 'Memuat...' : 'Pilih Tingkat Pendidikan' }}</option>
+                <option v-for="level in educationLevels" :key="level.id" :value="level.id">
+                  {{ getEducationLevelLabel(level.name) }}
+                </option>
               </select>
               <svg class="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -62,33 +55,62 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">
               Nama Sekolah
             </label>
-            <input
-              v-model="formData.schoolName"
-              type="text"
-              placeholder="Contoh: Jakarta Intercultural School"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
-              required
-            />
+            <div class="relative">
+              <input
+                v-model="schoolSearchQuery"
+                @input="handleSchoolSearch"
+                @focus="showSchoolDropdown = true"
+                type="text"
+                placeholder="Cari nama sekolah..."
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                required
+                autocomplete="off"
+              />
+              
+              <!-- Dropdown Results -->
+              <div 
+                v-if="showSchoolDropdown && (schoolResults.length > 0 || loadingSchools)"
+                class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+              >
+                <div v-if="loadingSchools" class="px-4 py-3 text-sm text-gray-500">
+                  Mencari sekolah...
+                </div>
+                <div 
+                  v-else-if="schoolResults.length === 0 && schoolSearchQuery"
+                  class="px-4 py-3 text-sm text-gray-500"
+                >
+                  Tidak ada hasil
+                </div>
+                <button
+                  v-for="school in schoolResults"
+                  :key="school.id"
+                  type="button"
+                  @click="selectSchool(school)"
+                  class="w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0"
+                >
+                  <div class="font-medium text-gray-900">{{ school.name }}</div>
+                  <div class="text-sm text-gray-500">
+                    {{ school.subDistrictName }}, {{ school.districtName }}, {{ school.provinceName }}
+                  </div>
+                </button>
+              </div>
+            </div>
           </div>
 
-          <!-- Hubungan dengan Sekolah -->
+          <!-- Hubungan dengan Sekolah (Status) -->
           <div class="mb-6">
             <label class="block text-sm font-medium text-gray-700 mb-2">
               Hubungan dengan Sekolah
             </label>
             <div class="relative">
               <select
-                v-model="formData.relationship"
+                v-model="formData.status"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 appearance-none bg-white"
                 required
               >
-                <option value="" disabled>Contoh: Siswa</option>
-                <option value="Siswa">Siswa</option>
-                <option value="Mahasiswa">Mahasiswa</option>
-                <option value="Alumni">Alumni</option>
-                <option value="Guru">Guru</option>
-                <option value="Dosen">Dosen</option>
-                <option value="Staff">Staff</option>
+                <option value="" disabled>Pilih Status</option>
+                <option value="aktif">Siswa Aktif</option>
+                <option value="alumni">Alumni</option>
               </select>
               <svg class="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -117,8 +139,7 @@
                 v-model="formData.endDate"
                 type="date"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
-                :disabled="formData.isCurrentlyStudying"
-                :class="{ 'bg-gray-50 text-gray-500': formData.isCurrentlyStudying }"
+                required
               />
             </div>
           </div>
@@ -162,7 +183,8 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
+import axios from '@/lib/axios'
 
 const props = defineProps({
   isOpen: {
@@ -184,23 +206,116 @@ const emit = defineEmits(['close', 'submit', 'delete'])
 
 const isSubmitting = ref(false)
 const formData = ref({
-  level: '',
-  schoolName: '',
-  relationship: '',
+  educationLevelId: '',
+  schoolDetailId: '',
+  status: '',
   startDate: '',
-  endDate: '',
-  isCurrentlyStudying: false
+  endDate: ''
+})
+
+// Education Levels
+const educationLevels = ref([])
+const loadingLevels = ref(false)
+
+// School Search
+const schoolSearchQuery = ref('')
+const schoolResults = ref([])
+const loadingSchools = ref(false)
+const showSchoolDropdown = ref(false)
+const selectedSchool = ref(null)
+let searchTimeout = null
+
+// Fetch Education Levels
+const fetchEducationLevels = async () => {
+  loadingLevels.value = true
+  try {
+    const response = await axios.get('/education-levels')
+    // Filter out SPK SMA
+    educationLevels.value = response.data.data.filter(level => level.name !== 'SPK SMA')
+  } catch (error) {
+    console.error('Error fetching education levels:', error)
+  } finally {
+    loadingLevels.value = false
+  }
+}
+
+// Mapping untuk nama lengkap
+const getEducationLevelLabel = (name) => {
+  const mapping = {
+    'SD': 'Sekolah Dasar',
+    'SMP': 'Sekolah Menengah Pertama',
+    'SMA': 'Sekolah Menengah Atas',
+    'SMK': 'Sekolah Menengah Kejuruan',
+    'Universitas': 'Universitas'
+  }
+  return mapping[name] || name
+}
+
+// Search Schools with debounce
+const handleSchoolSearch = () => {
+  if (searchTimeout) clearTimeout(searchTimeout)
+  
+  searchTimeout = setTimeout(async () => {
+    if (schoolSearchQuery.value.length < 2) {
+      schoolResults.value = []
+      return
+    }
+    
+    loadingSchools.value = true
+    try {
+      const response = await axios.get('/school-details', {
+        params: {
+          search: schoolSearchQuery.value
+        }
+      })
+      schoolResults.value = response.data.data.datas
+    } catch (error) {
+      console.error('Error searching schools:', error)
+      schoolResults.value = []
+    } finally {
+      loadingSchools.value = false
+    }
+  }, 300)
+}
+
+// Select School from dropdown
+const selectSchool = (school) => {
+  selectedSchool.value = school
+  formData.value.schoolDetailId = school.id
+  schoolSearchQuery.value = school.name
+  showSchoolDropdown.value = false
+}
+
+// Close dropdown when clicking outside
+const handleClickOutside = (event) => {
+  if (!event.target.closest('.relative')) {
+    showSchoolDropdown.value = false
+  }
+}
+
+onMounted(() => {
+  fetchEducationLevels()
+  document.addEventListener('click', handleClickOutside)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+  if (searchTimeout) clearTimeout(searchTimeout)
 })
 
 watch(() => props.educationData, (newData) => {
   if (newData && Object.keys(newData).length > 0) {
     formData.value = {
-      level: newData.level || '',
-      schoolName: newData.schoolName || '',
-      relationship: newData.relationship || '',
+      educationLevelId: newData.educationLevelId || '',
+      schoolDetailId: newData.schoolDetailId || '',
+      status: newData.rawStatus || '',
       startDate: newData.startDate || '',
-      endDate: newData.endDate || '',
-      isCurrentlyStudying: newData.isCurrentlyStudying || false
+      endDate: newData.endDate || ''
+    }
+    // Set school name if editing
+    if (newData.schoolName) {
+      schoolSearchQuery.value = newData.schoolName
+      selectedSchool.value = { id: newData.schoolDetailId, name: newData.schoolName }
     }
   }
 }, { immediate: true, deep: true })
@@ -208,17 +323,32 @@ watch(() => props.educationData, (newData) => {
 watch(() => props.isOpen, (isOpen) => {
   if (isOpen && props.mode === 'add') {
     formData.value = {
-      level: '',
-      schoolName: '',
-      relationship: '',
+      educationLevelId: '',
+      schoolDetailId: '',
+      status: '',
       startDate: '',
-      endDate: '',
-      isCurrentlyStudying: false
+      endDate: ''
     }
+    schoolSearchQuery.value = ''
+    selectedSchool.value = null
+    schoolResults.value = []
   }
 })
 
 const handleSubmit = async () => {
+  // Validation
+  if (!formData.value.educationLevelId || !formData.value.schoolDetailId || 
+      !formData.value.status || !formData.value.startDate || !formData.value.endDate) {
+    alert('Semua field harus diisi')
+    return
+  }
+
+  // Validate date
+  if (new Date(formData.value.endDate) < new Date(formData.value.startDate)) {
+    alert('Tanggal akhir harus lebih besar dari tanggal mulai')
+    return
+  }
+
   isSubmitting.value = true
   try {
     emit('submit', {

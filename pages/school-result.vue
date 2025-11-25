@@ -15,27 +15,27 @@
     </div>
 
     <!-- Section dengan Background - Pindahkan ke luar container -->
-    <section class="bg-[#FBFBFB] py-8">
+    <section class="bg-bg-light py-8">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex gap-6">
           <!-- Sidebar Filters -->
           <aside class="w-64 flex-shrink-0">
             <div
-              class="bg-white rounded-2xl p-6 sticky top-6 border border-[#E9ECEF]"
+              class="bg-white rounded-2xl p-6 sticky top-6 border border-border-gray"
             >
               <div class="flex items-center justify-between mb-3">
                 <h3 class="font-semibold">Filter</h3>
                 <button
                   v-if="selectedStatus"
                   @click="resetFilters"
-                  class="text-xs bg-[#082519] w-14 h-7 rounded-full text-[#DEE2E6] hover:text-gray-900"
+                  class="text-xs bg-primary-green w-14 h-7 rounded-full text-white"
                 >
                   Hapus
                 </button>
               </div>
 
               <!-- Garis Pembatas Nyambung ke Pinggir -->
-              <div class="border-b border-[#E9ECEF] -mx-6 mb-4"></div>
+              <div class="border-b border-border-gray -mx-6 mb-4"></div>
 
               <!-- School Type -->
               <div class="mb-6">
@@ -69,7 +69,7 @@
                     :class="
                       selectedStatus === status.name
                         ? 'text-black font-medium'
-                        : 'text-[#6C757D]'
+                        : 'text-secondary-gray'
                     "
                   >
                     <input
@@ -77,7 +77,7 @@
                       name="schoolType"
                       :value="status.name"
                       v-model="selectedStatus"
-                      class="mr-2 accent-black cursor-pointer"
+                      class="w-5 h-5 mr-2 accent-black cursor-pointer"
                       @change="applyFilter"
                     />
                     <span>{{ getStatusDisplayName(status.name) }}</span>
@@ -98,7 +98,7 @@
             </div>
 
             <!-- Results Count -->
-            <p class="text-sm text-[#082519] mb-6">
+            <p class="text-sm text-primary-green mb-6">
               Menampilkan {{ schools.length }} dari {{ totalSchools }} Sekolah
             </p>
 

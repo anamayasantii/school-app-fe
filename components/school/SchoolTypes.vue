@@ -9,17 +9,17 @@
           :key="level.id"
           :to="`/schools/${level.id}`"
         >
-          <div class="border border-[#E9ECEF] rounded-xl px-4 py-6 flex flex-col items-center text-center transition duration-300 h-full w-full">
+          <div class="border border-border-gray rounded-xl px-4 py-6 flex flex-col items-center text-center transition duration-300 h-full w-full">
             <span class="mb-3">
               <component :is="level.icon" />
             </span>
-            <div class="text-[#28190C] font-manrope-bold text-base mb-1">
+            <div class="text-primary-green font-bold text-base mb-1">
               {{ level.title }}
             </div>
-            <div class="text-sm mb-1 text-[#6C757D]">
+            <div class="text-sm mb-1 text-secondary-gray">
               {{ level.description }}
             </div>
-            <div v-if="level.age" class="mt-2 text-xs tracking-wide font-manrope-regular text-[#232a25]">
+            <div v-if="level.age" class="mt-2 text-xs tracking-wide font-regular text-[#232a25]">
               {{ level.age }}
             </div>
           </div>
@@ -33,18 +33,15 @@
           :key="level.id"
           :to="`/schools/${level.id}`"
         >
-          <div class="border border-[#E9ECEF] rounded-xl px-4 py-6 flex flex-col items-center text-center transition duration-300 h-full w-full">
+          <div class="border border-border-gray rounded-xl px-4 py-6 flex flex-col items-center text-center transition duration-300 h-full w-full">
             <span class="mb-3">
               <component :is="level.icon" />
             </span>
-            <div class="text-[#28190C] font-manrope-bold text-base mb-1">
+            <div class="text-[#28190C] font-bold text-base mb-1">
               {{ level.title }}
             </div>
-            <div class="text-sm mb-1 text-[#76685A]">
+            <div class="text-sm mb-1 text-secondary-gray">
               {{ level.description }}
-            </div>
-            <div v-if="level.age" class="mt-2 text-xs tracking-wide font-manrope-regular text-[#232a25]">
-              {{ level.age }}
             </div>
           </div>
         </NuxtLink>
@@ -67,22 +64,19 @@ const topRowLevels = ref([
     id: 'sd',
     icon: IconSD,
     title: "Elementary School (SD)",
-    description: "Find primary education institutions for children ages 6-12",
-    age: null
+    description: "Find primary education institutions for children ages 6-12"
   },
   {
     id: 'smp',
     icon: IconSMP,
     title: "Junior High School (SMP)",
-    description: "Discover middle schools for students ages 12-15",
-    age: null
+    description: "Discover middle schools for students ages 12-15"
   },
   {
     id: 'sma',
     icon: IconSMA,
     title: "Senior High School (SMA)",
-    description: "Explore academic high schools for students ages 15-18",
-    age: null
+    description: "Explore academic high schools for students ages 15-18"
   }
 ])
 
@@ -91,15 +85,13 @@ const bottomRowLevels = ref([
     id: 'smk',
     icon: IconSMK,
     title: "Vocational High School (SMK)",
-    description: "Find vocational high schools offering specialized skills training",
-    age: null
+    description: "Find vocational high schools offering specialized skills training"
   },
   {
     id: 'universitas',
     icon: IconUniversity,
     title: "University",
-    description: "Research higher education options across Indonesia",
-    age: null
+    description: "Research higher education options across Indonesia"
   }
 ])
 </script>

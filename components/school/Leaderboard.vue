@@ -2,32 +2,36 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Header -->
     <div class="mb-6">
-      <h1 class="text-2xl font-manrope-bold text-gray-900">
-        Indonesian Leaderboard
+      <h1 class="text-2xl font-bold text-primary-green">
+        Sekolah terbaik yang terdaftar di Indonesia
       </h1>
     </div>
 
     <!-- Education Level Tabs Component -->
-    <EducationLevelTabs 
-      :activeTab="activeTab" 
+    <EducationLevelTabs
+      :activeTab="activeTab"
       @changeEducationLevel="fetchSchools"
     />
 
     <!-- School List -->
-    <div class="bg-[#FBFBFB] rounded-lg" v-if="schools.length > 0">
+    <div class="bg-bg-light rounded-lg" v-if="schools.length > 0">
       <div
         v-for="(school, index) in schools"
         :key="school.schoolId"
         class="flex items-center justify-between p-4 border-b border-[currentColor33] last:border-b-0"
       >
-        <!-- Left: School Logo and Name -->
-        <div class="flex items-center gap-4">
-          <div v-html="getRankSvg(index + 1)" class="w-10 h-10"></div>
-          <h3 class="text-base font-manrope-semibold text-[#28190C]">
-            {{ school.name }}
-          </h3>
-        </div>
-
+        <NuxtLink
+          :to="`/school-details/${school.id}`"
+          class="block cursor-pointer"
+        >
+          <!-- Left: School Logo and Name -->
+          <div class="flex items-center gap-4">
+            <div v-html="getRankSvg(index + 1)" class="w-10 h-10"></div>
+            <h3 class="font-semibold text-[#28190C]">
+              {{ school.name }}
+            </h3>
+          </div>
+        </NuxtLink>
         <!-- Right: Rating Info -->
         <div class="flex items-center gap-2">
           <svg class="w-5 h-5 text-[#FFB800] fill-current" viewBox="0 0 20 20">
@@ -38,8 +42,8 @@
           <span class="text-sm font-medium text-[#1D2B29]">{{
             school.rating
           }}</span>
-          <span class="text-sm text-[#76685A]"
-            >({{ school.reviewers.toLocaleString() }} reviews)</span
+          <span class="text-sm text-secondary-gray"
+            >({{ school.reviewers.toLocaleString() }} ulasan)</span
           >
         </div>
       </div>
@@ -62,7 +66,7 @@
           />
         </svg>
       </div>
-      <h3 class="text-lg font-manrope-medium text-[#76685A] mb-2">
+      <h3 class="text-lg font-medium text-[#76685A] mb-2">
         Data coming soon
       </h3>
       <p class="text-[#76685A]">No schools available</p>

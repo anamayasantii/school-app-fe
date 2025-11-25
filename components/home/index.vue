@@ -3,12 +3,11 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Header -->
       <div class="text-center mb-12">
-        <h2 class="text-3xl sm:text-4xl font-bold text-[#1D2B29] mb-4">
+        <h2 class="text-3xl sm:text-4xl font-semibold text-primary-green mb-4">
           Semua dalam satu platform.
-        </h2>
-        <p class="text-lg text-gray-600">
+          <br>
           Lebih sederhana & mudah.
-        </p>
+        </h2>
       </div>
 
       <!-- Education Level Tabs -->
@@ -56,7 +55,7 @@
       <div v-if="schools.length > 0" class="text-center">
         <NuxtLink 
           :to="`/schools/${selectedEducationLevel}`"
-          class="inline-flex items-center px-6 py-3 border border-[#E9ECEF] text-[#082519] font-medium rounded-lg"
+          class="inline-flex items-center px-6 py-3 border border-border-gray text-primary-green font-medium rounded-lg"
         >
           Browse All
         </NuxtLink>

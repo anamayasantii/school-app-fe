@@ -2,10 +2,10 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <!-- Header -->
     <div class="text-center mb-16">
-      <h1 class="text-4xl md:text-5xl font-bold leading-tight">
-        <span class="text-[#082519]">Sorotan sekolah —</span>
+      <h1 class="text-4xl md:text-5xl font-semibold leading-tight">
+        <span class="text-primary-green">Sorotan sekolah —</span>
         <br />
-        <span class="text-[#082519]">hari ini</span>
+        <span class="text-primary-green">hari ini</span>
       </h1>
     </div>
 
@@ -30,7 +30,7 @@
       <!-- Info -->
       <div class="space-y-6">
         <!-- School Name -->
-        <h2 class="text-3xl font-semibold text-[#082519]">
+        <h2 class="text-2xl font-semibold text-primary-green">
           {{ schoolData.name }}
         </h2>
 
@@ -41,7 +41,7 @@
           >
             {{ schoolData.accreditationCode }}
           </span>
-          <span class="text-[#082519] text-sm font-medium">Overall Grade</span>
+          <span class="text-primary-green text-sm font-medium">Overall Grade</span>
           <span
             ><svg
               width="2"
@@ -55,7 +55,7 @@
           </span>
           <div class="flex items-center gap-2">
             <span><Star /></span>
-            <span class="text-[#082519]">{{ schoolData.rating || "0" }}</span>
+            <span class="text-primary-green">{{ schoolData.rating || "0" }}</span>
           </div>
         </div>
 
@@ -96,7 +96,7 @@
         </div>
         <NuxtLink
           :to="`/school-details/${schoolData.id}`"
-          class="bg-[#082519] text-[#FFFFFF] px-6 py-3 rounded-lg font-medium inline-block text-center"
+          class="bg-primary-green text-[#FFFFFF] text-xs px-4 py-3 rounded-lg font-medium inline-block text-center"
         >
           Lihat Detail
         </NuxtLink>

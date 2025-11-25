@@ -1,10 +1,10 @@
 <template>
   <div class="relative w-full max-w-[690px]">
     <div
-      class="w-full h-[45px] rounded-[32px] bg-[#FBFBFB] px-6 flex items-center gap-6 relative z-20"
+      class="w-full h-[45px] rounded-[32px] bg-bg-light px-6 flex items-center gap-6 relative z-20"
     >
       <svg
-        class="w-6 h-6 text-[#082519] flex-shrink-0"
+        class="w-6 h-6 text-primary-green flex-shrink-0"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -25,7 +25,7 @@
             ? 'Cari sekolah berdasarkan nama, lokasi, atau jenjang pendidikan'
             : 'Cari sekolah mana pun'
         "
-        class="flex-1 bg-transparent border-none outline-none text-base text-[#082519] placeholder:text-[#082519] placeholder:opacity-60"
+        class="flex-1 bg-transparent border-none outline-none text-base text-primary-green placeholder:text-primary-green"
         @focus="handleFocus"
         @blur="handleBlur"
         @input="handleSearch"

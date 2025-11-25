@@ -4,7 +4,7 @@ komponen navigasi tab
   <div class="mb-6 sm:mb-8">
     <!-- Mobile: Stack vertically -->
     <div
-      class="flex flex-col sm:hidden bg-white border border-[#E9ECEF] rounded-xl p-1 gap-1 w-full"
+      class="flex flex-col sm:hidden bg-white border border-border-gray rounded-xl p-1 gap-1 w-full"
     >
       <button
         v-for="tab in educationTabs"
@@ -13,8 +13,8 @@ komponen navigasi tab
         :class="[
           'flex items-center gap-2 px-3 py-3 rounded-lg text-sm font-medium transition-colors',
           activeTab === tab.value
-            ? 'bg-[#212529] text-[#F8F9FA]'
-            : 'text-[#082519] hover:bg-[#fafbfb]',
+            ? 'bg-primary-green-dark text-[#F8F9FA]'
+            : 'text-primary-green hover:bg-[#fafbfb]',
         ]"
       >
         <span class="text-base w-4 h-4" v-html="tab.icon"></span>
@@ -24,7 +24,7 @@ komponen navigasi tab
 
     <!-- Desktop: Horizontal - FULL WIDTH VERSION -->
     <div
-      class="hidden sm:flex bg-white border border-[#E9ECEF] rounded-xl p-1 gap-1 w-full"
+      class="hidden sm:flex bg-white border border-border-gray rounded-xl p-1 gap-1 w-full"
     >
       <button
         v-for="tab in educationTabs"
@@ -33,8 +33,8 @@ komponen navigasi tab
         :class="[
           'flex items-center justify-center gap-1.5 px-3 py-3 rounded-lg text-xs font-medium transition-colors whitespace-nowrap flex-1',
           activeTab === tab.value
-            ? 'bg-[#212529] text-[#F8F9FA]'
-            : 'text-[#082519] hover:bg-[#fafbfb]',
+            ? 'bg-primary-green-dark text-[#F8F9FA]'
+            : 'text-primary-green hover:bg-[#fafbfb]',
         ]"
       >
         <span class="text-sm w-4 h-4" v-html="tab.icon"></span>

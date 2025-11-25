@@ -1,9 +1,9 @@
 <!-- components/profile/Profile.vue -->
 <template>
-  <div class="bg-white rounded-lg shadow-sm border border-gray-100">
+  <div class="bg-white rounded-xl border border-border-gray">
     <!-- Header -->
-    <div class="px-6 py-4 border-b border-gray-100">
-      <h2 class="text-xl font-semibold text-gray-900">Pengaturan Profil</h2>
+    <div class="px-6 py-4">
+      <h2 class="text-xl font-semibold text-primary-green">Pengaturan Profil</h2>
     </div>
 
     <!-- Content -->
@@ -69,19 +69,19 @@
       </div>
 
       <!-- Profile Form -->
-      <div class="space-y-6">
+      <div class="space-y-6 border border-border-gray p-3 border-b rounded-xl">
         <!-- Nama Lengkap -->
         <div
-          class="flex justify-between items-center py-4 border-b border-gray-100"
+          class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
         >
           <div class="flex-1">
             <label
-              class="text-sm font-medium text-gray-500 uppercase tracking-wider"
+              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
               >NAMA LENGKAP</label
             >
           </div>
           <div class="flex-1 text-right">
-            <span class="text-gray-900 font-medium">{{
+            <span class="text-primary-green font-medium">{{
               profileData.fullname
             }}</span>
           </div>
@@ -90,11 +90,11 @@
         <!-- NISN - Only for students -->
         <div
           v-if="isStudent"
-          class="flex justify-between items-center py-4 border-b border-gray-100"
+          class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
         >
           <div class="flex-1">
             <label
-              class="text-sm font-medium text-gray-500 uppercase tracking-wider"
+              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
               >NISN/NIM</label
             >
           </div>
@@ -107,11 +107,11 @@
 
         <!-- Status -->
         <div
-          class="flex justify-between items-center py-4 border-b border-gray-100"
+          class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
         >
           <div class="flex-1">
             <label
-              class="text-sm font-medium text-gray-500 uppercase tracking-wider"
+              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
               >STATUS</label
             >
           </div>
@@ -136,16 +136,16 @@
         <!-- Sekolah - Only for students -->
         <div
           v-if="isStudent"
-          class="flex justify-between items-center py-4 border-b border-gray-100"
+          class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
         >
           <div class="flex-1">
             <label
-              class="text-sm font-medium text-gray-500 uppercase tracking-wider"
+              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
               >SEKOLAH</label
             >
           </div>
           <div class="flex-1 text-right flex items-center justify-end">
-            <span class="text-gray-900 font-medium">{{
+            <span class="text-primary-green font-medium">{{
               profileData.schoolDetails || "-"
             }}</span>
           </div>
@@ -153,16 +153,16 @@
 
         <!-- Email -->
         <div
-          class="flex justify-between items-center py-4 border-b border-gray-100"
+          class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
         >
           <div class="flex-1">
             <label
-              class="text-sm font-medium text-gray-500 uppercase tracking-wider"
+              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
               >EMAIL</label
             >
           </div>
           <div class="flex-1 text-right">
-            <span class="text-gray-900 font-medium">{{
+            <span class="text-primary-green font-medium">{{
               profileData.email
             }}</span>
           </div>
@@ -171,16 +171,16 @@
         <!-- Tanggal Lahir - Only for students -->
         <div
           v-if="isStudent"
-          class="flex justify-between items-center py-4 border-b border-gray-100"
+          class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
         >
           <div class="flex-1">
             <label
-              class="text-sm font-medium text-gray-500 uppercase tracking-wider"
+              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
               >TANGGAL LAHIR</label
             >
           </div>
           <div class="flex-1 text-right">
-            <span class="text-gray-900 font-medium">{{
+            <span class="text-primary-green font-medium">{{
               formatDate(profileData.birthDate)
             }}</span>
           </div>
@@ -188,30 +188,28 @@
 
         <!-- No. Telp -->
         <div
-          class="flex justify-between items-center py-4 border-b border-gray-100"
+          class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
         >
           <div class="flex-1">
             <label
-              class="text-sm font-medium text-gray-500 uppercase tracking-wider"
+              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
               >NO. TELP</label
             >
           </div>
-          <div class="flex-1 text-right">
+          <div class="flex-1 text-right text-primary-green">
             <span class="">{{ profileData.phone || "-" }}</span>
           </div>
         </div>
 
         <!-- Alamat -->
-        <div
-          class="flex justify-between items-center py-4 border-b border-gray-100"
-        >
+        <div class="flex justify-between items-center py-4">
           <div class="flex-1">
             <label
-              class="text-sm font-medium text-gray-500 uppercase tracking-wider"
+              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
               >ALAMAT</label
             >
           </div>
-          <div class="flex-1 text-right">
+          <div class="flex-1 text-right text-primary-green">
             <span class="">{{ profileData.address || "-" }}</span>
           </div>
         </div>
@@ -221,21 +219,30 @@
       <div class="flex justify-end mt-8">
         <button
           @click="handleEdit"
-          class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
+          class="inline-flex items-center px-4 py-2 gap-2 text-sm font-medium text-primary-green border border-border-gray -mx-3 px-3 rounded-xl"
         >
           <span>Ubah</span>
           <svg
-            class="w-4 h-4 ml-2"
+            width="14"
+            height="14"
+            viewBox="0 0 21 21"
             fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-            />
+            <g clip-path="url(#clip0_4319_2151)">
+              <path
+                d="M15.75 8.74831L12.25 5.24831M2.1875 18.8108L5.14882 18.4818C5.51063 18.4416 5.69153 18.4215 5.86062 18.3667C6.01063 18.3182 6.15339 18.2496 6.28503 18.1628C6.4334 18.0649 6.5621 17.9362 6.81951 17.6788L18.375 6.12331C19.3415 5.15681 19.3415 3.58981 18.375 2.62331C17.4085 1.65681 15.8415 1.65681 14.875 2.62331L3.31951 14.1788C3.0621 14.4362 2.9334 14.5649 2.83556 14.7133C2.74875 14.8449 2.68014 14.9877 2.63157 15.1377C2.57684 15.3068 2.55674 15.4877 2.51654 15.8495L2.1875 18.8108Z"
+                stroke="#082519"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </g>
+            <defs>
+              <clipPath id="clip0_4319_2151">
+                <rect width="21" height="21" fill="white" />
+              </clipPath>
+            </defs>
           </svg>
         </button>
       </div>
@@ -245,10 +252,10 @@
   <!-- Student Data Section for Parents -->
   <div
     v-if="isParent"
-    class="bg-white rounded-lg shadow-sm border border-gray-100 mt-6"
+    class="bg-white rounded-lg shadow-sm border border-border-gray -mx-3 px-3 mt-6"
   >
     <!-- Header -->
-    <div class="px-6 py-4 border-b border-gray-100">
+    <div class="px-6 py-4 border-b border-border-gray -mx-3 px-3">
       <h2 class="text-xl font-semibold text-gray-900">Peserta Didik</h2>
     </div>
 
@@ -257,11 +264,11 @@
       <div class="space-y-6">
         <!-- Nama Lengkap -->
         <div
-          class="flex justify-between items-center py-4 border-b border-gray-100"
+          class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
         >
           <div class="flex-1">
             <label
-              class="text-sm font-medium text-gray-500 uppercase tracking-wider"
+              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
               >NAMA LENGKAP</label
             >
           </div>
@@ -274,11 +281,11 @@
 
         <!-- NISN -->
         <div
-          class="flex justify-between items-center py-4 border-b border-gray-100"
+          class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
         >
           <div class="flex-1">
             <label
-              class="text-sm font-medium text-gray-500 uppercase tracking-wider"
+              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
               >NISN</label
             >
           </div>
@@ -291,11 +298,11 @@
 
         <!-- Status -->
         <div
-          class="flex justify-between items-center py-4 border-b border-gray-100"
+          class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
         >
           <div class="flex-1">
             <label
-              class="text-sm font-medium text-gray-500 uppercase tracking-wider"
+              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
               >STATUS</label
             >
           </div>
@@ -311,11 +318,11 @@
 
         <!-- Tanggal Lahir -->
         <div
-          class="flex justify-between items-center py-4 border-b border-gray-100"
+          class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
         >
           <div class="flex-1">
             <label
-              class="text-sm font-medium text-gray-500 uppercase tracking-wider"
+              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
               >TANGGAL LAHIR</label
             >
           </div>
@@ -328,11 +335,11 @@
 
         <!-- Sekolah -->
         <div
-          class="flex justify-between items-center py-4 border-b border-gray-100"
+          class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
         >
           <div class="flex-1">
             <label
-              class="text-sm font-medium text-gray-500 uppercase tracking-wider"
+              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
               >SEKOLAH</label
             >
           </div>
@@ -374,6 +381,7 @@
     :educationData="educationHistory"
     @add="handleAddEducation"
     @edit="handleEditEducation"
+    @delete="handleDeleteEducation"
   />
 
   <!-- Edit Profile Modal -->
@@ -445,7 +453,7 @@ const profileData = computed(() => {
   return {
     fullname: authStore.user.fullname || "",
     nisn: authStore.user.nisn || "",
-    roles: authStore.user.roles || [], 
+    roles: authStore.user.roles || [],
     schoolDetails: getSchoolName(authStore.user.schoolDetails),
     email: authStore.user.email || "",
     birthDate: authStore.user.dateOfBirth || "",
@@ -472,11 +480,169 @@ const studentData = computed(() => {
   };
 });
 
+// Education Experience
+const educationExperiences = ref([]);
+const educationLevels = ref([]);
+const loadingEducation = ref(false);
+
 const educationHistory = computed(() => {
-  // TODO: Fetch from API - bisa dari endpoint terpisah atau bagian dari user data
-  // Sementara return empty array, nanti bisa diisi dari API
-  return [];
+  const levelMapping = {
+    SD: "Sekolah Dasar",
+    SMP: "Sekolah Menengah Pertama",
+    SMA: "Sekolah Menengah Atas",
+    SMK: "Sekolah Menengah Kejuruan",
+    Universitas: "Universitas",
+  };
+
+  return educationExperiences.value.map((exp) => {
+    const level = educationLevels.value.find(
+      (l) => l.id === exp.educationLevelId
+    );
+    const levelName = level?.name || "Loading...";
+
+    return {
+      id: exp.id,
+      educationLevelId: exp.educationLevelId,
+      schoolDetailId: exp.schoolDetailId,
+      schoolName: exp.schoolName || "Loading...",
+      level: levelMapping[levelName] || levelName,
+      status: exp.status === "aktif" ? "Siswa Aktif" : "Alumni",
+      period: `${formatDateShort(exp.startDate)} - ${formatDateShort(
+        exp.endDate
+      )}`,
+      startDate: exp.startDate,
+      endDate: exp.endDate,
+      rawStatus: exp.status,
+      galleryImages: exp.galleryImages || [],
+    };
+  });
 });
+
+const fetchEducationLevels = async () => {
+  try {
+    const response = await axios.get("/education-levels");
+    educationLevels.value = response.data.data;
+  } catch (error) {
+    console.error("Error fetching education levels:", error);
+  }
+};
+
+const fetchEducationExperiences = async () => {
+  loadingEducation.value = true;
+  try {
+    const token = Cookies.get("token");
+    const response = await axios.get("/experiences-user", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const experiences = response.data.data;
+
+    // Fetch school details untuk setiap experience
+    const experiencesWithSchools = await Promise.all(
+      experiences.map(async (exp) => {
+        try {
+          const schoolResponse = await axios.get(
+            `/school-details/${exp.schoolDetailId}`
+          );
+          return {
+            ...exp,
+            schoolName: schoolResponse.data.data.name,
+            galleryImages: schoolResponse.data.data.galleryImages || [],
+          };
+        } catch (error) {
+          console.error("Error fetching school detail:", error);
+          return {
+            ...exp,
+            schoolName: "Unknown School",
+            galleryImages: [],
+          };
+        }
+      })
+    );
+
+    educationExperiences.value = experiencesWithSchools;
+  } catch (error) {
+    console.error("Error fetching education experiences:", error);
+  } finally {
+    loadingEducation.value = false;
+  }
+};
+
+const handleAddEducation = async (data) => {
+  try {
+    const token = Cookies.get("token");
+    const response = await axios.post("/education-experiences", data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.data.status === "success") {
+      alert("Riwayat pendidikan berhasil ditambahkan!");
+      await fetchEducationExperiences();
+    }
+  } catch (error) {
+    console.error("Error adding education:", error);
+    alert(
+      error.response?.data?.message || "Gagal menambahkan riwayat pendidikan"
+    );
+  }
+};
+
+const handleEditEducation = async ({ data, index }) => {
+  try {
+    const token = Cookies.get("token");
+    const educationId = educationExperiences.value[index].id;
+
+    const response = await axios.put(
+      `/education-experiences/${educationId}`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.data.status === "success") {
+      alert("Riwayat pendidikan berhasil diupdate!");
+      await fetchEducationExperiences();
+    }
+  } catch (error) {
+    console.error("Error updating education:", error);
+    alert(
+      error.response?.data?.message || "Gagal mengupdate riwayat pendidikan"
+    );
+  }
+};
+
+const handleDeleteEducation = async ({ data, index }) => {
+  try {
+    const token = Cookies.get("token");
+    const educationId = educationExperiences.value[index].id;
+
+    const response = await axios.delete(
+      `/education-experiences/${educationId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.data.status === "success") {
+      alert("Riwayat pendidikan berhasil dihapus!");
+      await fetchEducationExperiences();
+    }
+  } catch (error) {
+    console.error("Error deleting education:", error);
+    alert(
+      error.response?.data?.message || "Gagal menghapus riwayat pendidikan"
+    );
+  }
+};
 
 const formatDate = (date) => {
   if (!date) return "-";
@@ -486,6 +652,20 @@ const formatDate = (date) => {
     return dateObj.toLocaleDateString("id-ID", {
       day: "2-digit",
       month: "2-digit",
+      year: "numeric",
+    });
+  } catch (error) {
+    return "-";
+  }
+};
+
+const formatDateShort = (date) => {
+  if (!date) return "-";
+
+  try {
+    const dateObj = new Date(date);
+    return dateObj.toLocaleDateString("id-ID", {
+      month: "short",
       year: "numeric",
     });
   } catch (error) {
@@ -654,17 +834,6 @@ const handleSubmitStudentEdit = async (formData) => {
   }
 };
 
-const handleAddEducation = () => {
-  console.log("Add education");
-  // TODO: Implement add education modal/functionality
-};
-
-const handleEditEducation = (data) => {
-  console.log("Edit education:", data);
-  // TODO: Implement edit education modal/functionality
-  // data contains { education, index }
-};
-
 onMounted(async () => {
   if (!authStore.user) {
     await authStore.fetchUser();
@@ -673,5 +842,9 @@ onMounted(async () => {
   const token = Cookies.get("token");
   console.log("Token available:", token ? "Yes" : "No");
   console.log("User data:", authStore.user);
+
+  // Fetch education data
+  await fetchEducationLevels();
+  await fetchEducationExperiences();
 });
 </script>
