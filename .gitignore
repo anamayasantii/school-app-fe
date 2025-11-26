@@ -72,3 +72,6 @@ Thumbs.db
 *.mov
 *.wmv
 
+bun.lock
+yarn.lock
+pnpm-lock.yaml

@@ -4,8 +4,7 @@
     <div
       class="flex-1 relative bg-cover bg-center bg-no-repeat"
       :style="`background-image: url('${backgroundImage}')`"
-    >
-    </div>
+    ></div>
 
     <!-- Right Section - Login Form -->
     <div class="flex-1 bg-white flex flex-col justify-center px-12 py-12">
@@ -33,13 +32,15 @@
               required
               :class="[
                 'w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200',
-                emailError ? 'border-red-300 error-input' : 'border-gray-300',
+                form.errors.email
+                  ? 'border-red-300 error-input'
+                  : 'border-gray-300',
               ]"
               placeholder="Email"
               @blur="validateEmail"
             />
-            <p v-if="emailError" class="mt-1 text-sm text-red-600">
-              {{ emailError }}
+            <p v-if="form.errors.email" class="mt-1 text-sm text-red-600">
+              {{ form.errors.email }}
             </p>
           </div>
 
@@ -67,15 +68,12 @@
                 required
                 :class="[
                   'w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 pr-12',
-                  passwordError
+                  form.errors.password
                     ? 'border-red-300 error-input'
                     : 'border-gray-300',
                 ]"
                 placeholder="Password"
-                @blur="
-                  passwordTouched = true;
-                  validatePassword();
-                "
+                @blur="handlePasswordBlur"
               />
               <button
                 type="button"
@@ -118,8 +116,8 @@
                 </svg>
               </button>
             </div>
-            <p v-if="passwordError" class="mt-1 text-sm text-red-600">
-              {{ passwordError }}
+            <p v-if="form.errors.password" class="mt-1 text-sm text-red-600">
+              {{ form.errors.password }}
             </p>
           </div>
 
@@ -197,10 +195,11 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from "vue";
 import axios from "@/lib/axios";
-import Cookies from "js-cookie";
 import { useAuthStore } from "@/store/auth";
+
+import { ref, reactive, computed } from "vue";
+
 import backgroundImg from "~/assets/images/login.jpg";
 
 definePageMeta({
@@ -208,107 +207,125 @@ definePageMeta({
 });
 
 const backgroundImage = backgroundImg;
+const authStore = useAuthStore();
+
 const showPassword = ref(false);
 const isLoading = ref(false);
+
 const errorMessage = ref("");
-const emailError = ref("");
-const passwordError = ref("");
 
 const form = reactive({
   email: "",
   password: "",
+  errors: {
+    email: "",
+    password: "",
+  },
+  touched: {
+    password: false,
+  },
 });
 
 const isFormValid = computed(() => {
   return (
-    form.email && form.password && !emailError.value && !passwordError.value
+    form.email && form.password && !form.errors.email && !form.errors.password
   );
 });
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PASSWORD_REGEX =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]/;
+
 const validateEmail = () => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!form.email) {
-    emailError.value = "Email wajib diisi";
-  } else if (!emailRegex.test(form.email)) {
-    emailError.value = "Format email tidak valid";
+    form.errors.email = "Email wajib diisi";
+  } else if (!EMAIL_REGEX.test(form.email)) {
+    form.errors.email = "Format email tidak valid";
   } else {
-    emailError.value = "";
+    form.errors.email = "";
   }
 };
 
-const passwordTouched = ref(false);
-
 const validatePassword = () => {
-  if (!passwordTouched.value) return;
-
-  const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]/;
+  if (!form.touched.password) return;
 
   if (!form.password) {
-    passwordError.value = "Password wajib diisi";
+    form.errors.password = "Password wajib diisi";
   } else if (form.password.length < 8) {
-    passwordError.value = "Password minimal 8 karakter";
-  } else if (!passwordRegex.test(form.password)) {
-    passwordError.value =
+    form.errors.password = "Password minimal 8 karakter";
+  } else if (!PASSWORD_REGEX.test(form.password)) {
+    form.errors.password =
       "Password harus mengandung huruf besar, huruf kecil, angka, dan simbol";
   } else {
-    passwordError.value = "";
+    form.errors.password = "";
+  }
+};
+
+const checkAdminRole = (user) => {
+  return user?.role === "admin";
+};
+
+const handleLoginError = (error) => {
+  switch (error.response?.status) {
+    case 400:
+      return "Permintaan tidak valid. Silakan periksa kembali data Anda.";
+
+    case 401:
+      return "Email atau password salah.";
+
+    case 422:
+      return "Data tidak valid. Silakan periksa kembali input Anda.";
+
+    case 500:
+      return "Terjadi kesalahan pada server. Silakan coba lagi nanti.";
+
+    default:
+      return "Terjadi kesalahan, silakan coba lagi.";
   }
 };
 
 const handleSubmit = async () => {
+  isLoading.value = true;
+  errorMessage.value = "";
+  form.touched.password = true;
+
+  validateEmail();
+  validatePassword();
+
+  if (form.errors.email || form.errors.password) {
+    isLoading.value = false;
+    return;
+  }
+
   try {
-    isLoading.value = true;
-    errorMessage.value = "";
-
-    passwordTouched.value = true;
-
-    validateEmail();
-    validatePassword();
-
-    if (emailError.value || passwordError.value) {
-      return;
-    }
-
-    const response = await axios.post("/login", {
+    const { data: result } = await axios.post("/login", {
       email: form.email,
       password: form.password,
     });
 
-    if (response.data.status === "success") {
-      const { token, expiresAt } = response.data.data;
-
-      Cookies.set("token", token, {
-        expires: new Date(expiresAt),
-        secure: true,
-        sameSite: "strict",
-      });
-
-      const authStore = useAuthStore();
-      await authStore.fetchUser();
-
-      if (authStore.user?.role === 'admin') {
-        Cookies.remove('token');
-        authStore.logout();
-        
-        errorMessage.value = 'Akun admin tidak bisa login di sini. Silakan login di /dashboard/login';
-        return;
-      }
-
-      await navigateTo("/");
-    } else {
-      errorMessage.value = response.data.message || "Login gagal";
+    if (result.status !== "success") {
+      errorMessage.value = result.message || "Login gagal";
+      return;
     }
+
+    const { token, expiresAt } = result.data;
+
+    await authStore.fetchUser();
+    authStore.setAuthToken(token, expiresAt);
+
+    if (checkAdminRole(authStore.user)) {
+      authStore.logout();
+
+      errorMessage.value =
+        "Akun admin tidak bisa login di sini. Silakan login di /dashboard/login";
+
+      return;
+    }
+
+    await navigateTo("/");
   } catch (error) {
     console.error("Login failed:", error);
-
-    if (error.response?.status === 401) {
-      errorMessage.value = "Email atau password salah";
-    } else if (error.response?.status === 422) {
-      errorMessage.value = "Data tidak valid";
-    } else {
-      errorMessage.value = "Terjadi kesalahan, silakan coba lagi";
-    }
+    errorMessage.value = handleLoginError(error);
   } finally {
     isLoading.value = false;
   }

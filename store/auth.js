@@ -1,67 +1,70 @@
-// store/auth.js
-import { defineStore } from 'pinia'
-import { ref, computed, readonly } from 'vue'
-import axios from '@/lib/axios'
-import Cookies from 'js-cookie'
+import { defineStore } from "pinia";
+import axios from "@/lib/axios";
+import { ref, computed, readonly } from "vue";
 
-export const useAuthStore = defineStore('auth', () => {
-  const user = ref(null)
+import Cookies from "js-cookie";
+
+export const useAuthStore = defineStore("auth", () => {
+  const user = ref(null);
+
   const isLoggedIn = computed(() => {
-  const token = Cookies.get('token')
-  console.log('Token:', token)
-  console.log('User:', user.value)
-  return !!token && !!user.value
-})
+    const token = Cookies.get("token");
+    return !!token && !!user.value;
+  });
 
   const initAuth = async () => {
-  await fetchUser()
-}
+    await fetchUser();
+  };
+
+  const setAuthToken = (token, expiresAt) => {
+    Cookies.set("token", token, {
+      expires: new Date(expiresAt),
+      secure: true,
+      sameSite: "strict",
+    });
+  };
 
   const fetchUser = async () => {
-  try {
-    const token = Cookies.get('token')
-    
-    if (!token) {
-      user.value = null
-      return null
-    }
-    
-    const response = await axios.get('/user', {
-      headers: {
-        'Authorization': `Bearer ${token}`
+    try {
+      const token = Cookies.get("token");
+
+      if (!token) {
+        user.value = null;
+        return null;
       }
-    })
-    
-    console.log('Fetch user response:', response.data)
-    
-    if (response.data.status === 'success') {
-      user.value = response.data.data
-      
-      console.log('User set to:', user.value)
-      console.log('User roles:', user.value?.roles)
-      
-      return user.value
+
+      const { data: result } = await axios.get("/user", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (result.status === "success") {
+        user.value = result.data;
+        return user.value;
+      }
+
+      return null;
+    } catch (error) {
+      console.error("Fetch user error:", error);
+
+      if (error.response?.status === 401) {
+        logout();
+      }
+
+      return null;
     }
-  } catch (error) {
-    console.error('Fetch user error:', error)
-    
-    if (error.response?.status === 401) {
-      Cookies.remove('token')
-      user.value = null
-    }
-  }
-}
+  };
 
   const logout = () => {
-  Cookies.remove('token')
-  user.value = null
-}
+    Cookies.remove("token");
+    user.value = null;
+  };
 
   return {
     user: readonly(user),
     isLoggedIn,
     fetchUser,
     logout,
-    initAuth
-  }
-})
+    initAuth,
+    setAuthToken,
+  };
+});

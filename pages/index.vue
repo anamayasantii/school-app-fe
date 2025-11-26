@@ -44,11 +44,12 @@
           </NuxtLink>
         </div>
 
-        <h1 class="text-3xl font-semibold md:text-6xl mb-4 py-4">
-          Pencarian sekolah lebih
-          <br />
-          sederhana dan mudah.
+        <h1
+          class="text-3xl font-semibold md:text-6xl mb-4 py-4 max-w-3xl tracking-tight mx-auto"
+        >
+          Pencarian sekolah lebih sederhana dan mudah.
         </h1>
+
         <div class="flex justify-center mb-12">
           <SearchSchool />
         </div>
