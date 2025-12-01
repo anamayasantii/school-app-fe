@@ -1,11 +1,9 @@
 <template>
   <div class="flex flex-col min-h-screen">
-    <!-- Header -->
     <header class="w-full border-b border-gray-200 bg-white sticky top-0 z-50">
       <div
         class="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between"
       >
-        <!-- Logo Section -->
         <div class="flex items-center">
           <nuxt-link to="/" class="flex items-center">
             <div class="w-8 h-8 mr-2">
@@ -14,13 +12,10 @@
           </nuxt-link>
         </div>
 
-        <!-- Right Section: Navigation, Language & Auth -->
         <div class="flex items-center space-x-6">
-          <!-- Navigation Section -->
           <nav class="flex items-center space-x-6 text-sm">
             <a href="/" class="text-gray-700 hover:text-gray-900"> Beranda </a>
 
-            <!-- Jelajahi with Dropdown -->
             <div
               class="relative"
               @mouseenter="isDropdownOpen = true"
@@ -47,7 +42,6 @@
                 </svg>
               </button>
 
-              <!-- Dropdown Menu -->
               <transition
                 enter-active-class="transition ease-out duration-200"
                 enter-from-class="opacity-0 translate-y-1"
@@ -70,7 +64,6 @@
 
                   <template v-else>
                     <div class="flex p-2 min-h-[120px]">
-                      <!-- Kolom Kiri -->
                       <div class="w-1/2 pr-1">
                         <div class="flex flex-col gap-1">
                           <nuxt-link
@@ -123,7 +116,6 @@
                         </div>
                       </div>
 
-                      <!-- Kolom Kanan -->
                       <div class="w-1/2 pl-1">
                         <div class="flex flex-col gap-1">
                           <nuxt-link
@@ -173,7 +165,6 @@
             </a>
           </nav>
 
-          <!-- Language Selector -->
           <div
             class="relative"
             @mouseenter="isLangOpen = true"
@@ -200,7 +191,6 @@
               </svg>
             </button>
 
-            <!-- Language Dropdown -->
             <transition
               enter-active-class="transition ease-out duration-200"
               enter-from-class="opacity-0 translate-y-1"
@@ -231,22 +221,18 @@
             </transition>
           </div>
 
-          <!-- Auth Menu -->
           <AuthMenu />
         </div>
       </div>
     </header>
 
-    <!-- Page Content -->
     <main class="flex-grow">
       <slot />
     </main>
 
-    <!-- Footer -->
     <footer class="py-16">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          <!-- Logo and Contact Section -->
           <div class="lg:col-span-1">
             <div class="flex items-center mb-6">
               <div
@@ -272,7 +258,6 @@
               </a>
             </div>
 
-            <!-- Social Media Icons -->
             <div class="flex space-x-4">
               <a
                 href="#"
@@ -323,7 +308,6 @@
             </div>
           </div>
 
-          <!-- Menu 1 -->
           <div>
             <ul class="space-y-4">
               <li>
@@ -361,7 +345,6 @@
             </ul>
           </div>
 
-          <!-- Menu 2 -->
           <div>
             <ul class="space-y-4">
               <li>
@@ -399,7 +382,6 @@
             </ul>
           </div>
 
-          <!-- Newsletter Section -->
           <div>
             <div class="mb-6">
               <h4 class="text-lg font-semibold text-gray-900 mb-4">
@@ -424,7 +406,6 @@
               </form>
             </div>
 
-            <!-- Social Media Links -->
             <div class="space-y-3">
               <a
                 href="#"
@@ -454,7 +435,6 @@
           </div>
         </div>
 
-        <!-- Bottom Copyright -->
         <div class="border-t border-gray-200 pt-8">
           <p class="text-sm text-gray-600 text-left lg:text-left">
             Copyright © 2025 School Advisor. All Rights Reserved. Powered by PT.

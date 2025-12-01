@@ -84,10 +84,10 @@ const data = {
           title: "School Lists",
           url: "/dashboard/school-lists",
         },
-        {
-          title: "Add School",
-          url: "#",
-        },
+        // {
+        //   title: "Add School",
+        //   url: "/dashboard/school-lists/add",
+        // },
       ],
     },
     {
@@ -97,15 +97,15 @@ const data = {
       items: [
         {
           title: "Review Lists",
-          url: "#",
+          url: "/dashboard/review-lists",
         },
         {
-          title: "Review Requests",
-          url: "#",
+          title: "Review Approved",
+          url: "/dashboard/review-lists/approved",
         },
         {
           title: "Review Rejects",
-          url: "#",
+          url: "/dashboard/review-lists/rejected",
         },
       ],
     },

@@ -310,19 +310,27 @@ const handleSubmit = async () => {
 
     const { token, expiresAt } = result.data;
 
-    await authStore.fetchUser();
+    // Set token dulu sebelum fetchUser
     authStore.setAuthToken(token, expiresAt);
+    
+    // Fetch user data
+    await authStore.fetchUser();
 
     if (checkAdminRole(authStore.user)) {
       authStore.logout();
-
       errorMessage.value =
         "Akun admin tidak bisa login di sini. Silakan login di /dashboard/login";
-
       return;
     }
 
-    await navigateTo("/");
+    // Cek apakah profile sudah complete
+    const isProfileComplete = authStore.user?.nisn && authStore.user?.schoolDetail;
+
+    if (isProfileComplete) {
+      await navigateTo("/");
+    } else {
+      await navigateTo("/profile/setup");
+    }
   } catch (error) {
     console.error("Login failed:", error);
     errorMessage.value = handleLoginError(error);

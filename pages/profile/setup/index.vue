@@ -13,7 +13,8 @@
 
 <script setup>
 import { ref } from 'vue'
-import api from '@/lib/axios'
+import axios from '@/lib/axios'
+import Cookies from 'js-cookie'
 import FormStepOne from '@/components/auth/ProfileStep1.vue'
 import FormStepTwo from '@/components/auth/ProfileStep2.vue'
 import FormStepThree from '@/components/auth/ProfileStep3.vue'
@@ -61,43 +62,39 @@ const handleFinalSubmit = async () => {
   loading.value = true
   
   try {
-    console.log('Final submit:', formData.value)
+    const token = Cookies.get('token')
+    
+    console.log('Final submit started')
     console.log('Step1 data:', formData.value.step1)
-    console.log('Step2 data:', formData.value.step2) 
-    console.log('Step3 data:', formData.value.step3)
+    console.log('Step2 data:', formData.value.step2)
     
-    const token = useCookie('token').value
-    console.log('Auth token:', token ? 'Token exists' : 'No token found')
-    
-    const flatData = {
-      ...formData.value.step1,
-      ...formData.value.step2,
-      ...formData.value.step3
+    // Susun data sesuai format backend
+    const submitData = {
+      fullname: formData.value.step1.fullname,
+      dateOfBirth: formData.value.step1.dateOfBirth,
+      nisn: formData.value.step1.nisn,
+      schoolDetailId: formData.value.step2.schoolDetailId,
+      schoolValidation: formData.value.step2.schoolValidation
     }
     
-    console.log('Flat data to send:', flatData)
-    
-    const formDataToSend = new FormData()
-    
-    Object.keys(flatData).forEach(key => {
-      if (key !== 'schoolValidation' && flatData[key] !== null && flatData[key] !== undefined) {
-        formDataToSend.append(key, flatData[key])
-      }
-    })
-    
-    if (flatData.schoolValidation && flatData.schoolValidation instanceof File) {
-      formDataToSend.append('schoolValidation', flatData.schoolValidation)
+    // Tambahkan relation jika parent
+    if (formData.value.step1.relation) {
+      submitData.relation = formData.value.step1.relation
     }
     
-    const response = await api.put('/profile/complete', formDataToSend, {
+    console.log('Data to submit:', submitData)
+    
+    // SUBMIT KE BACKEND
+    const response = await axios.put('/profile/complete', submitData, {
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       }
     })
     
     console.log('Setup success:', response.data)
     
+    // Redirect ke home setelah berhasil
     await navigateTo('/')
     
   } catch (error) {
@@ -106,12 +103,7 @@ const handleFinalSubmit = async () => {
     if (error.response) {
       console.error('Server error:', error.response.data)
       console.error('Status:', error.response.status)
-    } else if (error.request) {
-      console.error('Network error:', error.request)
-    } else {
-      console.error('Error:', error.message)
     }
-
   } finally {
     loading.value = false
   }

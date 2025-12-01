@@ -106,7 +106,7 @@
           >
             <SaveIcon
               :filled="isSaved"
-              :color="isSaved ? 'primary-green' : '#9CA3AF'"
+              :color="isSaved ? '#082519' : '#9CA3AF'"
               class="w-10 h-10"
             />
           </button>

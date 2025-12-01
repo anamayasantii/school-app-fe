@@ -1,4 +1,3 @@
-<!-- components/profile/ChangePassword.vue -->
 <template>
   <div class="bg-white rounded-lg shadow-sm border border-gray-100">
     <!-- Header -->
@@ -156,12 +155,24 @@
       </form>
     </div>
   </div>
+
+  <!-- Modal Component -->
+  <Modal
+    :isOpen="isModalOpen"
+    :type="modalType"
+    :title="modalTitle"
+    :message="modalMessage"
+    :confirmText="modalConfirmText"
+    @confirm="handleModalConfirm"
+    @close="closeModal"
+  />
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
 import axios from '@/lib/axios'
 import Cookies from 'js-cookie'
+import Modal from '@/components/common/Modal.vue'
 
 const form = ref({
   currentPassword: '',
@@ -175,6 +186,29 @@ const errors = ref({})
 const showCurrentPassword = ref(false)
 const showNewPassword = ref(false)
 const showConfirmPassword = ref(false)
+
+// MODAL STATE
+const isModalOpen = ref(false)
+const modalType = ref('success')
+const modalTitle = ref('')
+const modalMessage = ref('')
+const modalConfirmText = ref('Oke')
+
+// MODAL FUNCTIONS
+const showModal = (type, title, message) => {
+  modalType.value = type
+  modalTitle.value = title
+  modalMessage.value = message
+  isModalOpen.value = true
+}
+
+const closeModal = () => {
+  isModalOpen.value = false
+}
+
+const handleModalConfirm = () => {
+  // Do nothing, just close
+}
 
 const isFormValid = computed(() => {
   return form.value.currentPassword && 
@@ -274,12 +308,10 @@ const handleSubmit = async () => {
     const token = Cookies.get('token')
     
     if (!token) {
-      alert('Sesi Anda telah berakhir, silakan login kembali')
+      showModal('error', 'Sesi Berakhir!', 'Sesi Anda telah berakhir, silakan login kembali.')
       isSubmitting.value = false
       return
     }
-
-    console.log('Submitting password change...')
 
     const response = await axios.put('/user', {
       current_password: form.value.currentPassword,
@@ -291,10 +323,8 @@ const handleSubmit = async () => {
       }
     })
 
-    console.log('Password change response:', response.data)
-
     if (response.data.status === 'success') {
-      alert('Kata sandi berhasil diperbarui!')
+      showModal('success', 'Kata Sandi Berhasil Diperbarui!', 'Kata sandi Anda telah berhasil diubah.')
       
       form.value = {
         currentPassword: '',
@@ -310,7 +340,6 @@ const handleSubmit = async () => {
 
   } catch (error) {
     console.error('Error changing password:', error)
-    console.error('Error response:', error.response)
     
     if (error.response) {
       const errorMessage = error.response.data?.message || 'Gagal memperbarui kata sandi'
@@ -336,26 +365,24 @@ const handleSubmit = async () => {
               : serverErrors.new_password_confirmation
           }
         } else {
-          alert(errorMessage)
+          showModal('error', 'Gagal Memperbarui!', errorMessage)
         }
       } else if (statusCode === 401) {
         if (errorMessage.toLowerCase().includes('current password') || 
             errorMessage.toLowerCase().includes('kata sandi saat ini')) {
           errors.value.currentPassword = 'Kata sandi saat ini salah'
         } else {
-          alert('Sesi Anda telah berakhir, silakan login kembali')
+          showModal('error', 'Sesi Berakhir!', 'Sesi Anda telah berakhir, silakan login kembali.')
         }
       } else if (statusCode === 403) {
-        alert('Anda tidak memiliki akses untuk mengubah kata sandi')
-      } else if (statusCode === 422) {
-        alert(errorMessage)
+        showModal('error', 'Akses Ditolak!', 'Anda tidak memiliki akses untuk mengubah kata sandi.')
       } else {
-        alert(errorMessage)
+        showModal('error', 'Gagal Memperbarui!', errorMessage)
       }
     } else if (error.request) {
-      alert('Tidak dapat terhubung ke server. Periksa koneksi internet Anda.')
+      showModal('error', 'Koneksi Gagal!', 'Tidak dapat terhubung ke server. Periksa koneksi internet Anda.')
     } else {
-      alert(error.message || 'Terjadi kesalahan yang tidak diketahui')
+      showModal('error', 'Terjadi Kesalahan!', error.message || 'Terjadi kesalahan yang tidak diketahui.')
     }
   } finally {
     isSubmitting.value = false

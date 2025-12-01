@@ -88,8 +88,8 @@ const handlePageChange = (page) => {
 }
 
 const handleEdit = (school) => {
-  // TODO: Implement edit functionality
-  console.log('Edit school:', school)
+  navigateTo(`/dashboard/school-lists/edit/${school.id}`)
+  console.log('Edit school:', school) 
 }
 
 const confirmDelete = (school) => {
@@ -153,7 +153,7 @@ onMounted(() => {
       
       <!-- Header Actions -->
       <div class="flex justify-between items-center mb-6">
-        <Button class="bg-gray-400 hover:bg-gray-500">
+        <Button @click="$router.push('/dashboard/school-lists/add')" class="bg-gray-400 hover:bg-gray-500">
           Tambah +
         </Button>
         

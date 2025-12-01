@@ -43,7 +43,7 @@
         <div class="mb-6">
           <label class="block text-sm font-medium mb-2">Nama Lengkap</label>
           <input
-            v-model="formData.fullName"
+            v-model="form.fullName"
             type="text"
             placeholder="Contoh: John Doe"
             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -54,7 +54,7 @@
         <div class="mb-6">
           <label class="block text-sm font-medium mb-2">Alamat Email</label>
           <input
-            v-model="formData.email"
+            v-model="form.email"
             type="email"
             placeholder="Contoh: john.doe@gmail.com"
             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -65,7 +65,7 @@
         <div class="mb-6">
           <label class="block text-sm font-medium mb-2">Nomor Telepon</label>
           <input
-            v-model="formData.phone"
+            v-model="form.phoneNo"
             type="tel"
             placeholder="Contoh: 8888-8888-8888"
             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -77,11 +77,11 @@
           <label class="block text-sm font-medium mb-2">Hubungan dengan Sekolah</label>
           <div class="relative">
             <select
-              v-model="formData.relationship"
+              v-model="form.status"
               class="w-full px-4 py-3 border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
             >
               <option value="">Pilih Hubungan</option>
-              <option value="siswa_aktif">Siswa Aktif</option>
+              <option value="aktif">Siswa Aktif</option>
               <option value="alumni">Alumni</option>
             </select>
             <svg class="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -93,11 +93,18 @@
         <!-- Checkbox Verification -->
         <div class="flex items-start mb-6">
           <div class="flex items-center h-5 mt-1">
-            <div class="w-5 h-5 rounded border-2 border-black bg-black flex items-center justify-center">
-              <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
+            <button
+              type="button"
+              @click="form.isVerified = !form.isVerified"
+              :class="[
+                'w-5 h-5 rounded border-2 flex items-center justify-center transition-colors',
+                form.isVerified ? 'border-black bg-black' : 'border-gray-300 bg-white'
+              ]"
+            >
+              <svg v-if="form.isVerified" class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
               </svg>
-            </div>
+            </button>
           </div>
           <label class="ml-3 text-sm">
             Saya dapat memberikan verifikasi hubungan saya dengan sekolah ini
@@ -105,27 +112,31 @@
         </div>
 
         <!-- Info Box -->
-        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
+        <div v-if="form.isVerified" class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
           <p class="text-sm text-blue-700">
             Dapatkan lencana terverifikasi khusus untuk memberikan verifikasi hubungan Anda dengan Sekolah
           </p>
         </div>
 
         <!-- File Upload Section - Conditional -->
-        <div v-if="formData.relationship" class="mb-6">
+        <div v-if="form.isVerified" class="mb-6">
           <h3 class="text-lg font-semibold mb-4">Unggah Berkas</h3>
           
           <!-- Upload Area -->
-          <div v-if="!formData.file" class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+          <div v-if="!form.file" class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
             <div class="flex flex-col items-center">
               <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div v-if="isUploading" class="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+                <svg v-else class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                 </svg>
               </div>
               <p class="text-gray-600 mb-1">
-                Seret dan jatuhkan berkas di sini atau 
-                <label for="fileUpload" class="text-blue-600 underline cursor-pointer">Pilih berkas</label>
+                <span v-if="isUploading">Mengunggah...</span>
+                <span v-else>
+                  Seret dan jatuhkan berkas di sini atau 
+                  <label for="fileUpload" class="text-blue-600 underline cursor-pointer">Pilih berkas</label>
+                </span>
               </p>
               <input
                 id="fileUpload"
@@ -133,6 +144,7 @@
                 @change="handleFileUpload"
                 class="hidden"
                 accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                :disabled="isUploading"
               />
             </div>
           </div>
@@ -146,7 +158,7 @@
                 </svg>
               </div>
               <div>
-                <p class="font-medium text-sm">{{ formData.fileName }}</p>
+                <p class="font-medium text-sm">{{ form.fileName }}</p>
                 <p class="text-xs text-gray-500">{{ fileSize }}</p>
               </div>
             </div>
@@ -155,7 +167,7 @@
               class="text-gray-400 hover:text-red-600 transition-colors"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
@@ -163,14 +175,19 @@
 
         <!-- Buttons -->
         <div class="flex justify-between pt-6">
-          <button class="px-6 py-3 text-gray-700 font-medium hover:bg-gray-100 rounded-lg transition-colors">
+          <button 
+            type="button"
+            class="px-6 py-3 text-gray-700 font-medium hover:bg-gray-100 rounded-lg transition-colors"
+          >
             Batal
           </button>
           <button
-            :disabled="!isFormValid"
+            type="button"
+            @click="handleNext"
+            :disabled="!isFormValid || isUploading"
             :class="[
               'px-8 py-3 rounded-lg font-medium transition-colors flex items-center',
-              isFormValid
+              isFormValid && !isUploading
                 ? 'bg-black text-white hover:bg-gray-800'
                 : 'bg-gray-300 text-gray-500 cursor-not-allowed'
             ]"
@@ -188,54 +205,134 @@
 
 <script setup>
 import { useAuthStore } from '@/store/auth'
+import axios from '@/lib/axios'
+import Cookies from 'js-cookie'
+
+const props = defineProps({
+  formData: {
+    type: Object,
+    default: () => ({})
+  }
+})
+
+const emit = defineEmits(['next', 'updateFormData'])
 
 const authStore = useAuthStore()
 
-const formData = ref({
+const form = ref({
   fullName: '',
   email: '',
-  phone: '',
-  relationship: '',
+  phoneNo: '',
+  status: '',
   file: null,
-  fileName: ''
+  fileName: '',
+  fileUrl: '',
+  isVerified: false
 })
 
+const isUploading = ref(false)
+
+// Load data dari props atau user saat mounted
 onMounted(() => {
-  formData.value.fullName = authStore.user.fullname
-  formData.value.email = authStore.user.email
-  formData.value.phone = authStore.user.phone
+  // Cek apakah ada data yang tersimpan di props
+  if (props.formData?.step1) {
+    form.value = { ...props.formData.step1 }
+  } else {
+    // Load dari user data
+    const user = authStore.user
+    
+    if (user.role === 'parent' && user.child && user.child.length > 0) {
+      const child = user.child[0]
+      form.value.fullName = child.fullname || ''
+      form.value.status = child.status || ''
+      form.value.email = user.email || ''
+      form.value.phoneNo = user.phoneNo || ''
+    } else {
+      form.value.fullName = user.fullname || ''
+      form.value.email = user.email || ''
+      form.value.phoneNo = user.phoneNo || ''
+    }
+  }
 })
+
+// Watch props untuk update saat kembali dari step berikutnya
+watch(() => props.formData?.step1, (newData) => {
+  if (newData) {
+    form.value = { ...newData }
+  }
+}, { deep: true })
 
 // Computed untuk validasi form
 const isFormValid = computed(() => {
-  return formData.value.fullName && 
-         formData.value.email && 
-         formData.value.phone && 
-         formData.value.relationship &&
-         (formData.value.relationship ? formData.value.file : true)
+  return form.value.fullName && 
+         form.value.email && 
+         form.value.phoneNo && 
+         form.value.status &&
+         (form.value.isVerified ? form.value.file : true)
 })
 
 // Computed untuk file size
 const fileSize = computed(() => {
-  if (formData.value.file) {
-    const sizeInMB = (formData.value.file.size / (1024 * 1024)).toFixed(2)
+  if (form.value.file) {
+    const sizeInMB = (form.value.file.size / (1024 * 1024)).toFixed(2)
     return `${sizeInMB} MB`
   }
   return ''
 })
 
 // Handle file upload
-const handleFileUpload = (event) => {
+const handleFileUpload = async (event) => {
   const file = event.target.files[0]
-  if (file) {
-    formData.value.file = file
-    formData.value.fileName = file.name
+  if (!file) return
+
+  isUploading.value = true
+
+  try {
+    const token = Cookies.get('token')
+    const formDataUpload = new FormData()
+    formDataUpload.append('files[]', file)
+
+    const response = await axios.post('/upload', formDataUpload, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    const fileUrl = response.data.data.urls[0]
+    
+    form.value.file = file
+    form.value.fileName = file.name
+    form.value.fileUrl = fileUrl
+    
+    // Auto save setelah upload
+    emit('updateFormData', { step1: form.value })
+  } catch (error) {
+    console.error('Upload error:', error)
+    alert('Gagal upload file')
+  } finally {
+    isUploading.value = false
   }
 }
 
 // Handle file delete
 const handleFileDelete = () => {
-  formData.value.file = null
-  formData.value.fileName = ''
+  form.value.file = null
+  form.value.fileName = ''
+  form.value.fileUrl = ''
+  
+  // Auto save setelah delete
+  emit('updateFormData', { step1: form.value })
+}
+
+// Handle next
+const handleNext = () => {
+  if (!isFormValid.value) return
+  
+  // Emit save dulu
+  emit('save', { step1: form.value })
+  
+  // Lanjut ke step 2
+  emit('next')
 }
 </script>

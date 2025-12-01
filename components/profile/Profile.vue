@@ -1,16 +1,14 @@
 <!-- components/profile/Profile.vue -->
 <template>
   <div class="bg-white rounded-xl border border-border-gray">
-    <!-- Header -->
     <div class="px-6 py-4">
-      <h2 class="text-xl font-semibold text-primary-green">Pengaturan Profil</h2>
+      <h2 class="text-xl font-semibold text-primary-green">
+        Pengaturan Profil
+      </h2>
     </div>
 
-    <!-- Content -->
     <div class="p-6">
-      <!-- Profile Photo Section -->
       <div class="flex items-start space-x-6 mb-8">
-        <!-- Avatar -->
         <div class="relative">
           <div class="w-24 h-24 rounded-full overflow-hidden">
             <img
@@ -19,37 +17,20 @@
               :alt="profileData.fullname"
               class="w-full h-full object-cover"
             />
-            <div v-else class="w-full h-full flex items-center justify-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="200"
-                height="200"
-                viewBox="0 0 24 24"
-                fill="#082519"
-              >
-                <g
-                  fill="none"
-                  stroke="#082519"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="1.5"
-                >
-                  <path
-                    d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10s10-4.477 10-10S17.523 2 12 2Z"
-                  />
-                  <path
-                    d="M4.271 18.346S6.5 15.5 12 15.5s7.73 2.846 7.73 2.846M12 12a3 3 0 1 0 0-6a3 3 0 0 0 0 6Z"
-                  />
-                </g>
-              </svg>
+            <div v-else class="w-full h-full flex items-center justify-center rounded-full bg-primary-green">
+              <span class="text-white font-semibold text-3xl">{{ userInitials }}</span>
             </div>
           </div>
         </div>
 
-        <!-- Upload Info -->
         <div class="flex-1">
-          <h3 class="text-lg font-medium text-gray-900 mb-1">Ubah Profil</h3>
-          <p class="text-sm text-gray-600 mb-4">PNG, JPEG under 2MB</p>
+          <h3
+            @click="fileInput?.click()"
+            class="text-lg font-medium text-primary-green mb-1 underline cursor-pointer"
+          >
+            Ubah Profil
+          </h3>
+          <p class="text-sm text-secondary-gray mb-4">PNG, JPEG under 2MB</p>
 
           <input
             ref="fileInput"
@@ -58,19 +39,10 @@
             @change="handleFileUpload"
             class="hidden"
           />
-
-          <button
-            @click="fileInput?.click()"
-            class="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors"
-          >
-            Pilih Foto
-          </button>
         </div>
       </div>
 
-      <!-- Profile Form -->
       <div class="space-y-6 border border-border-gray p-3 border-b rounded-xl">
-        <!-- Nama Lengkap -->
         <div
           class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
         >
@@ -87,7 +59,6 @@
           </div>
         </div>
 
-        <!-- NISN - Only for students -->
         <div
           v-if="isStudent"
           class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
@@ -99,13 +70,15 @@
             >
           </div>
           <div class="flex-1 text-right">
-            <span class="text-green-600 font-medium">{{
-              profileData.nisn || "-"
-            }}</span>
+            <span
+              class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[#EDF8F0] text-[#4CC16B]"
+            >
+              <span class="mr-2"><UserNum /></span
+              >{{ profileData.nisn || "-" }}</span
+            >
           </div>
         </div>
 
-        <!-- Status -->
         <div
           class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
         >
@@ -117,23 +90,22 @@
           </div>
           <div class="flex-1 text-right">
             <span
-              class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800"
+              class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[#E5F3FE] text-[#0789F2]"
               v-if="isStudent"
             >
-              <span class="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
+              <span class="mr-2"><UserStatus/></span>
               Siswa
             </span>
             <span
-              class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-orange-100 text-orange-800"
+              class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[#FFF4EE] text-[#FA9E53]"
               v-else-if="isParent"
             >
-              <span class="w-2 h-2 bg-orange-400 rounded-full mr-2"></span>
+              <span class="mr-2"><UserCircle /></span>
               Orang Tua
             </span>
           </div>
         </div>
 
-        <!-- Sekolah - Only for students -->
         <div
           v-if="isStudent"
           class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
@@ -151,7 +123,6 @@
           </div>
         </div>
 
-        <!-- Email -->
         <div
           class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
         >
@@ -168,7 +139,6 @@
           </div>
         </div>
 
-        <!-- Tanggal Lahir - Only for students -->
         <div
           v-if="isStudent"
           class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
@@ -186,7 +156,6 @@
           </div>
         </div>
 
-        <!-- No. Telp -->
         <div
           class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
         >
@@ -201,7 +170,6 @@
           </div>
         </div>
 
-        <!-- Alamat -->
         <div class="flex justify-between items-center py-4">
           <div class="flex-1">
             <label
@@ -215,11 +183,10 @@
         </div>
       </div>
 
-      <!-- Edit Button -->
       <div class="flex justify-end mt-8">
         <button
           @click="handleEdit"
-          class="inline-flex items-center px-4 py-2 gap-2 text-sm font-medium text-primary-green border border-border-gray -mx-3 px-3 rounded-xl"
+          class="inline-flex items-center py-2 gap-2 text-sm font-medium text-primary-green border border-border-gray -mx-3 px-3 rounded-xl"
         >
           <span>Ubah</span>
           <svg
@@ -249,20 +216,16 @@
     </div>
   </div>
 
-  <!-- Student Data Section for Parents -->
   <div
     v-if="isParent"
-    class="bg-white rounded-lg shadow-sm border border-border-gray -mx-3 px-3 mt-6"
+    class="bg-white rounded-xl border border-border-gray mt-6"
   >
-    <!-- Header -->
-    <div class="px-6 py-4 border-b border-border-gray -mx-3 px-3">
-      <h2 class="text-xl font-semibold text-gray-900">Peserta Didik</h2>
+    <div class="px-6 py-4">
+      <h2 class="text-xl font-semibold text-primary-green">Peserta Didik</h2>
     </div>
 
-    <!-- Content -->
     <div class="p-6">
-      <div class="space-y-6">
-        <!-- Nama Lengkap -->
+      <div class="space-y-6 border border-border-gray p-3 border-b rounded-xl">
         <div
           class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
         >
@@ -273,13 +236,12 @@
             >
           </div>
           <div class="flex-1 text-right">
-            <span class="text-gray-900 font-medium">{{
+            <span class="text-primary-green font-medium">{{
               studentData.fullname || "-"
             }}</span>
           </div>
         </div>
 
-        <!-- NISN -->
         <div
           class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
         >
@@ -290,13 +252,15 @@
             >
           </div>
           <div class="flex-1 text-right">
-            <span class="text-green-600 font-medium">{{
-              studentData.nisn || "-"
-            }}</span>
+            <span
+              class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[#EDF8F0] text-[#4CC16B]"
+            >
+              <span class="mr-2"><UserNum /></span
+              >{{ studentData.nisn || "-" }}</span
+            >
           </div>
         </div>
 
-        <!-- Status -->
         <div
           class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
         >
@@ -308,15 +272,14 @@
           </div>
           <div class="flex-1 text-right">
             <span
-              class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800"
+              class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[#E5F3FE] text-[#0789F2]"
             >
-              <span class="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
+              <span class="mr-1"><UserStatus /></span>
               Siswa Aktif
             </span>
           </div>
         </div>
 
-        <!-- Tanggal Lahir -->
         <div
           class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
         >
@@ -327,16 +290,13 @@
             >
           </div>
           <div class="flex-1 text-right">
-            <span class="text-gray-900 font-medium">{{
+            <span class="text-primary-green font-medium">{{
               formatDate(studentData.birthDate) || "-"
             }}</span>
           </div>
         </div>
 
-        <!-- Sekolah -->
-        <div
-          class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
-        >
+        <div class="flex justify-between items-center py-4 -mx-3 px-3">
           <div class="flex-1">
             <label
               class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
@@ -344,39 +304,46 @@
             >
           </div>
           <div class="flex-1 text-right flex items-center justify-end">
-            <span class="text-gray-900 font-medium">{{
+            <span class="text-primary-green font-medium">{{
               studentData.schoolName || "-"
             }}</span>
           </div>
         </div>
       </div>
 
-      <!-- Edit Button -->
       <div class="flex justify-end mt-8">
         <button
           @click="handleEditStudent"
-          class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
+          class="inline-flex items-center py-2 gap-2 text-sm font-medium text-primary-green border border-border-gray px-3 rounded-xl"
         >
           <span>Ubah</span>
           <svg
-            class="w-4 h-4 ml-2"
+            width="14"
+            height="14"
+            viewBox="0 0 21 21"
             fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-            />
+            <g clip-path="url(#clip0_4319_2151)">
+              <path
+                d="M15.75 8.74831L12.25 5.24831M2.1875 18.8108L5.14882 18.4818C5.51063 18.4416 5.69153 18.4215 5.86062 18.3667C6.01063 18.3182 6.15339 18.2496 6.28503 18.1628C6.4334 18.0649 6.5621 17.9362 6.81951 17.6788L18.375 6.12331C19.3415 5.15681 19.3415 3.58981 18.375 2.62331C17.4085 1.65681 15.8415 1.65681 14.875 2.62331L3.31951 14.1788C3.0621 14.4362 2.9334 14.5649 2.83556 14.7133C2.74875 14.8449 2.68014 14.9877 2.63157 15.1377C2.57684 15.3068 2.55674 15.4877 2.51654 15.8495L2.1875 18.8108Z"
+                stroke="#082519"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </g>
+            <defs>
+              <clipPath id="clip0_4319_2151">
+                <rect width="21" height="21" fill="white" />
+              </clipPath>
+            </defs>
           </svg>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Education History Component - Always at the bottom -->
   <EducationHistory
     :educationData="educationHistory"
     @add="handleAddEducation"
@@ -384,7 +351,6 @@
     @delete="handleDeleteEducation"
   />
 
-  <!-- Edit Profile Modal -->
   <ProfileEditModal
     :isOpen="isEditModalOpen"
     :userData="profileData"
@@ -392,12 +358,24 @@
     @submit="handleSubmitEdit"
   />
 
-  <!-- Edit Student Profile Modal -->
   <ProfileStudentEditModal
     :isOpen="isStudentEditModalOpen"
     :studentData="studentData"
     @close="handleCloseStudentModal"
     @submit="handleSubmitStudentEdit"
+  />
+
+  <Modal
+    :isOpen="isModalOpen"
+    :type="modalType"
+    :title="modalTitle"
+    :message="modalMessage"
+    :confirmText="modalConfirmText"
+    :cancelText="modalCancelText"
+    :showCancel="showCancelButton"
+    @confirm="handleModalConfirm"
+    @cancel="handleModalCancel"
+    @close="closeModal"
   />
 </template>
 
@@ -409,18 +387,52 @@ import ProfileStudentEditModal from "./ProfileStudentEditModal.vue";
 import EducationHistory from "./EducationHistory.vue";
 import Cookies from "js-cookie";
 import axios from "@/lib/axios";
+import UserStatus from "~/assets/UserStatus.vue";
+import UserCircle from "~/assets/UserCircle.vue";
+import UserNum from "~/assets/UserNum.vue";
+import Modal from "~/components/common/Modal.vue";
 
 const authStore = useAuthStore();
 const fileInput = ref(null);
 const isEditModalOpen = ref(false);
 const isStudentEditModalOpen = ref(false);
 
+const isModalOpen = ref(false);
+const modalType = ref('success');
+const modalTitle = ref('');
+const modalMessage = ref('');
+const modalConfirmText = ref('Oke');
+const modalCancelText = ref('Batal');
+const showCancelButton = ref(false);
+
+const showModal = (type, title, message, options = {}) => {
+  modalType.value = type;
+  modalTitle.value = title;
+  modalMessage.value = message;
+  modalConfirmText.value = options.confirmText || 'Oke';
+  modalCancelText.value = options.cancelText || 'Batal';
+  showCancelButton.value = options.showCancel || false;
+  isModalOpen.value = true;
+};
+
+const closeModal = () => {
+  isModalOpen.value = false;
+};
+
+const handleModalConfirm = () => {
+  console.log('Modal confirmed');
+};
+
+const handleModalCancel = () => {
+  console.log('Modal cancelled');
+};
+
 const isStudent = computed(() => {
-  return authStore.user?.roles?.includes("student") || false;
+  return authStore.user?.role === "student" || false;
 });
 
 const isParent = computed(() => {
-  return authStore.user?.roles?.includes("parent") || false;
+  return authStore.user?.role === "parent" || false;
 });
 
 const profileData = computed(() => {
@@ -438,29 +450,30 @@ const profileData = computed(() => {
     };
   }
 
-  const getSchoolName = (schoolDetails) => {
-    if (!schoolDetails) return "";
-
-    // Untuk student, schoolDetails adalah array
-    if (Array.isArray(schoolDetails) && schoolDetails.length > 0) {
-      const firstSchool = schoolDetails[0];
-      return firstSchool.name || "";
-    }
-
-    return "";
-  };
-
   return {
     fullname: authStore.user.fullname || "",
     nisn: authStore.user.nisn || "",
-    roles: authStore.user.roles || [],
-    schoolDetails: getSchoolName(authStore.user.schoolDetails),
+    roles: authStore.user.role ? [authStore.user.role] : [],
+    schoolDetails: authStore.user.schoolDetail || "",
     email: authStore.user.email || "",
-    birthDate: authStore.user.dateOfBirth || "",
+    birthDate: authStore.user.birthdate || "",
     phone: authStore.user.phoneNo || "",
     address: authStore.user.address || "",
     avatar: authStore.user.image || null,
   };
+});
+
+const getInitials = (fullname) => {
+  const parts = fullname.split(" ");
+  const lastTwoParts = parts.slice(-2);
+  return lastTwoParts
+    .map((part) => part.charAt(0).toUpperCase())
+    .join("");
+};
+
+const userInitials = computed(() => {
+  if (!authStore.user || !authStore.user.fullname) return "U";
+  return getInitials(authStore.user.fullname);
 });
 
 const studentData = computed(() => {
@@ -472,15 +485,14 @@ const studentData = computed(() => {
   return {
     fullname: child.fullname || "",
     nisn: child.nisn || "",
-    birthDate: child.dateOfBirth || "",
-    schoolName: child.schoolDetail?.name || "",
+    birthDate: child.birthdate || "",
+    schoolName: child.schoolDetail || "",
     schoolDetailId: child.schoolDetailId || null,
     email: child.email || "",
     phone: child.phoneNo || "",
   };
 });
 
-// Education Experience
 const educationExperiences = ref([]);
 const educationLevels = ref([]);
 const loadingEducation = ref(false);
@@ -539,7 +551,6 @@ const fetchEducationExperiences = async () => {
 
     const experiences = response.data.data;
 
-    // Fetch school details untuk setiap experience
     const experiencesWithSchools = await Promise.all(
       experiences.map(async (exp) => {
         try {
@@ -580,14 +591,12 @@ const handleAddEducation = async (data) => {
     });
 
     if (response.data.status === "success") {
-      alert("Riwayat pendidikan berhasil ditambahkan!");
+      showModal('success', 'Berhasil Ditambahkan!', 'Riwayat pendidikan berhasil ditambahkan.');
       await fetchEducationExperiences();
     }
   } catch (error) {
     console.error("Error adding education:", error);
-    alert(
-      error.response?.data?.message || "Gagal menambahkan riwayat pendidikan"
-    );
+    showModal('error', 'Gagal Menambahkan!', error.response?.data?.message || 'Gagal menambahkan riwayat pendidikan.');
   }
 };
 
@@ -607,14 +616,12 @@ const handleEditEducation = async ({ data, index }) => {
     );
 
     if (response.data.status === "success") {
-      alert("Riwayat pendidikan berhasil diupdate!");
+      showModal('success', 'Berhasil Diupdate!', 'Riwayat pendidikan berhasil diupdate.');
       await fetchEducationExperiences();
     }
   } catch (error) {
     console.error("Error updating education:", error);
-    alert(
-      error.response?.data?.message || "Gagal mengupdate riwayat pendidikan"
-    );
+    showModal('error', 'Gagal Mengupdate!', error.response?.data?.message || 'Gagal mengupdate riwayat pendidikan.');
   }
 };
 
@@ -633,14 +640,12 @@ const handleDeleteEducation = async ({ data, index }) => {
     );
 
     if (response.data.status === "success") {
-      alert("Riwayat pendidikan berhasil dihapus!");
+      showModal('success', 'Berhasil Dihapus!', 'Riwayat pendidikan berhasil dihapus.');
       await fetchEducationExperiences();
     }
   } catch (error) {
     console.error("Error deleting education:", error);
-    alert(
-      error.response?.data?.message || "Gagal menghapus riwayat pendidikan"
-    );
+    showModal('error', 'Gagal Menghapus!', error.response?.data?.message || 'Gagal menghapus riwayat pendidikan.');
   }
 };
 
@@ -678,23 +683,85 @@ const handleFileUpload = async (event) => {
   if (!file) return;
 
   if (file.size > 2 * 1024 * 1024) {
-    alert("Ukuran file maksimal 2MB");
+    showModal('error', 'File Terlalu Besar!', 'Ukuran file maksimal 2MB.');
     return;
   }
 
-  const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+  const allowedTypes = [
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "image/gif",
+    "image/webp",
+  ];
   if (!allowedTypes.includes(file.type)) {
-    alert("Format file harus PNG atau JPEG");
+    showModal('error', 'Format File Salah!', 'Format file harus PNG, JPEG, GIF, atau WEBP.');
     return;
   }
 
   try {
-    // TODO: Implementasi upload file
-    console.log("File selected:", file);
-    // Sementara hanya log, nanti bisa ditambahkan logic upload
+    const token = Cookies.get("token");
+
+    if (!token) {
+      showModal('error', 'Sesi Berakhir!', 'Sesi Anda telah berakhir, silakan login kembali.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("files[]", file);
+
+    const uploadResponse = await axios.post("/upload", formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    if (uploadResponse.data.message === "Upload Files Success") {
+      const imageUrl = uploadResponse.data.data.urls[0];
+
+      let requestBody = {};
+
+      if (isStudent.value) {
+        requestBody = {
+          fullname: profileData.value.fullname,
+          email: profileData.value.email,
+          nisn: profileData.value.nisn,
+          dateOfBirth: profileData.value.birthDate,
+          phoneNo: profileData.value.phone,
+          address: profileData.value.address,
+          image: imageUrl,
+        };
+      } else if (isParent.value) {
+        requestBody = {
+          fullname: profileData.value.fullname,
+          email: profileData.value.email,
+          phoneNo: profileData.value.phone,
+          address: profileData.value.address,
+          image: imageUrl,
+        };
+      }
+
+      const updateResponse = await axios.put("/user", requestBody, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (updateResponse.data.status === "success") {
+        await authStore.fetchUser();
+        showModal('success', 'Foto Berhasil Diupdate!', 'Foto profil Anda berhasil diperbarui.');
+      }
+    } else {
+      showModal('error', 'Upload Gagal!', 'Terjadi kesalahan saat mengupload foto.');
+    }
   } catch (error) {
     console.error("Upload error:", error);
-    alert("Gagal mengunggah foto");
+    if (error.response?.status === 401) {
+      showModal('error', 'Sesi Berakhir!', 'Sesi Anda telah berakhir, silakan login kembali.');
+    } else {
+      showModal('error', 'Upload Gagal!', error.response?.data?.message || 'Gagal mengunggah foto.');
+    }
   }
 };
 
@@ -719,7 +786,7 @@ const handleSubmitEdit = async (formData) => {
     const token = Cookies.get("token");
 
     if (!token) {
-      alert("Sesi Anda telah berakhir, silakan login kembali");
+      showModal('error', 'Sesi Berakhir!', 'Sesi Anda telah berakhir, silakan login kembali.');
       return;
     }
 
@@ -733,7 +800,7 @@ const handleSubmitEdit = async (formData) => {
         dateOfBirth: formData.birthDate || null,
         phoneNo: formData.phone || null,
         address: formData.address || null,
-        image: null, // Will be implemented later
+        image: null,
       };
     } else if (isParent.value) {
       requestBody = {
@@ -741,15 +808,9 @@ const handleSubmitEdit = async (formData) => {
         email: formData.email || null,
         phoneNo: formData.phone || null,
         address: formData.address || null,
-        image: null, // Will be implemented later
+        image: null,
       };
     }
-
-    console.log(
-      "Updating profile with token:",
-      token ? "Token exists" : "No token"
-    );
-    console.log("Request body:", requestBody);
 
     const response = await axios.put("/user", requestBody, {
       headers: {
@@ -759,19 +820,16 @@ const handleSubmitEdit = async (formData) => {
 
     if (response.data.status === "success") {
       await authStore.fetchUser();
-
       isEditModalOpen.value = false;
-
-      alert("Profil berhasil diupdate!");
+      showModal('success', 'Profil Berhasil Diupdate!', 'Profil Anda berhasil diperbarui.');
     }
   } catch (error) {
     console.error("Update profile error:", error);
-    console.error("Error response:", error.response);
 
     if (error.response?.status === 401) {
-      alert("Sesi Anda telah berakhir, silakan login kembali");
+      showModal('error', 'Sesi Berakhir!', 'Sesi Anda telah berakhir, silakan login kembali.');
     } else {
-      alert(error.response?.data?.message || "Gagal mengupdate profil");
+      showModal('error', 'Update Gagal!', error.response?.data?.message || 'Gagal mengupdate profil.');
     }
   }
 };
@@ -781,7 +839,7 @@ const handleSubmitStudentEdit = async (formData) => {
     const token = Cookies.get("token");
 
     if (!token) {
-      alert("Sesi Anda telah berakhir, silakan login kembali");
+      showModal('error', 'Sesi Berakhir!', 'Sesi Anda telah berakhir, silakan login kembali.');
       return;
     }
 
@@ -790,7 +848,7 @@ const handleSubmitStudentEdit = async (formData) => {
       email: profileData.value.email || null,
       phoneNo: profileData.value.phone || null,
       address: profileData.value.address || null,
-      image: null, // Will be implemented later
+      image: null,
 
       child: {
         fullname: formData.fullname || null,
@@ -803,12 +861,6 @@ const handleSubmitStudentEdit = async (formData) => {
       },
     };
 
-    console.log(
-      "Updating student profile with token:",
-      token ? "Token exists" : "No token"
-    );
-    console.log("Request body:", requestBody);
-
     const response = await axios.put("/user", requestBody, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -817,19 +869,16 @@ const handleSubmitStudentEdit = async (formData) => {
 
     if (response.data.status === "success") {
       await authStore.fetchUser();
-
       isStudentEditModalOpen.value = false;
-
-      alert("Profil siswa berhasil diupdate!");
+      showModal('success', 'Profil Siswa Berhasil Diupdate!', 'Profil siswa berhasil diperbarui.');
     }
   } catch (error) {
     console.error("Update student profile error:", error);
-    console.error("Error response:", error.response);
 
     if (error.response?.status === 401) {
-      alert("Sesi Anda telah berakhir, silakan login kembali");
+      showModal('error', 'Sesi Berakhir!', 'Sesi Anda telah berakhir, silakan login kembali.');
     } else {
-      alert(error.response?.data?.message || "Gagal mengupdate profil siswa");
+      showModal('error', 'Update Gagal!', error.response?.data?.message || 'Gagal mengupdate profil siswa.');
     }
   }
 };
@@ -843,7 +892,6 @@ onMounted(async () => {
   console.log("Token available:", token ? "Yes" : "No");
   console.log("User data:", authStore.user);
 
-  // Fetch education data
   await fetchEducationLevels();
   await fetchEducationExperiences();
 });

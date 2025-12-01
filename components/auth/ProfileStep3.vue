@@ -114,7 +114,7 @@
 </template>
 
 <script setup>
-import backgroundImage from '~/assets/images/conslusion.jpg'
+import backgroundImage from '~/assets/images/conclusion.jpg'
 import { ref, computed, watch } from 'vue'
 import { useAuthStore } from '@/store/auth'
 import axios from '@/lib/axios'
@@ -131,7 +131,7 @@ const currentStep = props.currentStep || 3
 const schoolName = ref('')
 
 const userRole = computed(() => {
-  const roles = authStore.user?.roles
+  const roles = authStore.user?.role
   
   if (Array.isArray(roles)) {
     return roles.includes('parent') ? 'parent' : 'student'
@@ -161,29 +161,20 @@ const handlePrev = () => {
   emit('prev')
 }
 
-const handleSubmit = async () => {
-  isSubmitting.value = true
-  
-  try {
-    await emit('submit', {
-      step1: props.formData?.step1,
-      step2: props.formData?.step2,
-      preview: previewData.value
-    })
-  } catch (error) {
-    console.error('Error submitting form:', error)
-  } finally {
-    isSubmitting.value = false
-  }
+const handleSubmit = () => {
+  // Emit ke parent untuk handle submit
+  emit('submit')
 }
 
 const fetchSchoolName = async (schoolId) => {
   try {
     const response = await axios.get(`/school-details/${schoolId}`)
     if (response.data.status === 'success') {
-      schoolName.value = response.data.data.schoolName
+      // PERBAIKAN: pakai 'name' bukan 'schoolName'
+      schoolName.value = response.data.data.name
     }
   } catch (error) {
+    console.error('Error fetching school:', error)
     schoolName.value = 'Sekolah tidak ditemukan'
   }
 }

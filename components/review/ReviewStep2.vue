@@ -79,12 +79,12 @@
                   <input 
                     type="radio" 
                     :value="rating" 
-                    v-model="ratings.fasilitas"
+                    v-model="form.ratings.fasilitas"
                     class="sr-only"
                   />
                   <span 
                     class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 transition-colors"
-                    :class="ratings.fasilitas === rating ? 'border-black bg-black text-white' : 'border-gray-300 text-gray-600 hover:border-gray-400'"
+                    :class="form.ratings.fasilitas === rating ? 'border-black bg-black text-white' : 'border-gray-300 text-gray-600 hover:border-gray-400'"
                   >
                     {{ rating }}
                   </span>
@@ -104,12 +104,12 @@
                   <input 
                     type="radio" 
                     :value="rating" 
-                    v-model="ratings.pembelajaran"
+                    v-model="form.ratings.pembelajaran"
                     class="sr-only"
                   />
                   <span 
                     class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 transition-colors"
-                    :class="ratings.pembelajaran === rating ? 'border-black bg-black text-white' : 'border-gray-300 text-gray-600 hover:border-gray-400'"
+                    :class="form.ratings.pembelajaran === rating ? 'border-black bg-black text-white' : 'border-gray-300 text-gray-600 hover:border-gray-400'"
                   >
                     {{ rating }}
                   </span>
@@ -129,12 +129,12 @@
                   <input 
                     type="radio" 
                     :value="rating" 
-                    v-model="ratings.layanan"
+                    v-model="form.ratings.layanan"
                     class="sr-only"
                   />
                   <span 
                     class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 transition-colors"
-                    :class="ratings.layanan === rating ? 'border-black bg-black text-white' : 'border-gray-300 text-gray-600 hover:border-gray-400'"
+                    :class="form.ratings.layanan === rating ? 'border-black bg-black text-white' : 'border-gray-300 text-gray-600 hover:border-gray-400'"
                   >
                     {{ rating }}
                   </span>
@@ -154,12 +154,12 @@
                   <input 
                     type="radio" 
                     :value="rating" 
-                    v-model="ratings.keamanan"
+                    v-model="form.ratings.keamanan"
                     class="sr-only"
                   />
                   <span 
                     class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 transition-colors"
-                    :class="ratings.keamanan === rating ? 'border-black bg-black text-white' : 'border-gray-300 text-gray-600 hover:border-gray-400'"
+                    :class="form.ratings.keamanan === rating ? 'border-black bg-black text-white' : 'border-gray-300 text-gray-600 hover:border-gray-400'"
                   >
                     {{ rating }}
                   </span>
@@ -179,12 +179,12 @@
                   <input 
                     type="radio" 
                     :value="rating" 
-                    v-model="ratings.kegiatan"
+                    v-model="form.ratings.kegiatan"
                     class="sr-only"
                   />
                   <span 
                     class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 transition-colors"
-                    :class="ratings.kegiatan === rating ? 'border-black bg-black text-white' : 'border-gray-300 text-gray-600 hover:border-gray-400'"
+                    :class="form.ratings.kegiatan === rating ? 'border-black bg-black text-white' : 'border-gray-300 text-gray-600 hover:border-gray-400'"
                   >
                     {{ rating }}
                   </span>
@@ -203,33 +203,33 @@
           <div class="mb-6">
             <label class="block text-sm font-medium mb-2">Apa yang paling Anda sukai?</label>
             <textarea
-              v-model="experience.liked"
+              v-model="form.experience.liked"
               rows="4"
               maxlength="1000"
               placeholder="Jelaskan apa yang paling Anda sukai"
               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             ></textarea>
-            <p class="text-xs text-gray-500 mt-1 text-right">{{ experience.liked.length }}/1000</p>
+            <p class="text-xs text-gray-500 mt-1 text-right">{{ form.experience.liked.length }}/1000</p>
           </div>
 
           <!-- Apa yang bisa diperbaiki? -->
           <div class="mb-6">
             <label class="block text-sm font-medium mb-2">Apa yang bisa diperbaiki?</label>
             <textarea
-              v-model="experience.improved"
+              v-model="form.experience.improved"
               rows="4"
               maxlength="1000"
               placeholder="Jelaskan apa yang bisa diperbaiki"
               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             ></textarea>
-            <p class="text-xs text-gray-500 mt-1 text-right">{{ experience.improved.length }}/1000</p>
+            <p class="text-xs text-gray-500 mt-1 text-right">{{ form.experience.improved.length }}/1000</p>
           </div>
         </div>
 
         <!-- Buttons -->
         <div class="flex justify-between pt-6">
           <button 
-            @click="$emit('back')"
+            @click="handlePrev"
             class="px-6 py-3 text-gray-700 font-medium hover:bg-gray-100 rounded-lg transition-colors flex items-center"
           >
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -263,53 +263,58 @@ const props = defineProps({
   schoolName: {
     type: String,
     default: 'Jakarta Intercultural School'
+  },
+  formData: {
+    type: Object,
+    default: () => ({})
   }
 })
 
-const emit = defineEmits(['next', 'back'])
+const emit = defineEmits(['next', 'prev', 'updateFormData'])
 
-// Ratings untuk 5 kategori
-const ratings = ref({
-  fasilitas: null,
-  pembelajaran: null,
-  layanan: null,
-  keamanan: null,
-  kegiatan: null
+const form = ref({
+  ratings: {
+    fasilitas: null,
+    pembelajaran: null,
+    layanan: null,
+    keamanan: null,
+    kegiatan: null
+  },
+  experience: {
+    liked: '',
+    improved: ''
+  }
 })
 
-// Experience text
-const experience = ref({
-  liked: '',
-  improved: ''
-})
-
-// Overall rating (akan di-set dari backend berdasarkan 5 kategori)
 const overallRating = ref(0)
+
+// Load data dari props saat mounted
+onMounted(() => {
+  if (props.formData?.step2) {
+    form.value = { ...props.formData.step2 }
+  }
+})
+
+// Watch props untuk update saat kembali dari step berikutnya
+watch(() => props.formData?.step2, (newData) => {
+  if (newData) {
+    form.value = { ...newData }
+  }
+}, { deep: true })
 
 // Computed untuk validasi form
 const isFormValid = computed(() => {
-  return ratings.value.fasilitas !== null &&
-         ratings.value.pembelajaran !== null &&
-         ratings.value.layanan !== null &&
-         ratings.value.keamanan !== null &&
-         ratings.value.kegiatan !== null &&
-         experience.value.liked.trim() !== '' &&
-         experience.value.improved.trim() !== ''
+  return form.value.ratings.fasilitas !== null &&
+         form.value.ratings.pembelajaran !== null &&
+         form.value.ratings.layanan !== null &&
+         form.value.ratings.keamanan !== null &&
+         form.value.ratings.kegiatan !== null &&
+         form.value.experience.liked.trim() !== '' &&
+         form.value.experience.improved.trim() !== ''
 })
 
-// Handle next button
-const handleNext = () => {
-  if (isFormValid.value) {
-    // Kirim data ke parent atau API
-    emit('next', {
-      ratings: ratings.value,
-      experience: experience.value
-    })
-  }
-}
-
-// Watch perubahan ratings untuk update overall (simulasi, nanti dari backend)
-watch(ratings, (newRatings) => {
+// Watch perubahan ratings untuk update overall rating
+watch(() => form.value.ratings, (newRatings) => {
   const allRatings = Object.values(newRatings)
   if (allRatings.every(r => r !== null)) {
     const sum = allRatings.reduce((acc, val) => acc + val, 0)
@@ -318,6 +323,25 @@ watch(ratings, (newRatings) => {
     overallRating.value = 0
   }
 }, { deep: true })
+
+// Handle prev
+// Handle prev
+const handlePrev = () => {
+  // Simpan data dulu sebelum kembali
+  emit('save', { step2: form.value })
+  emit('prev')
+}
+
+// Handle next
+const handleNext = () => {
+  if (!isFormValid.value) return
+  
+  // Emit data ke parent
+  emit('save', { step2: form.value })
+  
+  // Lanjut ke step 3
+  emit('next')
+}
 </script>
 
 <style scoped>

@@ -134,7 +134,7 @@
         <!-- Buttons -->
         <div class="flex justify-between pt-6">
           <button 
-            @click="$emit('back')"
+            @click="handlePrev"
             class="px-6 py-3 text-gray-700 font-medium hover:bg-gray-100 rounded-lg transition-colors flex items-center"
           >
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -144,16 +144,17 @@
           </button>
           <button
             @click="handleSubmit"
-            :disabled="!isFormValid"
+            :disabled="!isFormValid || isSubmitting"
             :class="[
               'px-8 py-3 rounded-lg font-medium transition-colors flex items-center',
-              isFormValid
+              isFormValid && !isSubmitting
                 ? 'bg-black text-white hover:bg-gray-800'
                 : 'bg-gray-300 text-gray-500 cursor-not-allowed'
             ]"
           >
-            Kirim
-            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <span v-if="isSubmitting">Mengirim...</span>
+            <span v-else>Kirim</span>
+            <svg v-if="!isSubmitting" class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
           </button>
@@ -164,27 +165,51 @@
 </template>
 
 <script setup>
-const emit = defineEmits(['submit', 'back'])
+const props = defineProps({
+  formData: {
+    type: Object,
+    default: () => ({})
+  }
+})
 
-// Agreements checkboxes
+const emit = defineEmits(['prev', 'submit'])
+
 const agreements = ref({
   agreement1: false,
   agreement2: false
 })
 
-// Computed untuk validasi form - harus centang semua
+const isSubmitting = ref(false)
+
+// Load data dari props saat mounted
+onMounted(() => {
+  if (props.formData?.step3) {
+    agreements.value = { ...props.formData.step3 }
+  }
+})
+
+// Watch props untuk update
+watch(() => props.formData?.step3, (newData) => {
+  if (newData) {
+    agreements.value = { ...newData }
+  }
+}, { deep: true })
+
+// Computed untuk validasi form
 const isFormValid = computed(() => {
   return agreements.value.agreement1 && agreements.value.agreement2
 })
 
-// Handle submit button
+// Handle prev
+const handlePrev = () => {
+  emit('prev')
+}
+
+// Handle submit
 const handleSubmit = () => {
-  if (isFormValid.value) {
-    emit('submit')
-  }
+  if (!isFormValid.value || isSubmitting.value) return
+  
+  isSubmitting.value = true
+  emit('submit')
 }
 </script>
-
-<style scoped>
-/* Custom styling jika diperlukan */
-</style>

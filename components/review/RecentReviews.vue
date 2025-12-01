@@ -1,7 +1,6 @@
 <template>
   <div class="bg-bg-light">
     <section class="max-w-7xl mx-auto px-6 py-16 sm:px-6 lg:px-8">
-      <!-- Header -->
       <div class="text-center mb-12">
         <h2 class="text-3xl font-semibold text-gray-900 mb-4">
           Beberapa hal mendalam untuk membantu
@@ -15,15 +14,12 @@
       </div>
 
       <div class="relative">
-        <!-- Grid Container -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Review Card -->
           <article
             v-for="review in visibleReviews"
             :key="review.id"
             class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow"
           >
-            <!-- Review For Badge -->
             <div class="flex items-center gap-2 mb-6">
               <div class="border border-border-gray rounded-full px-3 py-2 flex items-center gap-2">
                 <span class="text-sm text-secondary-gray">Review untuk</span>
@@ -63,7 +59,6 @@
               </div>
             </div>
 
-            <!-- User Info -->
             <div class="flex items-start gap-4 mb-6">
               <img
                 v-if="review.image"
@@ -111,7 +106,6 @@
               </div>
             </div>
 
-            <!-- Rating and Date -->
             <div
               class="flex items-center gap-4 mb-4 pt-4 border-t border-border-gray"
             >
@@ -140,12 +134,10 @@
               </span>
             </div>
 
-            <!-- Review Text -->
             <p class="text-sm text-gray-700 leading-relaxed line-clamp-3 mb-4">
               {{ review.reviewText }}
             </p>
 
-            <!-- Helpful Footer -->
             <div class="flex items-center gap-2 pt-4">
               <div class="border border-border-gray rounded-full px-3 py-2 flex items-center gap-2">
                 <span class="text-sm text-secondary-gray">Helpful?</span>
@@ -172,7 +164,6 @@
           </article>
         </div>
 
-        <!-- Navigation Buttons -->
         <div class="flex items-center justify-center gap-4 mt-8">
           <button
             class="p-3 rounded-full border-2 border-gray-300 hover:border-gray-900 hover:bg-gray-50 transition-all disabled:opacity-30 disabled:cursor-not-allowed"

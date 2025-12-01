@@ -136,13 +136,8 @@ const form = ref({
 })
 
 const userRole = computed(() => {
-  const roles = authStore.user?.roles
-  
-  if (Array.isArray(roles)) {
-    return roles.includes('parent') ? 'parent' : 'student'
-  }
-  
-  return roles || 'student'
+  // PERBAIKAN: pakai role (singular) bukan roles (plural)
+  return authStore.user?.role || 'student'
 })
 
 const isFormValid = computed(() => {
@@ -173,7 +168,11 @@ watch(() => props.formData?.step1, (newData) => {
   }
 }, { immediate: true })
 
-onMounted(() => {
+onMounted(async () => {
+  if (!authStore.user) {
+    await authStore.fetchUser()
+  }
+  
   if (userRole.value === 'student' && authStore.user?.fullname) {
     form.value.fullname = authStore.user.fullname
   }

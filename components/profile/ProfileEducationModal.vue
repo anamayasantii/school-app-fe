@@ -1,4 +1,3 @@
-<!-- components/profile/ProfileEducationModal.vue -->
 <template>
   <div v-if="isOpen" class="fixed inset-0 z-50 overflow-y-auto">
     <!-- Backdrop -->
@@ -151,7 +150,7 @@
               <button
                 v-if="mode === 'edit'"
                 type="button"
-                @click="handleDelete"
+                @click="showDeleteModal = true"
                 class="px-6 py-3 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors"
               >
                 Hapus Pendidikan
@@ -180,11 +179,26 @@
       </div>
     </div>
   </div>
+
+  <!-- Delete Confirmation Modal -->
+  <Modal
+    :isOpen="showDeleteModal"
+    type="warning"
+    title="Hapus Riwayat Pendidikan?"
+    message="Apakah Anda yakin ingin menghapus riwayat pendidikan ini? Tindakan ini tidak dapat dibatalkan."
+    confirmText="Ya, Hapus"
+    cancelText="Batal"
+    :showCancel="true"
+    @confirm="handleDeleteConfirm"
+    @cancel="showDeleteModal = false"
+    @close="showDeleteModal = false"
+  />
 </template>
 
 <script setup>
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import axios from '@/lib/axios'
+import Modal from '@/components/common/Modal.vue'
 
 const props = defineProps({
   isOpen: {
@@ -205,6 +219,7 @@ const props = defineProps({
 const emit = defineEmits(['close', 'submit', 'delete'])
 
 const isSubmitting = ref(false)
+const showDeleteModal = ref(false)
 const formData = ref({
   educationLevelId: '',
   schoolDetailId: '',
@@ -213,11 +228,9 @@ const formData = ref({
   endDate: ''
 })
 
-// Education Levels
 const educationLevels = ref([])
 const loadingLevels = ref(false)
 
-// School Search
 const schoolSearchQuery = ref('')
 const schoolResults = ref([])
 const loadingSchools = ref(false)
@@ -225,12 +238,10 @@ const showSchoolDropdown = ref(false)
 const selectedSchool = ref(null)
 let searchTimeout = null
 
-// Fetch Education Levels
 const fetchEducationLevels = async () => {
   loadingLevels.value = true
   try {
     const response = await axios.get('/education-levels')
-    // Filter out SPK SMA
     educationLevels.value = response.data.data.filter(level => level.name !== 'SPK SMA')
   } catch (error) {
     console.error('Error fetching education levels:', error)
@@ -239,7 +250,6 @@ const fetchEducationLevels = async () => {
   }
 }
 
-// Mapping untuk nama lengkap
 const getEducationLevelLabel = (name) => {
   const mapping = {
     'SD': 'Sekolah Dasar',
@@ -251,7 +261,6 @@ const getEducationLevelLabel = (name) => {
   return mapping[name] || name
 }
 
-// Search Schools with debounce
 const handleSchoolSearch = () => {
   if (searchTimeout) clearTimeout(searchTimeout)
   
@@ -278,7 +287,6 @@ const handleSchoolSearch = () => {
   }, 300)
 }
 
-// Select School from dropdown
 const selectSchool = (school) => {
   selectedSchool.value = school
   formData.value.schoolDetailId = school.id
@@ -286,7 +294,6 @@ const selectSchool = (school) => {
   showSchoolDropdown.value = false
 }
 
-// Close dropdown when clicking outside
 const handleClickOutside = (event) => {
   if (!event.target.closest('.relative')) {
     showSchoolDropdown.value = false
@@ -312,7 +319,6 @@ watch(() => props.educationData, (newData) => {
       startDate: newData.startDate || '',
       endDate: newData.endDate || ''
     }
-    // Set school name if editing
     if (newData.schoolName) {
       schoolSearchQuery.value = newData.schoolName
       selectedSchool.value = { id: newData.schoolDetailId, name: newData.schoolName }
@@ -336,14 +342,12 @@ watch(() => props.isOpen, (isOpen) => {
 })
 
 const handleSubmit = async () => {
-  // Validation
   if (!formData.value.educationLevelId || !formData.value.schoolDetailId || 
       !formData.value.status || !formData.value.startDate || !formData.value.endDate) {
     alert('Semua field harus diisi')
     return
   }
 
-  // Validate date
   if (new Date(formData.value.endDate) < new Date(formData.value.startDate)) {
     alert('Tanggal akhir harus lebih besar dari tanggal mulai')
     return
@@ -360,9 +364,8 @@ const handleSubmit = async () => {
   }
 }
 
-const handleDelete = () => {
-  if (confirm('Apakah Anda yakin ingin menghapus riwayat pendidikan ini?')) {
-    emit('delete', props.educationData)
-  }
+const handleDeleteConfirm = () => {
+  emit('delete', props.educationData)
+  showDeleteModal.value = false
 }
 </script>
