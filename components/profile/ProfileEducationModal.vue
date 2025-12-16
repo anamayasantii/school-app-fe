@@ -1,40 +1,35 @@
 <template>
   <div v-if="isOpen" class="fixed inset-0 z-50 overflow-y-auto">
-    <!-- Backdrop -->
     <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" @click="$emit('close')"></div>
     
-    <!-- Modal -->
-    <div class="flex min-h-full items-center justify-center p-4">
-      <div class="relative bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-        <!-- Header -->
-        <div class="flex items-center justify-between p-6 border-b border-gray-200">
+    <div class="flex min-h-full items-center justify-center p-2 sm:p-4">
+      <div class="relative bg-white rounded-lg shadow-xl w-full max-w-[320px] sm:max-w-md md:max-w-2xl lg:max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between p-4 sm:p-5 md:p-6 border-b border-gray-200">
           <div>
-            <h3 class="text-xl font-semibold text-gray-900">
+            <h3 class="text-base sm:text-lg md:text-xl font-semibold text-gray-900">
               {{ mode === 'add' ? 'Menambahkan Pengalaman Pendidikan' : 'Edit Pengalaman Pendidikan' }}
             </h3>
-            <p class="text-sm text-gray-500 mt-1">Tambahkan informasi mengenai riwayat pendidikan Anda</p>
+            <p class="text-xs sm:text-sm text-gray-500 mt-0.5 sm:mt-1">Tambahkan informasi mengenai riwayat pendidikan Anda</p>
           </div>
           <button
             @click="$emit('close')"
-            class="text-gray-400 hover:text-gray-600 transition-colors"
+            class="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0 ml-2"
           >
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
             </svg>
           </button>
         </div>
 
-        <!-- Form -->
-        <form @submit.prevent="handleSubmit" class="p-6">
-          <!-- Tingkat Pendidikan -->
-          <div class="mb-6">
-            <label class="block text-sm font-medium text-gray-700 mb-2">
+        <form @submit.prevent="handleSubmit" class="p-4 sm:p-5 md:p-6">
+          <div class="mb-4 sm:mb-5 md:mb-6">
+            <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
               Tingkat Pendidikan
             </label>
             <div class="relative">
               <select
                 v-model="formData.educationLevelId"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 appearance-none bg-white"
+                class="w-full px-3 py-2 sm:px-4 sm:py-2.5 md:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 appearance-none bg-white"
                 required
                 :disabled="loadingLevels"
               >
@@ -43,15 +38,14 @@
                   {{ getEducationLevelLabel(level.name) }}
                 </option>
               </select>
-              <svg class="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
               </svg>
             </div>
           </div>
 
-          <!-- Nama Sekolah -->
-          <div class="mb-6">
-            <label class="block text-sm font-medium text-gray-700 mb-2">
+          <div class="mb-4 sm:mb-5 md:mb-6">
+            <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
               Nama Sekolah
             </label>
             <div class="relative">
@@ -61,22 +55,21 @@
                 @focus="showSchoolDropdown = true"
                 type="text"
                 placeholder="Cari nama sekolah..."
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                class="w-full px-3 py-2 sm:px-4 sm:py-2.5 md:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                 required
                 autocomplete="off"
               />
               
-              <!-- Dropdown Results -->
               <div 
                 v-if="showSchoolDropdown && (schoolResults.length > 0 || loadingSchools)"
-                class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+                class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-48 sm:max-h-60 overflow-y-auto"
               >
-                <div v-if="loadingSchools" class="px-4 py-3 text-sm text-gray-500">
+                <div v-if="loadingSchools" class="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm text-gray-500">
                   Mencari sekolah...
                 </div>
                 <div 
                   v-else-if="schoolResults.length === 0 && schoolSearchQuery"
-                  class="px-4 py-3 text-sm text-gray-500"
+                  class="px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm text-gray-500"
                 >
                   Tidak ada hasil
                 </div>
@@ -85,10 +78,10 @@
                   :key="school.id"
                   type="button"
                   @click="selectSchool(school)"
-                  class="w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0"
+                  class="w-full px-3 py-2 sm:px-4 sm:py-3 text-left hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0"
                 >
-                  <div class="font-medium text-gray-900">{{ school.name }}</div>
-                  <div class="text-sm text-gray-500">
+                  <div class="font-medium text-gray-900 text-xs sm:text-sm">{{ school.name }}</div>
+                  <div class="text-[10px] sm:text-xs text-gray-500 mt-0.5">
                     {{ school.subDistrictName }}, {{ school.districtName }}, {{ school.provinceName }}
                   </div>
                 </button>
@@ -96,80 +89,75 @@
             </div>
           </div>
 
-          <!-- Hubungan dengan Sekolah (Status) -->
-          <div class="mb-6">
-            <label class="block text-sm font-medium text-gray-700 mb-2">
+          <div class="mb-4 sm:mb-5 md:mb-6">
+            <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
               Hubungan dengan Sekolah
             </label>
             <div class="relative">
               <select
                 v-model="formData.status"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 appearance-none bg-white"
+                class="w-full px-3 py-2 sm:px-4 sm:py-2.5 md:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 appearance-none bg-white"
                 required
               >
                 <option value="" disabled>Pilih Status</option>
                 <option value="aktif">Siswa Aktif</option>
                 <option value="alumni">Alumni</option>
               </select>
-              <svg class="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
               </svg>
             </div>
           </div>
 
-          <!-- Row: Tanggal Mulai & Tanggal Akhir -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6 mb-6 sm:mb-7 md:mb-8">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">
+              <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                 Tanggal Mulai
               </label>
               <input
                 v-model="formData.startDate"
                 type="date"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                class="w-full px-3 py-2 sm:px-4 sm:py-2.5 md:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                 required
               />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">
+              <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                 Tanggal Akhir (Diharapkan)
               </label>
               <input
                 v-model="formData.endDate"
                 type="date"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                class="w-full px-3 py-2 sm:px-4 sm:py-2.5 md:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                 required
               />
             </div>
           </div>
 
-          <!-- Buttons -->
-          <div class="flex justify-between">
-            <!-- Left side - Delete button (only in edit mode) -->
-            <div>
+          <div class="flex flex-col sm:flex-row sm:justify-between gap-3">
+            <div class="order-2 sm:order-1">
               <button
                 v-if="mode === 'edit'"
                 type="button"
                 @click="showDeleteModal = true"
-                class="px-6 py-3 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors"
+                class="w-full sm:w-auto px-4 sm:px-5 md:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors"
               >
                 Hapus Pendidikan
               </button>
             </div>
             
-            <!-- Right side - Cancel and Submit buttons -->
-            <div class="flex space-x-3">
+            <div class="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 order-1 sm:order-2">
               <button
                 type="button"
                 @click="$emit('close')"
-                class="px-6 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                class="w-full sm:w-auto px-4 sm:px-5 md:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 Batal
               </button>
               <button
                 type="submit"
                 :disabled="isSubmitting"
-                class="px-6 py-3 text-sm font-medium text-white bg-gray-900 rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                class="w-full sm:w-auto px-4 sm:px-5 md:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-medium text-white bg-gray-900 rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 {{ isSubmitting ? 'Menyimpan...' : (mode === 'add' ? 'Tambah Pengalaman Pendidikan' : 'Simpan Perubahan') }}
               </button>
@@ -180,7 +168,6 @@
     </div>
   </div>
 
-  <!-- Delete Confirmation Modal -->
   <Modal
     :isOpen="showDeleteModal"
     type="warning"

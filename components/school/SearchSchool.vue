@@ -1,10 +1,10 @@
 <template>
-  <div class="relative w-full max-w-[690px]">
+  <div class="relative w-full max-w-[320px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[690px]">
     <div
-      class="w-full h-[45px] rounded-[32px] bg-bg-light px-6 flex items-center gap-6 relative z-20"
+      class="w-full h-[56px] sm:h-[50px] md:h-[45px] rounded-[32px] bg-bg-light px-4 sm:px-5 md:px-6 flex items-center gap-3 sm:gap-4 md:gap-6 relative z-20"
     >
       <svg
-        class="w-6 h-6 text-primary-green flex-shrink-0"
+        class="w-5 h-5 sm:w-6 sm:h-6 text-primary-green flex-shrink-0"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -25,59 +25,55 @@
             ? 'Cari sekolah berdasarkan nama, lokasi, atau jenjang pendidikan'
             : 'Cari sekolah mana pun'
         "
-        class="flex-1 bg-transparent border-none outline-none text-base text-primary-green placeholder:text-primary-green"
+        class="flex-1 bg-transparent border-none outline-none text-sm sm:text-base text-primary-green placeholder:text-primary-green"
         @focus="handleFocus"
         @blur="handleBlur"
         @input="handleSearch"
       />
     </div>
 
-    <!-- Dropdown Results -->
     <div
       v-if="showDropdown"
-      class="absolute top-[calc(100%+8px)] left-0 right-0 bg-white rounded-2xl shadow-lg max-h-[500px] overflow-y-auto z-30"
+      class="absolute top-[calc(100%+8px)] left-0 right-0 bg-white rounded-2xl shadow-lg max-h-[400px] sm:max-h-[500px] overflow-y-auto z-30"
     >
-      <!-- Loading State -->
       <div
         v-if="isLoading"
-        class="py-8 px-8 flex flex-col items-center gap-3 text-gray-500"
+        class="py-6 sm:py-8 px-4 sm:px-8 flex flex-col items-center gap-3 text-gray-500"
       >
         <div class="loading-spinner"></div>
-        <span>Mencari sekolah...</span>
+        <span class="text-sm sm:text-base">Mencari sekolah...</span>
       </div>
 
-      <!-- Empty State -->
       <div
         v-else-if="searchQuery && schools.length === 0"
-        class="py-8 px-8 text-center text-gray-500"
+        class="py-6 sm:py-8 px-4 sm:px-8 text-center text-gray-500"
       >
-        <p>Tidak ada hasil untuk "{{ searchQuery }}"</p>
+        <p class="text-sm sm:text-base">Tidak ada hasil untuk "{{ searchQuery }}"</p>
       </div>
 
-      <!-- Search Results -->
-      <div v-else-if="schools.length > 0" class="p-4">
+      <div v-else-if="schools.length > 0" class="p-3 sm:p-4">
         <NuxtLink
           v-for="school in schools"
           :key="school.id"
           :to="`/school-details/${school.id}`"
-          class="flex gap-4 p-4 rounded-xl transition-colors cursor-pointer no-underline text-inherit hover:bg-gray-50"
+          class="flex gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl transition-colors cursor-pointer no-underline text-inherit hover:bg-gray-50"
         >
           <img
             :src="school.galleryImages[0] || '/placeholder-school.jpg'"
             :alt="school.name"
-            class="w-20 h-20 rounded-xl object-cover flex-shrink-0"
+            class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl object-cover flex-shrink-0"
           />
-          <div class="flex-1 flex flex-col gap-2 justify-center">
-            <p class="text-[15px] text-gray-900 m-0 font-medium leading-tight text-left">
+          <div class="flex-1 flex flex-col gap-1.5 sm:gap-2 justify-center">
+            <p class="text-sm sm:text-[15px] text-gray-900 m-0 font-medium leading-tight text-left">
               {{ school.name }}
             </p>
-            <div class="flex items-center gap-3 flex-wrap">
+            <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
               <span
                 class="inline-flex items-center justify-center w-8 h-4 bg-red-50 text-red-600 font-semibold text-xs rounded-full"
               >
                 {{ school.accreditationCode }}
               </span>
-              <span class="text-sm">Overall Grade</span>
+              <span class="text-xs sm:text-sm">Overall Grade</span>
               <svg width="2" height="16" viewBox="0 0 2 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect width="2" height="16" rx="1" fill="#F8F9FA"/>
               </svg>
@@ -101,18 +97,16 @@
           </div>
         </NuxtLink>
 
-        <!-- See All Results Button -->
         <NuxtLink
           v-if="hasMore"
           :to="`/school-result?search=${searchQuery}`"
-          class="w-1/4 py-4 mt-2 border border-gray-200 rounded-xl bg-white text-gray-900 text-xs font-medium cursor-pointer transition-all no-underline block text-center hover:bg-gray-50 hover:border-gray-300"
+          class="w-full sm:w-1/2 md:w-1/4 py-3 sm:py-4 mt-2 border border-gray-200 rounded-xl bg-white text-gray-900 text-xs font-medium cursor-pointer transition-all no-underline block text-center hover:bg-gray-50 hover:border-gray-300"
         >
           See all result from "{{ searchQuery }}"
         </NuxtLink>
       </div>
     </div>
 
-    <!-- Overlay -->
     <div
       v-if="showDropdown"
       class="fixed inset-0 bg-black bg-opacity-30 z-10"
@@ -206,27 +200,6 @@ watch(showDropdown, (newVal) => {
 @keyframes spin {
   to {
     transform: rotate(360deg);
-  }
-}
-
-@media (max-width: 768px) {
-  .relative {
-    max-width: 500px;
-  }
-}
-
-@media (max-width: 480px) {
-  .h-\[45px\] {
-    height: 56px;
-  }
-  
-  .px-6 {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-  
-  .gap-6 {
-    gap: 12px;
   }
 }
 </style>

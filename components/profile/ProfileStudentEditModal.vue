@@ -1,134 +1,123 @@
-<!-- components/profile/ProfileStudentEditModal.vue -->
 <template>
   <div v-if="isOpen" class="fixed inset-0 z-50 overflow-y-auto">
-    <!-- Backdrop -->
     <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" @click="$emit('close')"></div>
     
-    <!-- Modal -->
-    <div class="flex min-h-full items-center justify-center p-4">
-      <div class="relative bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-        <!-- Header -->
-        <div class="flex items-center justify-between p-6 border-b border-gray-200">
+    <div class="flex min-h-full items-center justify-center p-2 sm:p-4">
+      <div class="relative bg-white rounded-lg shadow-xl w-full max-w-[320px] sm:max-w-md md:max-w-2xl lg:max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between p-4 sm:p-5 md:p-6 border-b border-gray-200">
           <div>
-            <h3 class="text-xl font-semibold text-gray-900">Edit Profil Siswa</h3>
-            <p class="text-sm text-gray-500 mt-1">Ubah profil siswa sesuai dengan data yang asli</p>
+            <h3 class="text-base sm:text-lg md:text-xl font-semibold text-gray-900">Edit Profil Siswa</h3>
+            <p class="text-xs sm:text-sm text-gray-500 mt-0.5 sm:mt-1">Ubah profil siswa sesuai dengan data yang asli</p>
           </div>
           <button
             @click="$emit('close')"
-            class="text-gray-400 hover:text-gray-600 transition-colors"
+            class="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0 ml-2"
           >
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
             </svg>
           </button>
         </div>
 
-        <!-- Form -->
-        <form @submit.prevent="handleSubmit" class="p-6">
-          <!-- Row 1: Nama Lengkap & Tanggal Lahir -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <form @submit.prevent="handleSubmit" class="p-4 sm:p-5 md:p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6 mb-4 sm:mb-5 md:mb-6">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">
+              <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                 Nama Lengkap
               </label>
               <input
                 v-model="formData.fullname"
                 type="text"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                class="w-full px-3 py-2 sm:px-4 sm:py-2.5 md:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                 required
               />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">
+              <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                 Tanggal Lahir
               </label>
               <div class="relative">
                 <input
                   v-model="formData.dateOfBirth"
                   type="date"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                  class="w-full px-3 py-2 sm:px-4 sm:py-2.5 md:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                 />
-                <svg class="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                 </svg>
               </div>
             </div>
           </div>
 
-          <!-- Row 2: NISN -->
-          <div class="mb-6">
-            <label class="block text-sm font-medium text-gray-700 mb-2">
+          <div class="mb-4 sm:mb-5 md:mb-6">
+            <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
               NISN
             </label>
             <input
               v-model="formData.nisn"
               type="text"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-500 bg-gray-50"
+              class="w-full px-3 py-2 sm:px-4 sm:py-2.5 md:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-500 bg-gray-50"
               readonly
               disabled
             />
           </div>
 
-          <!-- Row 3: Email & No. Telp -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6 mb-4 sm:mb-5 md:mb-6">
+            <!-- <div>
+              <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                 Email
               </label>
               <input
                 v-model="formData.email"
                 type="email"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-500 bg-gray-50"
+                class="w-full px-3 py-2 sm:px-4 sm:py-2.5 md:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-500 bg-gray-50"
                 readonly
                 disabled
               />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">
+            </div> -->
+            <!-- <div>
+              <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                 No. Telp
               </label>
               <input
                 v-model="formData.phoneNo"
                 type="tel"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                class="w-full px-3 py-2 sm:px-4 sm:py-2.5 md:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                 placeholder="Masukkan nomor telepon"
               />
-            </div>
+            </div> -->
           </div>
 
-          <!-- Row 4: Sekolah (readonly for reference) -->
-          <div class="mb-8">
-            <label class="block text-sm font-medium text-gray-700 mb-2">
+          <div class="mb-6 sm:mb-7 md:mb-8">
+            <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
               Sekolah
             </label>
             <input
               v-model="formData.schoolName"
               type="text"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-500 bg-gray-50"
+              class="w-full px-3 py-2 sm:px-4 sm:py-2.5 md:py-3 text-sm sm:text-base border border-gray-300 rounded-lg text-gray-500 bg-gray-50"
               readonly
               disabled
             />
-            <p class="text-xs text-gray-500 mt-1">Hubungi admin untuk mengubah sekolah</p>
+            <p class="text-[10px] sm:text-xs text-gray-500 mt-1">Hubungi admin untuk mengubah sekolah</p>
           </div>
 
-          <!-- Error Message -->
-          <div v-if="error" class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <p class="text-sm text-red-600">{{ error }}</p>
+          <div v-if="error" class="mb-4 sm:mb-5 md:mb-6 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p class="text-xs sm:text-sm text-red-600">{{ error }}</p>
           </div>
 
-          <!-- Buttons -->
-          <div class="flex justify-end space-x-3">
+          <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 sm:gap-3">
             <button
               type="button"
               @click="$emit('close')"
-              class="px-6 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              class="w-full sm:w-auto px-4 sm:px-5 md:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
             >
               Batal
             </button>
             <button
               type="submit"
               :disabled="isSubmitting"
-              class="px-6 py-3 text-sm font-medium text-white bg-gray-900 rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              class="w-full sm:w-auto px-4 sm:px-5 md:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-medium text-white bg-gray-900 rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {{ isSubmitting ? 'Menyimpan...' : 'Simpan Perubahan' }}
             </button>
@@ -161,8 +150,8 @@ const formData = ref({
   fullname: '',
   nisn: '',
   dateOfBirth: '',
-  email: '',
-  phoneNo: '',
+  //email: '',
+  //phoneNo: '',
   schoolName: '',
   schoolDetailId: null,
   schoolValidation: null

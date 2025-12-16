@@ -1,16 +1,13 @@
 <template>
-  <div class="bg-white rounded-lg shadow-sm border border-gray-100">
-    <!-- Header -->
-    <div class="px-6 py-4 border-b border-gray-100">
-      <h2 class="text-xl font-semibold text-gray-900">Ubah Kata Sandi</h2>
+  <div class="bg-white rounded-lg shadow-sm border border-gray-100 w-full max-w-full">
+    <div class="px-4 py-3 md:px-6 md:py-4 border-b border-gray-100">
+      <h2 class="text-lg md:text-xl font-semibold text-gray-900">Ubah Kata Sandi</h2>
     </div>
 
-    <!-- Content -->
-    <div class="p-6">
-      <form @submit.prevent="handleSubmit" class="space-y-6">
-        <!-- Current Password -->
+    <div class="p-4 md:p-6">
+      <form @submit.prevent="handleSubmit" class="space-y-4 md:space-y-6">
         <div>
-          <label for="currentPassword" class="block text-sm font-medium text-gray-900 mb-3">
+          <label for="currentPassword" class="block text-xs md:text-sm font-medium text-gray-900 mb-2 md:mb-3">
             Kata Sandi Saat Ini
           </label>
           <div class="relative">
@@ -18,32 +15,31 @@
               id="currentPassword"
               v-model="form.currentPassword"
               :type="showCurrentPassword ? 'text' : 'password'"
-              class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+              class="w-full px-3 py-2 md:px-4 md:py-3 pr-10 md:pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-sm md:text-base"
               :class="{ 'border-red-300': errors.currentPassword }"
               placeholder="Kata Sandi Saat Ini"
             />
             <button
               type="button"
               @click="showCurrentPassword = !showCurrentPassword"
-              class="absolute inset-y-0 right-0 flex items-center pr-3"
+              class="absolute inset-y-0 right-0 flex items-center pr-2 md:pr-3"
             >
-              <svg v-if="showCurrentPassword" class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg v-if="showCurrentPassword" class="w-4 h-4 md:w-5 md:h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"/>
               </svg>
-              <svg v-else class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg v-else class="w-4 h-4 md:w-5 md:h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
               </svg>
             </button>
           </div>
-          <div v-if="errors.currentPassword" class="mt-2 text-sm text-red-600">
+          <div v-if="errors.currentPassword" class="mt-1.5 md:mt-2 text-xs md:text-sm text-red-600">
             {{ errors.currentPassword }}
           </div>
         </div>
 
-        <!-- New Password -->
         <div>
-          <label for="newPassword" class="block text-sm font-medium text-gray-900 mb-3">
+          <label for="newPassword" class="block text-xs md:text-sm font-medium text-gray-900 mb-2 md:mb-3">
             Kata Sandi Baru
           </label>
           <div class="relative">
@@ -51,29 +47,28 @@
               id="newPassword"
               v-model="form.newPassword"
               :type="showNewPassword ? 'text' : 'password'"
-              class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+              class="w-full px-3 py-2 md:px-4 md:py-3 pr-10 md:pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-sm md:text-base"
               :class="{ 'border-red-300': errors.newPassword }"
               placeholder="Kata Sandi Baru"
             />
             <button
               type="button"
               @click="showNewPassword = !showNewPassword"
-              class="absolute inset-y-0 right-0 flex items-center pr-3"
+              class="absolute inset-y-0 right-0 flex items-center pr-2 md:pr-3"
             >
-              <svg v-if="showNewPassword" class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg v-if="showNewPassword" class="w-4 h-4 md:w-5 md:h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"/>
               </svg>
-              <svg v-else class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg v-else class="w-4 h-4 md:w-5 md:h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
               </svg>
             </button>
           </div>
-          <div v-if="errors.newPassword" class="mt-2 text-sm text-red-600">
+          <div v-if="errors.newPassword" class="mt-1.5 md:mt-2 text-xs md:text-sm text-red-600">
             {{ errors.newPassword }}
           </div>
-          <!-- Password strength indicator -->
-          <div v-if="form.newPassword" class="mt-2">
+          <div v-if="form.newPassword" class="mt-1.5 md:mt-2">
             <div class="flex space-x-1 mb-1">
               <div 
                 v-for="i in 4" 
@@ -88,9 +83,8 @@
           </div>
         </div>
 
-        <!-- Confirm Password -->
         <div>
-          <label for="confirmPassword" class="block text-sm font-medium text-gray-900 mb-3">
+          <label for="confirmPassword" class="block text-xs md:text-sm font-medium text-gray-900 mb-2 md:mb-3">
             Konfirmasi Kata Sandi
           </label>
           <div class="relative">
@@ -98,33 +92,32 @@
               id="confirmPassword"
               v-model="form.confirmPassword"
               :type="showConfirmPassword ? 'text' : 'password'"
-              class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+              class="w-full px-3 py-2 md:px-4 md:py-3 pr-10 md:pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-sm md:text-base"
               :class="{ 'border-red-300': errors.confirmPassword }"
               placeholder="Masukkan Ulang Kata Sandi Baru"
             />
             <button
               type="button"
               @click="showConfirmPassword = !showConfirmPassword"
-              class="absolute inset-y-0 right-0 flex items-center pr-3"
+              class="absolute inset-y-0 right-0 flex items-center pr-2 md:pr-3"
             >
-              <svg v-if="showConfirmPassword" class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg v-if="showConfirmPassword" class="w-4 h-4 md:w-5 md:h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"/>
               </svg>
-              <svg v-else class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg v-else class="w-4 h-4 md:w-5 md:h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
               </svg>
             </button>
           </div>
-          <div v-if="errors.confirmPassword" class="mt-2 text-sm text-red-600">
+          <div v-if="errors.confirmPassword" class="mt-1.5 md:mt-2 text-xs md:text-sm text-red-600">
             {{ errors.confirmPassword }}
           </div>
-          <!-- Password match indicator -->
-          <div v-if="form.confirmPassword" class="mt-2 flex items-center">
-            <svg v-if="form.newPassword === form.confirmPassword" class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div v-if="form.confirmPassword" class="mt-1.5 md:mt-2 flex items-center">
+            <svg v-if="form.newPassword === form.confirmPassword" class="w-3.5 h-3.5 md:w-4 md:h-4 text-green-500 mr-1.5 md:mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
             </svg>
-            <svg v-else class="w-4 h-4 text-red-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg v-else class="w-3.5 h-3.5 md:w-4 md:h-4 text-red-500 mr-1.5 md:mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
             </svg>
             <p class="text-xs" :class="form.newPassword === form.confirmPassword ? 'text-green-600' : 'text-red-600'">
@@ -133,19 +126,18 @@
           </div>
         </div>
 
-        <!-- Submit Button -->
-        <div class="flex justify-end pt-4">
+        <div class="flex justify-end pt-3 md:pt-4">
           <button
             type="submit"
             :disabled="isSubmitting || !isFormValid"
             :class="[
-              'px-6 py-2 rounded-lg text-sm font-medium transition-colors flex items-center',
+              'px-4 py-2 md:px-6 md:py-2.5 rounded-lg text-xs md:text-sm font-medium transition-colors flex items-center',
               isFormValid && !isSubmitting
                 ? 'bg-gray-900 text-white hover:bg-gray-800'
                 : 'bg-gray-300 text-gray-500 cursor-not-allowed'
             ]"
           >
-            <svg v-if="isSubmitting" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+            <svg v-if="isSubmitting" class="animate-spin -ml-1 mr-2 h-3.5 w-3.5 md:h-4 md:w-4 text-white" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
@@ -156,7 +148,6 @@
     </div>
   </div>
 
-  <!-- Modal Component -->
   <Modal
     :isOpen="isModalOpen"
     :type="modalType"
@@ -187,14 +178,12 @@ const showCurrentPassword = ref(false)
 const showNewPassword = ref(false)
 const showConfirmPassword = ref(false)
 
-// MODAL STATE
 const isModalOpen = ref(false)
 const modalType = ref('success')
 const modalTitle = ref('')
 const modalMessage = ref('')
 const modalConfirmText = ref('Oke')
 
-// MODAL FUNCTIONS
 const showModal = (type, title, message) => {
   modalType.value = type
   modalTitle.value = title

@@ -1,16 +1,15 @@
-<!-- components/profile/Profile.vue -->
 <template>
   <div class="bg-white rounded-xl border border-border-gray">
-    <div class="px-6 py-4">
-      <h2 class="text-xl font-semibold text-primary-green">
+    <div class="px-4 py-3 md:px-6 md:py-4">
+      <h2 class="text-lg md:text-xl font-semibold text-primary-green">
         Pengaturan Profil
       </h2>
     </div>
 
-    <div class="p-6">
-      <div class="flex items-start space-x-6 mb-8">
-        <div class="relative">
-          <div class="w-24 h-24 rounded-full overflow-hidden">
+    <div class="p-4 md:p-6">
+      <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 mb-6 md:mb-8">
+        <div class="relative flex-shrink-0">
+          <div class="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden">
             <img
               v-if="profileData.avatar"
               :src="profileData.avatar"
@@ -18,19 +17,19 @@
               class="w-full h-full object-cover"
             />
             <div v-else class="w-full h-full flex items-center justify-center rounded-full bg-primary-green">
-              <span class="text-white font-semibold text-3xl">{{ userInitials }}</span>
+              <span class="text-white font-semibold text-2xl md:text-3xl">{{ userInitials }}</span>
             </div>
           </div>
         </div>
 
-        <div class="flex-1">
+        <div class="flex-1 text-center sm:text-left">
           <h3
             @click="fileInput?.click()"
-            class="text-lg font-medium text-primary-green mb-1 underline cursor-pointer"
+            class="text-base md:text-lg font-medium text-primary-green mb-1 underline cursor-pointer"
           >
             Ubah Profil
           </h3>
-          <p class="text-sm text-secondary-gray mb-4">PNG, JPEG under 2MB</p>
+          <p class="text-xs md:text-sm text-secondary-gray mb-3 md:mb-4">PNG, JPEG under 2MB</p>
 
           <input
             ref="fileInput"
@@ -42,65 +41,56 @@
         </div>
       </div>
 
-      <div class="space-y-6 border border-border-gray p-3 border-b rounded-xl">
-        <div
-          class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
-        >
+      <div class="space-y-4 md:space-y-6 border border-border-gray p-3 md:p-4 rounded-xl">
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 py-3 md:py-4 border-b border-border-gray -mx-3 px-3">
           <div class="flex-1">
-            <label
-              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
-              >NAMA LENGKAP</label
-            >
+            <label class="text-xs md:text-sm font-medium text-[#ADB5BD] uppercase tracking-wider">
+              NAMA LENGKAP
+            </label>
           </div>
-          <div class="flex-1 text-right">
-            <span class="text-primary-green font-medium">{{
-              profileData.fullname
-            }}</span>
+          <div class="flex-1 sm:text-right">
+            <span class="text-sm md:text-base text-primary-green font-medium break-words">
+              {{ profileData.fullname }}
+            </span>
           </div>
         </div>
 
         <div
           v-if="isStudent"
-          class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
+          class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 py-3 md:py-4 border-b border-border-gray -mx-3 px-3"
         >
           <div class="flex-1">
-            <label
-              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
-              >NISN/NIM</label
-            >
+            <label class="text-xs md:text-sm font-medium text-[#ADB5BD] uppercase tracking-wider">
+              NISN/NIM
+            </label>
           </div>
-          <div class="flex-1 text-right">
-            <span
-              class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[#EDF8F0] text-[#4CC16B]"
-            >
-              <span class="mr-2"><UserNum /></span
-              >{{ profileData.nisn || "-" }}</span
-            >
+          <div class="flex-1 sm:text-right">
+            <span class="inline-flex items-center px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-medium bg-[#EDF8F0] text-[#4CC16B]">
+              <span class="mr-1 md:mr-2"><UserNum /></span>
+              {{ profileData.nisn || "-" }}
+            </span>
           </div>
         </div>
 
-        <div
-          class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
-        >
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 py-3 md:py-4 border-b border-border-gray -mx-3 px-3">
           <div class="flex-1">
-            <label
-              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
-              >STATUS</label
-            >
+            <label class="text-xs md:text-sm font-medium text-[#ADB5BD] uppercase tracking-wider">
+              STATUS
+            </label>
           </div>
-          <div class="flex-1 text-right">
+          <div class="flex-1 sm:text-right">
             <span
-              class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[#E5F3FE] text-[#0789F2]"
+              class="inline-flex items-center px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-medium bg-[#E5F3FE] text-[#0789F2]"
               v-if="isStudent"
             >
-              <span class="mr-2"><UserStatus/></span>
+              <span class="mr-1 md:mr-2"><UserStatus/></span>
               Siswa
             </span>
             <span
-              class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[#FFF4EE] text-[#FA9E53]"
+              class="inline-flex items-center px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-medium bg-[#FFF4EE] text-[#FA9E53]"
               v-else-if="isParent"
             >
-              <span class="mr-2"><UserCircle /></span>
+              <span class="mr-1 md:mr-2"><UserCircle /></span>
               Orang Tua
             </span>
           </div>
@@ -108,106 +98,85 @@
 
         <div
           v-if="isStudent"
-          class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
+          class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 py-3 md:py-4 border-b border-border-gray -mx-3 px-3"
         >
           <div class="flex-1">
-            <label
-              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
-              >SEKOLAH</label
-            >
+            <label class="text-xs md:text-sm font-medium text-[#ADB5BD] uppercase tracking-wider">
+              SEKOLAH
+            </label>
           </div>
-          <div class="flex-1 text-right flex items-center justify-end">
-            <span class="text-primary-green font-medium">{{
-              profileData.schoolDetails || "-"
-            }}</span>
+          <div class="flex-1 sm:text-right">
+            <span class="text-sm md:text-base text-primary-green font-medium break-words">
+              {{ profileData.schoolDetails || "-" }}
+            </span>
           </div>
         </div>
 
-        <div
-          class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
-        >
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 py-3 md:py-4 border-b border-border-gray -mx-3 px-3">
           <div class="flex-1">
-            <label
-              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
-              >EMAIL</label
-            >
+            <label class="text-xs md:text-sm font-medium text-[#ADB5BD] uppercase tracking-wider">
+              EMAIL
+            </label>
           </div>
-          <div class="flex-1 text-right">
-            <span class="text-primary-green font-medium">{{
-              profileData.email
-            }}</span>
+          <div class="flex-1 sm:text-right">
+            <span class="text-sm md:text-base text-primary-green font-medium break-words">
+              {{ profileData.email }}
+            </span>
           </div>
         </div>
 
         <div
           v-if="isStudent"
-          class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
+          class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 py-3 md:py-4 border-b border-border-gray -mx-3 px-3"
         >
           <div class="flex-1">
-            <label
-              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
-              >TANGGAL LAHIR</label
-            >
+            <label class="text-xs md:text-sm font-medium text-[#ADB5BD] uppercase tracking-wider">
+              TANGGAL LAHIR
+            </label>
           </div>
-          <div class="flex-1 text-right">
-            <span class="text-primary-green font-medium">{{
-              formatDate(profileData.birthDate)
-            }}</span>
+          <div class="flex-1 sm:text-right">
+            <span class="text-sm md:text-base text-primary-green font-medium">
+              {{ formatDate(profileData.birthDate) }}
+            </span>
           </div>
         </div>
 
-        <div
-          class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
-        >
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 py-3 md:py-4 border-b border-border-gray -mx-3 px-3">
           <div class="flex-1">
-            <label
-              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
-              >NO. TELP</label
-            >
+            <label class="text-xs md:text-sm font-medium text-[#ADB5BD] uppercase tracking-wider">
+              NO. TELP
+            </label>
           </div>
-          <div class="flex-1 text-right text-primary-green">
-            <span class="">{{ profileData.phone || "-" }}</span>
+          <div class="flex-1 sm:text-right text-primary-green">
+            <span class="text-sm md:text-base break-words">{{ profileData.phone || "-" }}</span>
           </div>
         </div>
 
-        <div class="flex justify-between items-center py-4">
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 py-3 md:py-4">
           <div class="flex-1">
-            <label
-              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
-              >ALAMAT</label
-            >
+            <label class="text-xs md:text-sm font-medium text-[#ADB5BD] uppercase tracking-wider">
+              ALAMAT
+            </label>
           </div>
-          <div class="flex-1 text-right text-primary-green">
-            <span class="">{{ profileData.address || "-" }}</span>
+          <div class="flex-1 sm:text-right text-primary-green">
+            <span class="text-sm md:text-base break-words">{{ profileData.address || "-" }}</span>
           </div>
         </div>
       </div>
 
-      <div class="flex justify-end mt-8">
+      <div class="flex justify-center sm:justify-end mt-6 md:mt-8">
         <button
           @click="handleEdit"
-          class="inline-flex items-center py-2 gap-2 text-sm font-medium text-primary-green border border-border-gray -mx-3 px-3 rounded-xl"
+          class="inline-flex items-center py-2 px-4 gap-2 text-sm font-medium text-primary-green border border-border-gray rounded-xl hover:bg-gray-50 transition-colors w-full sm:w-auto justify-center"
         >
           <span>Ubah</span>
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 21 21"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <svg width="14" height="14" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clip-path="url(#clip0_4319_2151)">
-              <path
-                d="M15.75 8.74831L12.25 5.24831M2.1875 18.8108L5.14882 18.4818C5.51063 18.4416 5.69153 18.4215 5.86062 18.3667C6.01063 18.3182 6.15339 18.2496 6.28503 18.1628C6.4334 18.0649 6.5621 17.9362 6.81951 17.6788L18.375 6.12331C19.3415 5.15681 19.3415 3.58981 18.375 2.62331C17.4085 1.65681 15.8415 1.65681 14.875 2.62331L3.31951 14.1788C3.0621 14.4362 2.9334 14.5649 2.83556 14.7133C2.74875 14.8449 2.68014 14.9877 2.63157 15.1377C2.57684 15.3068 2.55674 15.4877 2.51654 15.8495L2.1875 18.8108Z"
-                stroke="#082519"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
+              <path d="M15.75 8.74831L12.25 5.24831M2.1875 18.8108L5.14882 18.4818C5.51063 18.4416 5.69153 18.4215 5.86062 18.3667C6.01063 18.3182 6.15339 18.2496 6.28503 18.1628C6.4334 18.0649 6.5621 17.9362 6.81951 17.6788L18.375 6.12331C19.3415 5.15681 19.3415 3.58981 18.375 2.62331C17.4085 1.65681 15.8415 1.65681 14.875 2.62331L3.31951 14.1788C3.0621 14.4362 2.9334 14.5649 2.83556 14.7133C2.74875 14.8449 2.68014 14.9877 2.63157 15.1377C2.57684 15.3068 2.55674 15.4877 2.51654 15.8495L2.1875 18.8108Z" stroke="#082519" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </g>
             <defs>
               <clipPath id="clip0_4319_2151">
-                <rect width="21" height="21" fill="white" />
+                <rect width="21" height="21" fill="white"/>
               </clipPath>
             </defs>
           </svg>
@@ -218,124 +187,95 @@
 
   <div
     v-if="isParent"
-    class="bg-white rounded-xl border border-border-gray mt-6"
+    class="bg-white rounded-xl border border-border-gray mt-4 md:mt-6"
   >
-    <div class="px-6 py-4">
-      <h2 class="text-xl font-semibold text-primary-green">Peserta Didik</h2>
+    <div class="px-4 py-3 md:px-6 md:py-4">
+      <h2 class="text-lg md:text-xl font-semibold text-primary-green">Peserta Didik</h2>
     </div>
 
-    <div class="p-6">
-      <div class="space-y-6 border border-border-gray p-3 border-b rounded-xl">
-        <div
-          class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
-        >
+    <div class="p-4 md:p-6">
+      <div class="space-y-4 md:space-y-6 border border-border-gray p-3 md:p-4 rounded-xl">
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 py-3 md:py-4 border-b border-border-gray -mx-3 px-3">
           <div class="flex-1">
-            <label
-              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
-              >NAMA LENGKAP</label
-            >
+            <label class="text-xs md:text-sm font-medium text-[#ADB5BD] uppercase tracking-wider">
+              NAMA LENGKAP
+            </label>
           </div>
-          <div class="flex-1 text-right">
-            <span class="text-primary-green font-medium">{{
-              studentData.fullname || "-"
-            }}</span>
+          <div class="flex-1 sm:text-right">
+            <span class="text-sm md:text-base text-primary-green font-medium break-words">
+              {{ studentData.fullname || "-" }}
+            </span>
           </div>
         </div>
 
-        <div
-          class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
-        >
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 py-3 md:py-4 border-b border-border-gray -mx-3 px-3">
           <div class="flex-1">
-            <label
-              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
-              >NISN</label
-            >
+            <label class="text-xs md:text-sm font-medium text-[#ADB5BD] uppercase tracking-wider">
+              NISN
+            </label>
           </div>
-          <div class="flex-1 text-right">
-            <span
-              class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[#EDF8F0] text-[#4CC16B]"
-            >
-              <span class="mr-2"><UserNum /></span
-              >{{ studentData.nisn || "-" }}</span
-            >
+          <div class="flex-1 sm:text-right">
+            <span class="inline-flex items-center px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-medium bg-[#EDF8F0] text-[#4CC16B]">
+              <span class="mr-1 md:mr-2"><UserNum /></span>
+              {{ studentData.nisn || "-" }}
+            </span>
           </div>
         </div>
 
-        <div
-          class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
-        >
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 py-3 md:py-4 border-b border-border-gray -mx-3 px-3">
           <div class="flex-1">
-            <label
-              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
-              >STATUS</label
-            >
+            <label class="text-xs md:text-sm font-medium text-[#ADB5BD] uppercase tracking-wider">
+              STATUS
+            </label>
           </div>
-          <div class="flex-1 text-right">
-            <span
-              class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[#E5F3FE] text-[#0789F2]"
-            >
+          <div class="flex-1 sm:text-right">
+            <span class="inline-flex items-center px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-medium bg-[#E5F3FE] text-[#0789F2]">
               <span class="mr-1"><UserStatus /></span>
               Siswa Aktif
             </span>
           </div>
         </div>
 
-        <div
-          class="flex justify-between items-center py-4 border-b border-border-gray -mx-3 px-3"
-        >
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 py-3 md:py-4 border-b border-border-gray -mx-3 px-3">
           <div class="flex-1">
-            <label
-              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
-              >TANGGAL LAHIR</label
-            >
+            <label class="text-xs md:text-sm font-medium text-[#ADB5BD] uppercase tracking-wider">
+              TANGGAL LAHIR
+            </label>
           </div>
-          <div class="flex-1 text-right">
-            <span class="text-primary-green font-medium">{{
-              formatDate(studentData.birthDate) || "-"
-            }}</span>
+          <div class="flex-1 sm:text-right">
+            <span class="text-sm md:text-base text-primary-green font-medium">
+              {{ formatDate(studentData.birthDate) || "-" }}
+            </span>
           </div>
         </div>
 
-        <div class="flex justify-between items-center py-4 -mx-3 px-3">
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 py-3 md:py-4 -mx-3 px-3">
           <div class="flex-1">
-            <label
-              class="text-sm font-medium text-[#ADB5BD] uppercase tracking-wider"
-              >SEKOLAH</label
-            >
+            <label class="text-xs md:text-sm font-medium text-[#ADB5BD] uppercase tracking-wider">
+              SEKOLAH
+            </label>
           </div>
-          <div class="flex-1 text-right flex items-center justify-end">
-            <span class="text-primary-green font-medium">{{
-              studentData.schoolName || "-"
-            }}</span>
+          <div class="flex-1 sm:text-right">
+            <span class="text-sm md:text-base text-primary-green font-medium break-words">
+              {{ studentData.schoolName || "-" }}
+            </span>
           </div>
         </div>
       </div>
 
-      <div class="flex justify-end mt-8">
+      <div class="flex justify-center sm:justify-end mt-6 md:mt-8">
         <button
           @click="handleEditStudent"
-          class="inline-flex items-center py-2 gap-2 text-sm font-medium text-primary-green border border-border-gray px-3 rounded-xl"
+          class="inline-flex items-center py-2 px-4 gap-2 text-sm font-medium text-primary-green border border-border-gray rounded-xl hover:bg-gray-50 transition-colors w-full sm:w-auto justify-center"
         >
           <span>Ubah</span>
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 21 21"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <svg width="14" height="14" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clip-path="url(#clip0_4319_2151)">
-              <path
-                d="M15.75 8.74831L12.25 5.24831M2.1875 18.8108L5.14882 18.4818C5.51063 18.4416 5.69153 18.4215 5.86062 18.3667C6.01063 18.3182 6.15339 18.2496 6.28503 18.1628C6.4334 18.0649 6.5621 17.9362 6.81951 17.6788L18.375 6.12331C19.3415 5.15681 19.3415 3.58981 18.375 2.62331C17.4085 1.65681 15.8415 1.65681 14.875 2.62331L3.31951 14.1788C3.0621 14.4362 2.9334 14.5649 2.83556 14.7133C2.74875 14.8449 2.68014 14.9877 2.63157 15.1377C2.57684 15.3068 2.55674 15.4877 2.51654 15.8495L2.1875 18.8108Z"
-                stroke="#082519"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
+              <path d="M15.75 8.74831L12.25 5.24831M2.1875 18.8108L5.14882 18.4818C5.51063 18.4416 5.69153 18.4215 5.86062 18.3667C6.01063 18.3182 6.15339 18.2496 6.28503 18.1628C6.4334 18.0649 6.5621 17.9362 6.81951 17.6788L18.375 6.12331C19.3415 5.15681 19.3415 3.58981 18.375 2.62331C17.4085 1.65681 15.8415 1.65681 14.875 2.62331L3.31951 14.1788C3.0621 14.4362 2.9334 14.5649 2.83556 14.7133C2.74875 14.8449 2.68014 14.9877 2.63157 15.1377C2.57684 15.3068 2.55674 15.4877 2.51654 15.8495L2.1875 18.8108Z" stroke="#082519" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </g>
             <defs>
               <clipPath id="clip0_4319_2151">
-                <rect width="21" height="21" fill="white" />
+                <rect width="21" height="21" fill="white"/>
               </clipPath>
             </defs>
           </svg>
@@ -344,6 +284,7 @@
     </div>
   </div>
 
+  <!-- Education History Component -->
   <EducationHistory
     :educationData="educationHistory"
     @add="handleAddEducation"
@@ -351,6 +292,7 @@
     @delete="handleDeleteEducation"
   />
 
+  <!-- Modals -->
   <ProfileEditModal
     :isOpen="isEditModalOpen"
     :userData="profileData"
@@ -378,6 +320,7 @@
     @close="closeModal"
   />
 </template>
+
 
 <script setup>
 import { useAuthStore } from "@/store/auth";

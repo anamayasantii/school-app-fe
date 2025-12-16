@@ -1,23 +1,18 @@
 <template>
-  <div class="min-h-screen flex">
-    <!-- Left Section - Image Background -->
+  <div class="min-h-screen flex flex-col md:flex-row">
     <div
-      class="flex-1 relative bg-cover bg-center bg-no-repeat"
+      class="hidden md:flex md:flex-1 relative bg-cover bg-center bg-no-repeat"
       :style="`background-image: url('${backgroundImage}')`"
     ></div>
 
-    <!-- Right Section - Login Form -->
-    <div class="flex-1 bg-white flex flex-col justify-center px-12 py-12">
+    <div class="flex-1 bg-white flex flex-col justify-center px-6 sm:px-8 md:px-12 py-8 md:py-12">
       <div class="max-w-md mx-auto w-full">
-        <!-- Header -->
-        <div class="mb-8">
-          <h1 class="text-3xl font-bold text-gray-900 mb-3">Masuk</h1>
-          <p class="text-gray-600">Masuk dengan informasi kredensial Anda</p>
+        <div class="mb-6 md:mb-8">
+          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 md:mb-3">Masuk</h1>
+          <p class="text-sm sm:text-base text-gray-600">Masuk dengan informasi kredensial Anda</p>
         </div>
 
-        <!-- Login Form -->
-        <form @submit.prevent="handleSubmit" class="space-y-6">
-          <!-- Email Field -->
+        <form @submit.prevent="handleSubmit" class="space-y-4 md:space-y-6">
           <div>
             <label
               for="email"
@@ -31,7 +26,7 @@
               type="email"
               required
               :class="[
-                'w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200',
+                'w-full px-4 py-2.5 md:py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm sm:text-base',
                 form.errors.email
                   ? 'border-red-300 error-input'
                   : 'border-gray-300',
@@ -44,7 +39,6 @@
             </p>
           </div>
 
-          <!-- Password Field -->
           <div>
             <div class="flex items-center justify-between mb-2">
               <label
@@ -67,7 +61,7 @@
                 :type="showPassword ? 'text' : 'password'"
                 required
                 :class="[
-                  'w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 pr-12',
+                  'w-full px-4 py-2.5 md:py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 pr-12 text-sm sm:text-base',
                   form.errors.password
                     ? 'border-red-300 error-input'
                     : 'border-gray-300',
@@ -121,11 +115,10 @@
             </p>
           </div>
 
-          <!-- Login Button -->
           <button
             type="submit"
             :disabled="isLoading || !isFormValid"
-            class="w-full py-3 px-4 bg-gray-900 hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-all duration-200 transform hover:scale-105 disabled:hover:scale-100"
+            class="w-full py-2.5 md:py-3 px-4 bg-gray-900 hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-all duration-200 transform hover:scale-105 disabled:hover:scale-100 text-sm sm:text-base"
           >
             <span v-if="!isLoading">Masuk</span>
             <div v-else class="flex items-center justify-center">
@@ -154,8 +147,7 @@
           </button>
         </form>
 
-        <!-- Register Link -->
-        <div class="mt-8 text-center">
+        <div class="mt-6 md:mt-8 text-center">
           <p class="text-sm text-gray-600">
             Belum memiliki akun?
             <NuxtLink
@@ -167,14 +159,13 @@
           </p>
         </div>
 
-        <!-- Error Message -->
         <div
           v-if="errorMessage"
-          class="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg"
+          class="mt-4 p-3 md:p-4 bg-red-50 border border-red-200 rounded-lg"
         >
           <div class="flex">
             <svg
-              class="w-5 h-5 text-red-400"
+              class="w-5 h-5 text-red-400 flex-shrink-0"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -310,10 +301,8 @@ const handleSubmit = async () => {
 
     const { token, expiresAt } = result.data;
 
-    // Set token dulu sebelum fetchUser
     authStore.setAuthToken(token, expiresAt);
     
-    // Fetch user data
     await authStore.fetchUser();
 
     if (checkAdminRole(authStore.user)) {
@@ -323,8 +312,14 @@ const handleSubmit = async () => {
       return;
     }
 
-    // Cek apakah profile sudah complete
-    const isProfileComplete = authStore.user?.nisn && authStore.user?.schoolDetail;
+    let isProfileComplete = false;
+    
+    if (authStore.user?.role === 'parent') {
+      isProfileComplete = authStore.user?.child?.length > 0 && 
+                         authStore.user.child.some(child => child.nisn && child.schoolDetail);
+    } else {
+      isProfileComplete = authStore.user?.nisn && authStore.user?.schoolDetail;
+    }
 
     if (isProfileComplete) {
       await navigateTo("/");
@@ -382,5 +377,11 @@ a {
 .error-input {
   border-color: #ef4444;
   box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
+@media (max-width: 640px) {
+  input, button {
+    font-size: 16px;
+  }
 }
 </style>

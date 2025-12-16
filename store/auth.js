@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "@/lib/axios";
-import { ref, computed, readonly } from "vue";
+import { ref, computed } from "vue";
 
 import Cookies from "js-cookie";
 
@@ -9,6 +9,7 @@ export const useAuthStore = defineStore("auth", () => {
 
   const isLoggedIn = computed(() => {
     const token = Cookies.get("token");
+    console.log('isLoggedIn check - token:', !!token, 'user:', !!user.value);
     return !!token && !!user.value;
   });
 
@@ -60,7 +61,7 @@ export const useAuthStore = defineStore("auth", () => {
   };
 
   return {
-    user: readonly(user),
+    user,
     isLoggedIn,
     fetchUser,
     logout,

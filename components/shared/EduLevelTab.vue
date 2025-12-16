@@ -1,8 +1,5 @@
-komponen navigasi tab
 <template>
-  <!-- Education Level Tabs -->
   <div class="mb-6 sm:mb-8">
-    <!-- Mobile: Stack vertically -->
     <div
       class="flex flex-col sm:hidden bg-white border border-border-gray rounded-xl p-1 gap-1 w-full"
     >
@@ -22,7 +19,6 @@ komponen navigasi tab
       </button>
     </div>
 
-    <!-- Desktop: Horizontal - FULL WIDTH VERSION -->
     <div
       class="hidden sm:flex bg-white border border-border-gray rounded-xl p-1 gap-1 w-full"
     >
@@ -45,7 +41,6 @@ komponen navigasi tab
 </template>
 
 <script setup>
-// Define props
 const props = defineProps({
   activeTab: {
     type: String,
@@ -53,10 +48,8 @@ const props = defineProps({
   },
 });
 
-// Define emits
 const emit = defineEmits(["changeEducationLevel"]);
 
-// Education tabs data
 const educationTabs = [
   {
     name: "SD",
@@ -97,7 +90,6 @@ const educationTabs = [
 </script>
 
 <style scoped>
-/* Additional styles if needed */
 button {
   user-select: none;
 }

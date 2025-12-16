@@ -1,7 +1,6 @@
 <template>
   <DashboardLayout>
     <div class="container mx-auto py-8 px-4">
-      <!-- Toast Notification -->
       <div
         v-if="toastMessage"
         class="fixed top-4 right-4 z-50 bg-white border rounded-lg shadow-lg p-4 max-w-md animate-in slide-in-from-top-5"
@@ -29,7 +28,6 @@
         </div>
       </div>
 
-      <!-- Image Modal -->
       <Dialog v-model:open="showImageModal">
         <DialogContent class="max-w-3xl">
           <DialogHeader>
@@ -64,13 +62,6 @@
         >
           <CardContent class="p-4">
             <div class="flex items-start gap-4">
-              <!-- Avatar -->
-              <!-- <Avatar class="h-12 w-12 flex-shrink-0">
-              <AvatarImage :src="review.image" :alt="review.fullname" />
-              <AvatarFallback>{{ review.fullname.charAt(0) }}</AvatarFallback>
-            </Avatar> -->
-
-              <!-- Content -->
               <div class="flex-1 min-w-0">
                 <div class="flex items-start justify-between gap-4 mb-2">
                   <div>
@@ -116,7 +107,9 @@
                     <Button
                       variant="outline"
                       size="sm"
-                      @click="openImageModal(review.image)"
+                      @click="
+                        openImageModal(review.schoolValidation?.[0]?.file)
+                      "
                     >
                       Lihat Foto
                     </Button>
@@ -157,7 +150,6 @@ import axios from "@/lib/axios";
 import Cookies from "js-cookie";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Dialog,
@@ -176,12 +168,10 @@ const reviews = ref([]);
 const loading = ref(true);
 const processing = ref({});
 
-// Toast state
 const toastMessage = ref("");
 const toastTitle = ref("");
 const toastVariant = ref("default");
 
-// Image modal state
 const showImageModal = ref(false);
 const selectedImage = ref("");
 

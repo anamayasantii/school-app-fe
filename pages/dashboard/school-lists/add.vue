@@ -366,9 +366,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Loader2, Plus, X, Upload } from 'lucide-vue-next'
 import DashboardLayout from '~/layouts/dashboardLayout.vue'
 
-definePageMeta({
-  layout: 'dashboardLayout'
-})
+// definePageMeta({
+//   layout: 'dashboardLayout'
+// })
 
 const loading = ref(false)
 const uploading = ref(false)
