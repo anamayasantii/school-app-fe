@@ -1,31 +1,27 @@
 <template>
-  <div class="min-h-screen bg-gray-50 flex">
-    <!-- Left Side - Background -->
+  <div class="min-h-screen bg-gray-50 flex flex-col md:flex-row">
     <div
-      class="flex-1 relative bg-cover bg-center bg-no-repeat"
+      class="hidden md:flex md:flex-1 relative bg-cover bg-center bg-no-repeat"
       :style="`background-image: url('${backgroundImage}')`"
     ></div>
 
-    <!-- Right Side - Form -->
-    <div class="w-full lg:w-1/2 flex items-center justify-center p-8">
+    <div class="flex-1 flex items-center justify-center px-6 sm:px-8 py-8 md:py-12">
       <div class="w-full max-w-md">
-        <!-- Progress Indicator -->
-        <div class="text-center mb-8">
+        <div class="text-center mb-6 md:mb-8">
           <div class="text-sm text-teal-600 font-medium mb-2">
             LANGKAH {{ currentStep }} DARI 3
           </div>
         </div>
 
-        <!-- Form Title -->
-        <div class="text-center mb-8">
-          <h1 class="text-2xl font-bold text-gray-900 mb-2">
+        <div class="text-center mb-6 md:mb-8">
+          <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
             {{
               userRole === "student"
                 ? "Tambahkan Pendidikan Saat Ini"
                 : "Pendidikan Peserta Didik Anda"
             }}
           </h1>
-          <p class="text-gray-600">
+          <p class="text-sm sm:text-base text-gray-600">
             {{
               userRole === "student"
                 ? "Tambahkan informasi tentang sekolah atau pendidikan yang ditempuh saat ini."
@@ -34,9 +30,7 @@
           </p>
         </div>
 
-        <!-- Form Fields -->
-        <div class="space-y-6">
-          <!-- School Search Autocomplete -->
+        <div class="space-y-4 md:space-y-6">
           <div class="relative">
             <label class="block text-sm font-medium text-gray-700 mb-2">
               Nama Sekolah
@@ -48,12 +42,11 @@
                 @focus="showDropdown = true"
                 @blur="handleBlur"
                 type="text"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                class="w-full px-4 py-2.5 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm sm:text-base"
                 placeholder="Ketik nama sekolah..."
                 autocomplete="off"
               />
 
-              <!-- Loading Indicator -->
               <div
                 v-if="isSearching"
                 class="absolute right-3 top-1/2 transform -translate-y-1/2"
@@ -80,36 +73,33 @@
               </div>
             </div>
 
-            <!-- Dropdown Results -->
             <div
               v-if="
                 showDropdown &&
                 (schoolOptions.length > 0 ||
                   (schoolSearchQuery && !isSearching))
               "
-              class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+              class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-48 sm:max-h-60 overflow-y-auto"
             >
-              <!-- Search Results -->
               <div v-if="schoolOptions.length > 0">
                 <button
                   v-for="school in schoolOptions"
                   :key="school.id"
                   @mousedown="selectSchool(school)"
                   type="button"
-                  class="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0 focus:bg-gray-50 focus:outline-none"
+                  class="w-full text-left px-3 sm:px-4 py-2 sm:py-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0 focus:bg-gray-50 focus:outline-none"
                 >
-                  <div class="font-medium text-gray-900">{{ school.name }}</div>
-                  <div class="text-sm text-gray-600">
+                  <div class="font-medium text-gray-900 text-sm sm:text-base">{{ school.name }}</div>
+                  <div class="text-xs sm:text-sm text-gray-600">
                     {{ school.accreditationCode }} •
                     {{ school.subDistrictName }}, {{ school.districtName }}
                   </div>
                 </button>
               </div>
 
-              <!-- No Results -->
               <div
                 v-else-if="schoolSearchQuery && !isSearching"
-                class="px-4 py-3 text-gray-500 text-center"
+                class="px-4 py-3 text-gray-500 text-center text-sm"
               >
                 Tidak ada sekolah ditemukan
               </div>
@@ -121,26 +111,24 @@
               Unggah Dokumen Bukti Sekolah
             </label>
 
-            <!-- File Upload Area -->
             <div
               @click="triggerFileInput"
               @dragover.prevent
               @drop.prevent="handleDrop"
               :class="[
-                'w-full border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors',
+                'w-full border-2 border-dashed rounded-lg p-6 sm:p-8 text-center cursor-pointer transition-colors',
                 isUploading
                   ? 'border-teal-400 bg-teal-50'
                   : 'border-gray-300 hover:border-teal-400 hover:bg-gray-50',
               ]"
             >
               <div class="flex flex-col items-center">
-                <!-- Upload Icon -->
                 <div
-                  class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-4"
+                  class="w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 rounded-full flex items-center justify-center mb-3 sm:mb-4"
                 >
                   <svg
                     v-if="!isUploading"
-                    class="w-6 h-6 text-gray-600"
+                    class="w-5 h-5 sm:w-6 sm:h-6 text-gray-600"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -154,7 +142,7 @@
                   </svg>
                   <svg
                     v-else
-                    class="animate-spin h-6 w-6 text-teal-600"
+                    class="animate-spin h-5 w-5 sm:h-6 sm:w-6 text-teal-600"
                     fill="none"
                     viewBox="0 0 24 24"
                   >
@@ -174,8 +162,7 @@
                   </svg>
                 </div>
 
-                <!-- Upload Text -->
-                <p class="text-gray-600 mb-2">
+                <p class="text-sm sm:text-base text-gray-600 mb-2">
                   {{
                     isUploading
                       ? "Mengunggah..."
@@ -184,14 +171,13 @@
                       : "Seret dan lepas file di sini atau Pilih file"
                   }}
                 </p>
-                <p class="text-sm text-gray-500 mb-4">
+                <p class="text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4 px-2">
                   Unggah dokumen untuk membuktikan sebagai verifikasi, dapat
                   berupa foto kartu siswa atau dokumen yang relevan.
                 </p>
               </div>
             </div>
 
-            <!-- Hidden File Input -->
             <input
               ref="fileInput"
               type="file"
@@ -200,15 +186,14 @@
               class="hidden"
             />
 
-            <!-- File Preview -->
             <div
               v-if="selectedFile && !isUploading"
               class="mt-4 p-3 bg-gray-50 rounded-lg"
             >
               <div class="flex items-center justify-between">
-                <div class="flex items-center">
+                <div class="flex items-center min-w-0">
                   <svg
-                    class="w-5 h-5 text-gray-600 mr-2"
+                    class="w-5 h-5 text-gray-600 mr-2 flex-shrink-0"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -220,14 +205,14 @@
                       d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                     />
                   </svg>
-                  <span class="text-sm text-gray-700">{{
+                  <span class="text-sm text-gray-700 truncate">{{
                     selectedFile.name
                   }}</span>
                 </div>
                 <button
                   @click.stop="removeFile"
                   type="button"
-                  class="text-red-500 hover:text-red-700"
+                  class="text-red-500 hover:text-red-700 ml-2 flex-shrink-0"
                 >
                   <svg
                     class="w-5 h-5"
@@ -248,12 +233,11 @@
           </div>
         </div>
 
-        <!-- Buttons -->
-        <div class="flex space-x-4 pt-6">
+        <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-3 sm:space-y-0 pt-6">
           <button
             type="button"
             @click="handlePrev"
-            class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+            class="w-full sm:flex-1 px-6 py-2.5 md:py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors text-sm sm:text-base"
           >
             Kembali
           </button>
@@ -262,7 +246,7 @@
             @click="handleNext"
             :disabled="!isFormValid || isUploading"
             :class="[
-              'flex-1 px-6 py-3 rounded-lg font-medium transition-colors',
+              'w-full sm:flex-1 px-6 py-2.5 md:py-3 rounded-lg font-medium transition-colors text-sm sm:text-base',
               isFormValid && !isUploading
                 ? 'bg-gray-900 text-white hover:bg-gray-800'
                 : 'bg-gray-400 text-gray-200 cursor-not-allowed',
@@ -331,14 +315,9 @@ const triggerFileInput = () => {
 
 const uploadFile = async (file) => {
   try {
-    // SEMENTARA: Skip upload, langsung return dummy URL
     console.log("File selected:", file.name);
     const token = Cookies.get("token");
 
-    // Return dummy URL sesuai format backend
-    // return "http://103.150.226.108/storage/photos/dummy_validation.jpg"
-
-    // NANTI: Uncomment ini kalau endpoint /upload sudah fix
     const formData = new FormData();
     formData.append("files[]", file);
 
@@ -512,3 +491,37 @@ onUnmounted(() => {
   }
 });
 </script>
+
+<style scoped>
+.bg-cover {
+  background-size: cover;
+}
+
+.bg-center {
+  background-position: center;
+}
+
+.bg-no-repeat {
+  background-repeat: no-repeat;
+}
+
+input:focus {
+  outline: none;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@media (max-width: 640px) {
+  input, button {
+    font-size: 16px;
+  }
+}
+</style>

@@ -1,39 +1,34 @@
 <template>
-  <div class="min-h-screen flex">
-    <!-- Left Section - Image Background -->
-    <div class="flex-1 relative bg-cover bg-center bg-no-repeat" 
+  <div class="min-h-screen flex flex-col md:flex-row">
+    <div class="hidden md:flex md:flex-1 relative bg-cover bg-center bg-no-repeat" 
          :style="`background-image: url('${backgroundImage}')`">
     </div>
 
-    <!-- Right Section - Form -->
-    <div class="flex-1 bg-white flex flex-col justify-center px-8 py-12">
+    <div class="flex-1 bg-white flex flex-col justify-center px-6 sm:px-8 md:px-8 py-8 md:py-12">
       <div class="max-w-sm mx-auto w-full">
         
-        <!-- Header -->
-        <div class="mb-8">
-          <h1 class="text-3xl font-bold text-gray-900 mb-2">
+        <div class="mb-6 md:mb-8">
+          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
             Pilih Peran Anda
           </h1>
-          <p class="text-gray-600">
+          <p class="text-sm sm:text-base text-gray-600">
             Pilih peran yang sesuai.
           </p>
         </div>
 
-        <!-- Role Selection Cards -->
-        <div class="space-y-4 mb-8">
+        <div class="space-y-3 md:space-y-4 mb-6 md:mb-8">
           
-          <!-- Student Card -->
           <button @click="continueToNextStep('student')" 
-                  class="w-full text-left p-4 border-2 rounded-xl transition-all duration-200 hover:border-blue-500 hover:bg-blue-50 group"
+                  class="w-full text-left p-4 md:p-4 border-2 rounded-xl transition-all duration-200 hover:border-blue-500 hover:bg-blue-50 group"
                   :class="selectedRole === 'student' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'">
             <div class="flex items-center justify-between">
               <div>
-                <h3 class="font-semibold text-gray-900 mb-1">Murid</h3>
-                <p class="text-sm text-gray-600">
+                <h3 class="font-semibold text-base sm:text-lg text-gray-900 mb-1">Murid</h3>
+                <p class="text-xs sm:text-sm text-gray-600">
                   Saya disini untuk mencari Sekolah.
                 </p>
               </div>
-              <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors" 
+              <svg class="w-5 h-5 flex-shrink-0 ml-2 text-gray-400 group-hover:text-blue-500 transition-colors" 
                    :class="selectedRole === 'student' ? 'text-blue-500' : ''"
                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -41,29 +36,26 @@
             </div>
           </button>
 
-          <!-- Parent Card -->
           <button @click="continueToNextStep('parent')"
-                  class="w-full text-left p-4 border-2 rounded-xl transition-all duration-200 hover:border-blue-500 hover:bg-blue-50 group"
+                  class="w-full text-left p-4 md:p-4 border-2 rounded-xl transition-all duration-200 hover:border-blue-500 hover:bg-blue-50 group"
                   :class="selectedRole === 'parent' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'">
             <div class="flex items-center justify-between">
               <div>
-                <h3 class="font-semibold text-gray-900 mb-1">Orang Tua</h3>
-                <p class="text-sm text-gray-600">
+                <h3 class="font-semibold text-base sm:text-lg text-gray-900 mb-1">Orang Tua</h3>
+                <p class="text-xs sm:text-sm text-gray-600">
                   Saya disini untuk mencari informasi Sekolah.
                 </p>
               </div>
-              <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors"
+              <svg class="w-5 h-5 flex-shrink-0 ml-2 text-gray-400 group-hover:text-blue-500 transition-colors"
                    :class="selectedRole === 'parent' ? 'text-blue-500' : ''"
                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
               </svg>
             </div>
           </button>
-
         </div>
 
-        <!-- Login Link -->
-        <div class="text-center mt-8">
+        <div class="text-center mt-6 md:mt-8">
           <p class="text-sm text-gray-600">
             Sudah memiliki akun? 
             <NuxtLink to="/auth/login" class="font-medium text-blue-600 hover:text-blue-500 transition-colors">
@@ -121,5 +113,11 @@ const continueToNextStep = (role) => {
 button:focus {
   outline: 2px solid #3B82F6;
   outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  button {
+    min-height: 56px;
+  }
 }
 </style>

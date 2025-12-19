@@ -1,59 +1,66 @@
 <template>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Header -->
-    <div class="mb-6">
-      <h1 class="text-2xl font-bold text-primary-green">
+    <div class="mb-4 sm:mb-6 flex justify-between items-center">
+      <h1 class="text-xl sm:text-2xl font-bold text-primary-green">
         Sekolah terbaik yang terdaftar di Indonesia
       </h1>
+      
+      <button 
+        @click="downloadPDF"
+        :disabled="schools.length === 0"
+        class="bg-primary-green text-bg-light px-4 py-2 rounded-lg hover:bg-opacity-90 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        <span class="hidden sm:inline">Download PDF</span>
+      </button>
     </div>
 
-    <!-- Education Level Tabs Component -->
     <EducationLevelTabs
       :activeTab="activeTab"
       @changeEducationLevel="fetchSchools"
     />
 
-    <!-- School List -->
     <div class="bg-bg-light rounded-lg" v-if="schools.length > 0">
       <div
         v-for="(school, index) in schools"
         :key="school.schoolId"
-        class="flex items-center justify-between p-4 border-b border-[currentColor33] last:border-b-0"
+        class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 sm:p-4 gap-3 sm:gap-4 border-b border-[currentColor33] last:border-b-0"
       >
         <NuxtLink
           :to="`/school-details/${school.id}`"
-          class="block cursor-pointer"
+          class="block cursor-pointer w-full sm:w-auto"
         >
-          <!-- Left: School Logo and Name -->
-          <div class="flex items-center gap-4">
-            <div v-html="getRankSvg(index + 1)" class="w-10 h-10"></div>
-            <h3 class="font-semibold text-[#28190C]">
+          <div class="flex items-center gap-3 sm:gap-4">
+            <div v-html="getRankSvg(index + 1)" class="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0"></div>
+            <h3 class="font-semibold text-[#28190C] text-sm sm:text-base">
               {{ school.name }}
             </h3>
           </div>
         </NuxtLink>
-        <!-- Right: Rating Info -->
-        <div class="flex items-center gap-2">
-          <svg class="w-5 h-5 text-[#FFB800] fill-current" viewBox="0 0 20 20">
+        <div class="flex items-center gap-2 ml-11 sm:ml-0">
+          <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[#FFB800] fill-current flex-shrink-0" viewBox="0 0 20 20">
             <path
               d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"
             />
           </svg>
-          <span class="text-sm font-medium text-[#1D2B29]">{{
+          <span class="text-xs sm:text-sm font-medium text-[#1D2B29]">{{
             school.rating
           }}</span>
-          <span class="text-sm text-secondary-gray"
+          <span class="text-xs sm:text-sm text-secondary-gray"
             >({{ school.reviewers.toLocaleString() }} ulasan)</span
           >
         </div>
       </div>
     </div>
 
-    <!-- Placeholder for empty state -->
-    <div v-else class="bg-[#F2ECE3] rounded-lg p-8 text-center">
-      <div class="text-[#76685A] mb-4">
+    <div v-else class="bg-bg-light rounded-lg p-6 sm:p-8 text-center">
+      <div class="text-primary-green mb-4">
         <svg
-          class="mx-auto h-12 w-12"
+          class="mx-auto h-10 w-10 sm:h-12 sm:w-12"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -66,10 +73,10 @@
           />
         </svg>
       </div>
-      <h3 class="text-lg font-medium text-[#76685A] mb-2">
+      <h3 class="text-base sm:text-lg font-medium text-primary-green mb-2">
         Data coming soon
       </h3>
-      <p class="text-[#76685A]">No schools available</p>
+      <p class="text-sm sm:text-base text-primary-green">No schools available</p>
     </div>
   </div>
 </template>
@@ -81,6 +88,7 @@ import EducationLevelTabs from "@/components/shared/EduLevelTab.vue";
 
 const activeTab = ref("sd");
 const schools = ref([]);
+const { generatePDF } = usePDF();
 
 const rankSvgs = [
   `<svg width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -215,6 +223,10 @@ const fetchSchools = async (educationLevel) => {
 
 const getRankSvg = (rank) => {
   return rankSvgs[rank - 1] || "<svg></svg>";
+};
+
+const downloadPDF = () => {
+  generatePDF(schools.value, activeTab.value);
 };
 
 onMounted(() => {

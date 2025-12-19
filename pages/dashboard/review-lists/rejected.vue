@@ -129,7 +129,7 @@
                       v-if="review.image"
                       variant="outline"
                       size="sm"
-                      @click="openImageModal(review.image)"
+                      @click="openImageModal(review.schoolValidation?.[0]?.file)"
                     >
                       Lihat Foto
                     </Button>

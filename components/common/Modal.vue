@@ -1,4 +1,3 @@
-<!-- components/common/Modal.vue -->
 <template>
   <Teleport to="body">
     <Transition name="modal">
@@ -7,15 +6,12 @@
         class="fixed inset-0 z-50 flex items-center justify-center p-4"
         @click.self="handleBackdropClick"
       >
-        <!-- Backdrop -->
         <div class="absolute inset-0 bg-black/50"></div>
 
-        <!-- Modal Content -->
         <div
           class="relative bg-white rounded-2xl shadow-xl max-w-md w-full p-8 text-center"
           @click.stop
         >
-          <!-- Icon -->
           <div class="mb-6 flex justify-center">
             <div
               :class="[
@@ -23,7 +19,6 @@
                 iconBgClass
               ]"
             >
-              <!-- Success Icon -->
               <svg
                 v-if="type === 'success'"
                 class="w-10 h-10 text-green-600"
@@ -39,7 +34,6 @@
                 />
               </svg>
 
-              <!-- Error Icon -->
               <svg
                 v-else-if="type === 'error'"
                 class="w-10 h-10 text-red-600"
@@ -55,7 +49,6 @@
                 />
               </svg>
 
-              <!-- Warning Icon -->
               <svg
                 v-else-if="type === 'warning'"
                 class="w-10 h-10 text-yellow-600"
@@ -71,7 +64,6 @@
                 />
               </svg>
 
-              <!-- Info Icon -->
               <svg
                 v-else
                 class="w-10 h-10 text-blue-600"
@@ -89,19 +81,15 @@
             </div>
           </div>
 
-          <!-- Title -->
           <h3 class="text-xl font-bold text-gray-900 mb-3">
             {{ title }}
           </h3>
 
-          <!-- Message -->
           <p class="text-gray-600 mb-8">
             {{ message }}
           </p>
 
-          <!-- Buttons -->
           <div class="flex gap-3">
-            <!-- Cancel Button (jika ada) -->
             <button
               v-if="showCancel"
               @click="handleCancel"
@@ -110,7 +98,6 @@
               {{ cancelText }}
             </button>
 
-            <!-- Confirm Button -->
             <button
               @click="handleConfirm"
               :class="[
@@ -137,7 +124,7 @@ const props = defineProps({
   },
   type: {
     type: String,
-    default: 'info', // 'success', 'error', 'warning', 'info'
+    default: 'info',
     validator: (value) => ['success', 'error', 'warning', 'info'].includes(value)
   },
   title: {

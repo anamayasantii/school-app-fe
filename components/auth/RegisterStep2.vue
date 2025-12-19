@@ -1,28 +1,23 @@
 <template>
-  <div class="min-h-screen flex">
-    <!-- Left Section - Image Background -->
-    <div class="flex-1 relative bg-cover bg-center bg-no-repeat" 
+  <div class="min-h-screen flex flex-col md:flex-row">
+    <div class="hidden md:flex md:flex-1 relative bg-cover bg-center bg-no-repeat" 
          :style="`background-image: url('${backgroundImage}')`">
     </div>
 
-    <!-- Right Section - Registration Form -->
-    <div class="flex-1 bg-white flex flex-col justify-center px-12 py-12">
+    <div class="flex-1 bg-white flex flex-col justify-center px-6 sm:px-8 md:px-12 py-8 md:py-12">
       <div class="max-w-md mx-auto w-full">
         
-        <!-- Header -->
-        <div class="mb-8">
-          <h1 class="text-3xl font-bold text-gray-900 mb-3">
+        <div class="mb-6 md:mb-8">
+          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 md:mb-3">
             Buat Akun
           </h1>
-          <p class="text-gray-600">
+          <p class="text-sm sm:text-base text-gray-600">
             Daftar untuk menemukan lingkungan belajar ideal Anda.
           </p>
         </div>
 
-        <!-- Registration Form -->
-        <form @submit.prevent="handleSubmit" class="space-y-6">
+        <form @submit.prevent="handleSubmit" class="space-y-4 md:space-y-6">
           
-          <!-- Full Name Field -->
           <div>
             <label for="fullname" class="block text-sm font-medium text-gray-700 mb-2">
               Nama Lengkap
@@ -32,12 +27,11 @@
               v-model="form.fullname"
               type="text"
               required
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              class="w-full px-4 py-2.5 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm sm:text-base"
               placeholder="Nama Lengkap"
             />
           </div>
 
-          <!-- Email Field -->
           <div>
             <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
               Alamat Email
@@ -47,12 +41,11 @@
               v-model="form.email"
               type="email"
               required
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              class="w-full px-4 py-2.5 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm sm:text-base"
               placeholder="Alamat Email"
             />
           </div>
 
-          <!-- Password Field -->
           <div>
             <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
               Kata Sandi
@@ -63,7 +56,7 @@
                 v-model="form.password"
                 :type="showPassword ? 'text' : 'password'"
                 required
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 pr-12"
+                class="w-full px-4 py-2.5 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 pr-12 text-sm sm:text-base"
                 placeholder="Kata Sandi"
               />
               <button
@@ -82,22 +75,19 @@
             </div>
           </div>
 
-          <!-- Action Buttons -->
-          <div class="flex space-x-4">
-            <!-- Back Button -->
+          <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-3 sm:space-y-0">
             <button
               type="button"
               @click="$emit('prev')"
-              class="flex-1 py-3 px-4 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all duration-200"
+              class="w-full sm:flex-1 py-2.5 md:py-3 px-4 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all duration-200 text-sm sm:text-base"
             >
               Kembali
             </button>
             
-            <!-- Register Button -->
             <button
               type="submit"
               :disabled="isLoading"
-              class="flex-1 py-3 px-4 bg-gray-900 hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-all duration-200 transform hover:scale-105 disabled:hover:scale-100"
+              class="w-full sm:flex-1 py-2.5 md:py-3 px-4 bg-gray-900 hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-all duration-200 transform hover:scale-105 disabled:hover:scale-100 text-sm sm:text-base"
             >
               <span v-if="!isLoading">Buat Akun</span>
               <div v-else class="flex items-center justify-center">
@@ -109,11 +99,9 @@
               </div>
             </button>
           </div>
-
         </form>
 
-        <!-- Login Link -->
-        <div class="mt-8 text-center">
+        <div class="mt-6 md:mt-8 text-center">
           <p class="text-sm text-gray-600">
             Sudah memiliki akun? 
             <NuxtLink to="/auth/login" class="font-medium text-blue-600 hover:text-blue-500 transition-colors underline">
@@ -216,5 +204,11 @@ button:focus {
 
 input, button {
   transition: all 0.2s ease-in-out;
+}
+
+@media (max-width: 640px) {
+  input, button {
+    font-size: 16px;
+  }
 }
 </style>

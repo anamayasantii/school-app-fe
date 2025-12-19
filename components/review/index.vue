@@ -1,9 +1,7 @@
 <template>
   <div>
-    <!-- Step 1: Detail Anda -->
     <Step1PersonalInfo v-if="currentStep === 1" @next="handleStep1Next" />
 
-    <!-- Step 2: Tinjau Sekolah -->
     <Step2TinjauSekolah
       v-if="currentStep === 2"
       :schoolName="schoolName"
@@ -11,14 +9,12 @@
       @back="currentStep = 1"
     />
 
-    <!-- Step 3: Langkah Terakhir -->
     <Step3LangkahTerakhir
       v-if="currentStep === 3"
       @submit="handleSubmit"
       @back="currentStep = 2"
     />
 
-    <!-- Success Screen -->
     <ReviewSuccess
       v-if="currentStep === 4"
       :schoolId="schoolId"
@@ -64,7 +60,6 @@ const handleStep2Next = (data) => {
 
 const handleSubmit = async () => {
   try {
-    // Gabungkan semua data
     const fullReviewData = {
       schoolId: props.schoolId,
       ...reviewData.value.step1,

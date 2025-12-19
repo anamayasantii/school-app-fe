@@ -9,7 +9,7 @@
       :schoolId="id"
       @next="handleNext"
       @prev="handlePrev"
-      @save="saveFormData"
+      @updateFormData="updateFormData"
       @submit="handleSubmit"
     />
     <div
@@ -30,7 +30,6 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { useAuthStore } from "@/store/auth";
 import axios from "@/lib/axios";
 import Cookies from "js-cookie";
 import ReviewStep1 from "@/components/review/ReviewStep1.vue";
@@ -40,7 +39,6 @@ import ReviewSuccess from "@/components/review/Success.vue";
 
 const route = useRoute();
 const router = useRouter();
-const authStore = useAuthStore();
 const id = route.params.id;
 
 const school = ref(null);
@@ -54,7 +52,6 @@ const reviewFormData = ref({
   step3: null,
 });
 
-// Dynamic component mapping
 const stepComponents = {
   1: ReviewStep1,
   2: ReviewStep2,
@@ -76,7 +73,7 @@ const fetchSchoolData = async () => {
   }
 };
 
-const saveFormData = (data) => {
+const updateFormData = (data) => {
   reviewFormData.value = {
     ...reviewFormData.value,
     ...data,
@@ -94,11 +91,13 @@ const handlePrev = () => {
 
 const handleSubmit = async () => {
   try {
-    const user = authStore.user
     const token = Cookies.get('token')
     
-    // Build request body untuk review
     const reviewPayload = {
+      fullname: reviewFormData.value.step1?.fullName || '',
+      email: reviewFormData.value.step1?.email || '',
+      phoneNo: reviewFormData.value.step1?.phoneNo || '',
+      userStatus: reviewFormData.value.step1?.userStatus || '',
       schoolValidationFile: reviewFormData.value.step1?.fileUrl || null,
       schoolDetailId: parseInt(id),
       reviewText: reviewFormData.value.step2?.experience.liked || '',
@@ -112,57 +111,34 @@ const handleSubmit = async () => {
         { questionId: 5, score: reviewFormData.value.step2?.ratings.kegiatan }
       ]
     }
+
+    console.log('reviewFormData.value.step1:', reviewFormData.value.step1)
+    console.log('status yang dikirim:', reviewPayload.status)
+    console.log('Full payload:', reviewPayload)
     
-    // Submit review dengan header
-    await axios.post('/review/submit', reviewPayload, {
+    console.log('=== DEBUG SUBMIT ===')
+    console.log('reviewFormData.value:', reviewFormData.value)
+    console.log('step1 fileUrl:', reviewFormData.value.step1?.fileUrl)
+    console.log('Payload yang dikirim:', reviewPayload)
+    console.log('===================')
+    
+    const response = await axios.post('/review/submit', reviewPayload, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
     
-    // Update user profile dengan header
-    let profilePayload
-    if (user.role === 'parent') {
-      profilePayload = {
-        relation: user.relation,
-        phoneNo: reviewFormData.value.step1?.phoneNo,
-        address: user.address,
-        image: user.image,
-        child: {
-          fullname: reviewFormData.value.step1?.fullName,
-          nisn: user.child[0].nisn,
-          dateOfBirth: user.child[0].birthdate,
-          status: reviewFormData.value.step1?.status,
-          schoolDetailId: user.child[0].riwayatPendidikan[0].id
-        }
-      }
-    } else {
-      profilePayload = {
-        fullname: reviewFormData.value.step1?.fullName,
-        nisn: user.nisn,
-        email: reviewFormData.value.step1?.email,
-        dateOfBirth: user.dateOfBirth,
-        phoneNo: reviewFormData.value.step1?.phoneNo,
-        address: user.address,
-        image: reviewFormData.value.step1?.fileUrl || user.image
-      }
-    }
+    console.log('Response dari backend:', response.data)
     
-    await axios.put('/user', profilePayload, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-    
-    // Clear form data & pindah ke success page
     reviewFormData.value = { step1: null, step2: null, step3: null }
-    currentStep.value = 4 // Success page
+    currentStep.value = 4
     
   } catch (error) {
     console.error('Submit error:', error)
+    console.error('Error response:', error.response?.data)
     alert('Gagal submit review')
   }
-};
+}
 
 onMounted(() => {
   fetchSchoolData();

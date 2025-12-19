@@ -1,96 +1,91 @@
-<!-- components/profile/FormStepThree.vue -->
 <template>
-  <div class="min-h-screen bg-gray-50 flex">
-    <!-- Left Side - Background -->
-    <div class="flex-1 relative bg-cover bg-center bg-no-repeat" 
+  <div class="min-h-screen bg-gray-50 flex flex-col md:flex-row">
+    <div class="hidden md:flex md:flex-1 relative bg-cover bg-center bg-no-repeat" 
          :style="`background-image: url('${backgroundImage}')`">
     </div>
 
-    <!-- Right Side - Preview -->
-    <div class="w-full lg:w-1/2 flex items-center justify-center p-8">
+    <div class="flex-1 flex items-center justify-center px-6 sm:px-8 py-8 md:py-12">
       <div class="w-full max-w-md">
-        <!-- Progress Indicator -->
-        <div class="text-center mb-8">
-          <div class="text-sm text-teal-600 font-medium mb-2">LANGKAH {{ currentStep }} DARI 3</div>
-          <div class="flex justify-center space-x-2 mb-6">
+        <div class="text-center mb-6 md:mb-8">
+          <div class="text-sm text-teal-600 font-medium mb-2">
+            LANGKAH {{ currentStep }} DARI 3
           </div>
         </div>
 
-        <!-- Form Title -->
-        <div class="text-center mb-8">
-          <h1 class="text-2xl font-bold text-gray-900 mb-2">
+        <div class="text-center mb-6 md:mb-8">
+          <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
             Tinjau Kembali Profil
           </h1>
-          <p class="text-gray-600">
+          <p class="text-sm sm:text-base text-gray-600">
             Cek kembali detail profil kamu.
           </p>
         </div>
 
-        <!-- Profile Preview -->
-        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-100">
-          <!-- Profile Header -->
-          <div class="flex items-center mb-6">
-            <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center mr-4">
-              <!-- Avatar placeholder -->
-              <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="bg-white rounded-lg p-4 sm:p-6 mb-4 sm:mb-6 shadow-sm border border-gray-100">
+          <div class="flex items-center mb-4 sm:mb-6">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gray-300 rounded-full flex items-center justify-center mr-3 sm:mr-4 flex-shrink-0">
+              <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
               </svg>
             </div>
-            <div>
-              <h3 class="text-lg font-semibold text-gray-900">{{ previewData.fullname || 'Nama Lengkap' }}</h3>
-              <p class="text-sm text-gray-600">{{ authStore.user?.email || 'email@example.com' }}</p>
+            <div class="min-w-0">
+              <h3 class="text-base sm:text-lg font-semibold text-gray-900 truncate">
+                {{ previewData.fullname || 'Nama Lengkap' }}
+              </h3>
+              <p class="text-xs sm:text-sm text-gray-600 truncate">
+                {{ authStore.user?.email || 'email@example.com' }}
+              </p>
             </div>
           </div>
 
-          <!-- Profile Details -->
-          <div class="space-y-4">
-            <!-- Role Status -->
+          <div class="space-y-3 sm:space-y-4">
             <div v-if="userRole === 'parent'" class="flex justify-between items-center">
-              <span class="text-sm text-gray-500 font-medium">STATUS</span>
-              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-orange-100 text-orange-800">
-                <span class="w-2 h-2 bg-orange-400 rounded-full mr-2"></span>
+              <span class="text-xs sm:text-sm text-gray-500 font-medium">STATUS</span>
+              <span class="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium bg-orange-100 text-orange-800">
+                <span class="w-2 h-2 bg-orange-400 rounded-full mr-1 sm:mr-2"></span>
                 Orang Tua
               </span>
             </div>
 
-            <!-- Student Name (for parent role) -->
-            <div v-if="userRole === 'parent'" class="flex justify-between items-center">
-              <span class="text-sm text-gray-500 font-medium">NAMA</span>
-              <span class="text-sm text-gray-900 font-medium">{{ previewData.studentName || 'Nama Peserta Didik' }}</span>
+            <div v-if="userRole === 'parent'" class="flex justify-between items-center gap-2">
+              <span class="text-xs sm:text-sm text-gray-500 font-medium flex-shrink-0">NAMA</span>
+              <span class="text-xs sm:text-sm text-gray-900 font-medium text-right truncate">
+                {{ previewData.studentName || 'Nama Peserta Didik' }}
+              </span>
             </div>
 
-            <!-- Student Status -->
             <div class="flex justify-between items-center">
-              <span class="text-sm text-gray-500 font-medium">STATUS</span>
-              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                <span class="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
+              <span class="text-xs sm:text-sm text-gray-500 font-medium">STATUS</span>
+              <span class="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium bg-blue-100 text-blue-800">
+                <span class="w-2 h-2 bg-blue-400 rounded-full mr-1 sm:mr-2"></span>
                 Siswa Aktif
               </span>
             </div>
 
-            <!-- NISN -->
-            <div class="flex justify-between items-center">
-              <span class="text-sm text-gray-500 font-medium">NISN/NIM</span>
-              <span class="text-sm font-medium text-green-600">{{ previewData.nisn || '1234567890' }}</span>
+            <div class="flex justify-between items-center gap-2">
+              <span class="text-xs sm:text-sm text-gray-500 font-medium flex-shrink-0">NISN/NIM</span>
+              <span class="text-xs sm:text-sm font-medium text-green-600 truncate">
+                {{ previewData.nisn || '1234567890' }}
+              </span>
             </div>
 
-            <!-- School -->
-            <div class="flex justify-between items-center">
-              <span class="text-sm text-gray-500 font-medium">SEKOLAH</span>
-              <div class="flex items-center">
-                <span class="w-2 h-2 bg-teal-400 rounded-full mr-2"></span>
-                <span class="text-sm text-gray-900 font-medium">{{ previewData.schoolName }}</span>
+            <div class="flex justify-between items-start gap-2">
+              <span class="text-xs sm:text-sm text-gray-500 font-medium flex-shrink-0">SEKOLAH</span>
+              <div class="flex items-start text-right">
+                <span class="w-2 h-2 bg-teal-400 rounded-full mr-2 mt-1 flex-shrink-0"></span>
+                <span class="text-xs sm:text-sm text-gray-900 font-medium break-words">
+                  {{ previewData.schoolName }}
+                </span>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Buttons -->
-        <div class="flex space-x-4">
+        <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-3 sm:space-y-0">
           <button
             type="button"
             @click="handlePrev"
-            class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+            class="w-full sm:flex-1 px-6 py-2.5 md:py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors text-sm sm:text-base"
           >
             Kembali
           </button>
@@ -99,7 +94,7 @@
             @click="handleSubmit"
             :disabled="isSubmitting"
             :class="[
-              'flex-1 px-6 py-3 rounded-lg font-medium transition-colors',
+              'w-full sm:flex-1 px-6 py-2.5 md:py-3 rounded-lg font-medium transition-colors text-sm sm:text-base',
               isSubmitting 
                 ? 'bg-gray-400 text-gray-200 cursor-not-allowed' 
                 : 'bg-gray-900 text-white hover:bg-gray-800'
@@ -162,7 +157,6 @@ const handlePrev = () => {
 }
 
 const handleSubmit = () => {
-  // Emit ke parent untuk handle submit
   emit('submit')
 }
 
@@ -170,7 +164,6 @@ const fetchSchoolName = async (schoolId) => {
   try {
     const response = await axios.get(`/school-details/${schoolId}`)
     if (response.data.status === 'success') {
-      // PERBAIKAN: pakai 'name' bukan 'schoolName'
       schoolName.value = response.data.data.name
     }
   } catch (error) {
@@ -185,3 +178,23 @@ watch(() => props.formData?.step2?.schoolDetailId, (newId) => {
   }
 }, { immediate: true })
 </script>
+
+<style scoped>
+.bg-cover {
+  background-size: cover;
+}
+
+.bg-center {
+  background-position: center;
+}
+
+.bg-no-repeat {
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 640px) {
+  button {
+    font-size: 16px;
+  }
+}
+</style>

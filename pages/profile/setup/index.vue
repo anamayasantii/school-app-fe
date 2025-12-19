@@ -15,6 +15,7 @@
 import { ref } from 'vue'
 import axios from '@/lib/axios'
 import Cookies from 'js-cookie'
+import { useAuthStore } from '@/store/auth'
 import FormStepOne from '@/components/auth/ProfileStep1.vue'
 import FormStepTwo from '@/components/auth/ProfileStep2.vue'
 import FormStepThree from '@/components/auth/ProfileStep3.vue'
@@ -23,6 +24,7 @@ definePageMeta({
   layout: 'authPage'
 })
 
+const authStore = useAuthStore()
 const currentStep = ref(1)
 const loading = ref(false)
 const formData = ref({
@@ -68,7 +70,6 @@ const handleFinalSubmit = async () => {
     console.log('Step1 data:', formData.value.step1)
     console.log('Step2 data:', formData.value.step2)
     
-    // Susun data sesuai format backend
     const submitData = {
       fullname: formData.value.step1.fullname,
       dateOfBirth: formData.value.step1.dateOfBirth,
@@ -77,14 +78,12 @@ const handleFinalSubmit = async () => {
       schoolValidation: formData.value.step2.schoolValidation
     }
     
-    // Tambahkan relation jika parent
     if (formData.value.step1.relation) {
       submitData.relation = formData.value.step1.relation
     }
     
     console.log('Data to submit:', submitData)
     
-    // SUBMIT KE BACKEND
     const response = await axios.put('/profile/complete', submitData, {
       headers: {
         'Content-Type': 'application/json',
@@ -94,7 +93,11 @@ const handleFinalSubmit = async () => {
     
     console.log('Setup success:', response.data)
     
-    // Redirect ke home setelah berhasil
+    await authStore.fetchUser()
+    await nextTick()
+    console.log('User data refreshed:', authStore.user)
+    console.log('Is logged in:', authStore.isLoggedIn)
+    
     await navigateTo('/')
     
   } catch (error) {

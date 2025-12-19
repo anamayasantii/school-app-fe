@@ -1,16 +1,13 @@
 <template>
   <div class="min-h-screen">
-    <!-- Hero Section -->
-    <section class="bg-gradient-to-br py-16 pb-0">
+    <section class="bg-gradient-to-br py-8 sm:py-12 md:py-16 pb-0">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <!-- Button sesuai spesifikasi Figma -->
-        <div class="mb-8 flex justify-center">
-          <NuxtLink to="/ranking" class="figma-button">
-            <span class="text-[#F9F6F1] underline"
-              >Lihat 10 Sekolah Dasar Terbaik {{ currentYear }}</span
-            >
+        <div class="mb-6 sm:mb-8 flex justify-center px-4">
+          <NuxtLink to="/ranking" class="figma-button w-full sm:w-[360px]">
+            <span class="text-[#F9F6F1] underline text-sm sm:text-base">
+              Lihat 10 Sekolah Dasar Terbaik {{ currentYear }}
+            </span>
             <div class="arrow-container">
-              <!-- Panah pertama (terlihat normal) -->
               <svg
                 class="arrow-icon arrow-1"
                 width="16"
@@ -25,7 +22,6 @@
                 <path d="M5 12h14" />
                 <path d="M12 5l7 7-7 7" />
               </svg>
-              <!-- Panah kedua (tersembunyi di kiri) -->
               <svg
                 class="arrow-icon arrow-2"
                 width="16"
@@ -44,44 +40,33 @@
           </NuxtLink>
         </div>
 
-        <h1
-          class="text-3xl font-semibold md:text-6xl mb-4 py-4 max-w-3xl tracking-tight mx-auto"
-        >
+        <h1 class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-semibold mb-4 py-4 max-w-3xl tracking-tight mx-auto px-4">
           Pencarian sekolah lebih sederhana dan mudah.
         </h1>
 
-        <div class="flex justify-center mb-12">
+        <div class="flex justify-center mb-8 sm:mb-12 px-4">
           <SearchSchool />
         </div>
       </div>
     </section>
 
-    <!-- Education Categories -->
-    <section class="py-7">
+    <section class="py-6 sm:py-7">
       <SchoolTypes />
     </section>
 
-    <section class="py-7">
+    <section class="py-6 sm:py-7">
       <IndexSchools />
     </section>
 
-    <!-- Featured Schools -->
-    <!-- <section class="py-16">
-      <FeaturedSchools />
-    </section> -->
-
-    <!-- Indonesian Leaderboard -->
-    <section class="py-16">
+    <section class="py-12 sm:py-16">
       <Leaderboard />
     </section>
 
-    <!-- School Highlight -->
-    <section class="py-16">
+    <section class="py-12 sm:py-16">
       <SchoolHighlight />
     </section>
 
-    <!-- Recent Reviews -->
-    <section class="py-16">
+    <section class="py-12 sm:py-16">
       <RecentReviews />
     </section>
   </div>
@@ -100,7 +85,6 @@ const currentYear = new Date().getFullYear();
 
 <style scoped>
 .figma-button {
-  width: 360px;
   height: 46px;
   padding: 12px 24px;
   gap: 16px;
@@ -108,7 +92,6 @@ const currentYear = new Date().getFullYear();
   background-color: #082519;
   border: none;
   color: #ffffff;
-  font-size: 16px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
@@ -165,79 +148,5 @@ const currentYear = new Date().getFullYear();
 .figma-button:hover .arrow-2 {
   opacity: 1;
   transform: translateX(0);
-}
-
-@keyframes slideRight {
-  0% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(8px);
-  }
-  100% {
-    transform: translateX(6px);
-  }
-}
-@media (max-width: 480px) {
-  .figma-button {
-    width: 100%;
-    max-width: 350px;
-    font-size: 14px;
-    padding: 10px 20px;
-  }
-}
-
-.hero-gradient {
-  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
-}
-
-.search-container {
-  width: 690px;
-  height: 45px;
-  border-radius: 32px;
-  background-color: #fbfbfb;
-  padding: 24px;
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-.search-input {
-  flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-  font-size: 16px;
-}
-
-.search-input::placeholder {
-  color: #082519;
-}
-
-.search-icon {
-  color: #082519;
-  flex-shrink: 0;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-  .search-container {
-    width: 100%;
-    max-width: 500px;
-    height: 64px;
-    gap: 16px;
-  }
-}
-
-@media (max-width: 480px) {
-  .search-container {
-    height: 56px;
-    padding: 16px;
-    gap: 12px;
-  }
-
-  .search-input {
-    font-size: 14px;
-  }
 }
 </style>

@@ -1,90 +1,140 @@
 <template>
-  <div class="min-h-screen bg-gray-50 py-8 px-4">
+  <div class="min-h-screen bg-bg-light py-4 md:py-8 px-4">
     <div class="max-w-3xl mx-auto">
-      <!-- Progress Steps -->
-      <div class="flex items-center justify-center mb-12">
-        <div class="flex items-center">
-          <!-- Step 1 - Completed -->
-          <div class="flex flex-col items-center">
-            <div class="w-10 h-10 bg-green-500 text-white rounded-full flex items-center justify-center font-semibold mb-2">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+      <div class="flex items-center justify-center mb-8 md:mb-12 px-4">
+        <div
+          class="flex items-center justify-between w-full max-w-md md:max-w-2xl"
+        >
+          <div class="flex flex-col items-center flex-1">
+            <div
+              class="w-8 h-8 md:w-10 md:h-10 bg-[#0E996F] text-white rounded-full flex items-center justify-center font-semibold mb-1 md:mb-2"
+            >
+              <svg
+                class="w-4 h-4 md:w-6 md:h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                stroke-width="3"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
             </div>
-            <div class="text-sm font-medium text-green-500 text-center">Detail Anda</div>
+            <div
+              class="text-xs md:text-sm font-medium text-[#0E996F] text-center leading-tight"
+            >
+              Detail Anda
+            </div>
           </div>
-          
-          <div class="w-32 h-0.5 bg-gray-400 mx-4 mt-[-30px]"></div>
-          
-          <!-- Step 2 - Active -->
-          <div class="flex flex-col items-center">
-            <div class="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center font-semibold mb-2">
+
+          <div
+            class="flex-shrink-0 w-12 sm:w-20 md:w-32 h-0.5 bg-border-gray mx-1 sm:mx-2 md:mx-4 mt-[-24px] md:mt-[-30px]"
+          ></div>
+
+          <div class="flex flex-col items-center flex-1">
+            <div
+              class="w-8 h-8 md:w-10 md:h-10 bg-[#1F1F1F] text-white rounded-full flex items-center justify-center font-semibold mb-1 md:mb-2"
+            >
               2
             </div>
-            <div class="text-sm text-black font-medium text-center">Tinjau Sekolah</div>
+            <div
+              class="text-xs md:text-sm text-[#1F1F1F] font-medium text-center leading-tight"
+            >
+              Tinjau Sekolah
+            </div>
           </div>
-          
-          <div class="w-32 h-0.5 bg-gray-300 mx-4 mt-[-30px]"></div>
-          
-          <!-- Step 3 - Inactive -->
-          <div class="flex flex-col items-center">
-            <div class="w-10 h-10 bg-white border-2 border-gray-300 text-gray-400 rounded-full flex items-center justify-center font-semibold mb-2">
+
+          <div
+            class="flex-shrink-0 w-12 sm:w-20 md:w-32 h-0.5 bg-border-gray mx-1 sm:mx-2 md:mx-4 mt-[-24px] md:mt-[-30px]"
+          ></div>
+
+          <div class="flex flex-col items-center flex-1">
+            <div
+              class="w-8 h-8 md:w-10 md:h-10 border-2 border-border-gray text-secondary-gray rounded-full flex items-center justify-center font-semibold mb-1 md:mb-2"
+            >
               3
             </div>
-            <div class="text-sm text-gray-400 text-center">Langkah Terakhir</div>
+            <div
+              class="text-xs md:text-sm text-secondary-gray text-center leading-tight"
+            >
+              Langkah Terakhir
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Form Content -->
-      <div class="bg-white rounded-lg p-8 shadow-sm">
-        <h1 class="text-3xl font-bold mb-2">Tulis ulasan</h1>
-        <p class="text-gray-600 mb-8">Silakan isi kolom di bawah ini dengan detail kontak Anda.</p>
+      <div class="bg-white rounded-lg p-4 sm:p-6 md:p-8 shadow-sm">
+        <h1 class="text-xl sm:text-2xl md:text-3xl font-bold mb-2">
+          Tulis ulasan
+        </h1>
+        <p class="text-sm md:text-base text-[#1F1F1F] mb-6 md:mb-8">
+          Silakan isi kolom di bawah ini dengan detail kontak Anda.
+        </p>
 
-        <!-- Penilaian Keseluruhan -->
-        <div class="mb-8">
-          <h2 class="text-lg font-semibold mb-2">Penilaian Keseluruhan</h2>
-          <p class="text-sm text-gray-600 mb-4">Bagaimana Anda menilai sekolah ini secara keseluruhan?</p>
-          
-          <!-- Star Rating Display (Read-only, filled by backend) -->
-          <div class="flex gap-2">
-            <svg 
-              v-for="star in 5" 
+        <div class="mb-6 md:mb-8">
+          <h2 class="text-base md:text-lg font-semibold mb-2">
+            Penilaian Keseluruhan
+          </h2>
+          <p class="text-xs md:text-sm text-[#1F1F1F] mb-3 md:mb-4">
+            Bagaimana Anda menilai sekolah ini secara keseluruhan?
+          </p>
+
+          <div class="flex gap-1 sm:gap-2">
+            <svg
+              v-for="star in 5"
               :key="star"
-              class="w-10 h-10"
-              :class="star <= overallRating ? 'text-yellow-400 fill-current' : 'text-gray-300 fill-current'"
+              class="w-8 h-8 sm:w-10 sm:h-10"
+              :class="
+                star <= overallRating
+                  ? 'text-[#FFC423] fill-current'
+                  : 'text-border-gray fill-current'
+              "
               viewBox="0 0 24 24"
             >
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              <path
+                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+              />
             </svg>
           </div>
         </div>
 
-        <!-- Ulasan Anda -->
-        <div class="mb-8">
-          <h2 class="text-lg font-semibold mb-4">Ulasan Anda</h2>
-          <p class="text-sm text-gray-600 mb-4">Bagikan pemikiran Anda di sini</p>
+        <div class="mb-6 md:mb-8">
+          <h2 class="text-base md:text-lg font-semibold mb-3 md:mb-4">
+            Ulasan Anda
+          </h2>
+          <p class="text-xs md:text-sm text-[#1F1F1F] mb-3 md:mb-4">
+            Bagikan pemikiran Anda di sini
+          </p>
 
-          <!-- Rating Categories -->
-          <div class="space-y-4 mb-6">
-            <!-- Fasilitas & Peralatan -->
-            <div class="flex items-center justify-between">
-              <span class="text-sm font-medium">Fasilitas & Peralatan</span>
-              <div class="flex gap-4">
-                <label 
-                  v-for="rating in 5" 
+          <div class="space-y-4 md:space-y-6">
+            <div
+              class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+            >
+              <span class="text-xs md:text-sm font-medium"
+                >Fasilitas & Peralatan</span
+              >
+              <div class="flex gap-2 sm:gap-3 md:gap-4">
+                <label
+                  v-for="rating in 5"
                   :key="'fasilitas-' + rating"
                   class="cursor-pointer"
                 >
-                  <input 
-                    type="radio" 
-                    :value="rating" 
+                  <input
+                    type="radio"
+                    :value="rating"
                     v-model="form.ratings.fasilitas"
                     class="sr-only"
                   />
-                  <span 
-                    class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 transition-colors"
-                    :class="form.ratings.fasilitas === rating ? 'border-black bg-black text-white' : 'border-gray-300 text-gray-600 hover:border-gray-400'"
+                  <span
+                    class="inline-flex items-center justify-center w-7 h-7 md:w-8 md:h-8 rounded-full border-2 transition-colors text-xs md:text-sm"
+                    :class="
+                      form.ratings.fasilitas === rating
+                        ? 'border-[#1F1F1F] bg-[#1F1F1F] text-white'
+                        : 'border-bg-gray text-[#1F1F1F] hover:border-secondary-gray'
+                    "
                   >
                     {{ rating }}
                   </span>
@@ -92,24 +142,31 @@
               </div>
             </div>
 
-            <!-- Proses Pembelajaran -->
-            <div class="flex items-center justify-between">
-              <span class="text-sm font-medium">Proses Pembelajaran</span>
-              <div class="flex gap-4">
-                <label 
-                  v-for="rating in 5" 
+            <div
+              class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+            >
+              <span class="text-xs md:text-sm font-medium"
+                >Proses Pembelajaran</span
+              >
+              <div class="flex gap-2 sm:gap-3 md:gap-4">
+                <label
+                  v-for="rating in 5"
                   :key="'pembelajaran-' + rating"
                   class="cursor-pointer"
                 >
-                  <input 
-                    type="radio" 
-                    :value="rating" 
+                  <input
+                    type="radio"
+                    :value="rating"
                     v-model="form.ratings.pembelajaran"
                     class="sr-only"
                   />
-                  <span 
-                    class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 transition-colors"
-                    :class="form.ratings.pembelajaran === rating ? 'border-black bg-black text-white' : 'border-gray-300 text-gray-600 hover:border-gray-400'"
+                  <span
+                    class="inline-flex items-center justify-center w-7 h-7 md:w-8 md:h-8 rounded-full border-2 transition-colors text-xs md:text-sm"
+                    :class="
+                      form.ratings.pembelajaran === rating
+                        ? 'border-[#1F1F1F] bg-[#1F1F1F] text-white'
+                        : 'border-bg-gray text-[#1F1F1F] hover:border-secondary-gray'
+                    "
                   >
                     {{ rating }}
                   </span>
@@ -117,24 +174,31 @@
               </div>
             </div>
 
-            <!-- Layanan Sekolah -->
-            <div class="flex items-center justify-between">
-              <span class="text-sm font-medium">Layanan Sekolah</span>
-              <div class="flex gap-4">
-                <label 
-                  v-for="rating in 5" 
+            <div
+              class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+            >
+              <span class="text-xs md:text-sm font-medium"
+                >Layanan Sekolah</span
+              >
+              <div class="flex gap-2 sm:gap-3 md:gap-4">
+                <label
+                  v-for="rating in 5"
                   :key="'layanan-' + rating"
                   class="cursor-pointer"
                 >
-                  <input 
-                    type="radio" 
-                    :value="rating" 
+                  <input
+                    type="radio"
+                    :value="rating"
                     v-model="form.ratings.layanan"
                     class="sr-only"
                   />
-                  <span 
-                    class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 transition-colors"
-                    :class="form.ratings.layanan === rating ? 'border-black bg-black text-white' : 'border-gray-300 text-gray-600 hover:border-gray-400'"
+                  <span
+                    class="inline-flex items-center justify-center w-7 h-7 md:w-8 md:h-8 rounded-full border-2 transition-colors text-xs md:text-sm"
+                    :class="
+                      form.ratings.layanan === rating
+                        ? 'border-[#1F1F1F] bg-[#1F1F1F] text-white'
+                        : 'border-bg-gray text-[#1F1F1F] hover:border-secondary-gray'
+                    "
                   >
                     {{ rating }}
                   </span>
@@ -142,24 +206,31 @@
               </div>
             </div>
 
-            <!-- Keamanan Sekolah -->
-            <div class="flex items-center justify-between">
-              <span class="text-sm font-medium">Keamanan Sekolah</span>
-              <div class="flex gap-4">
-                <label 
-                  v-for="rating in 5" 
+            <div
+              class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+            >
+              <span class="text-xs md:text-sm font-medium"
+                >Keamanan Sekolah</span
+              >
+              <div class="flex gap-2 sm:gap-3 md:gap-4">
+                <label
+                  v-for="rating in 5"
                   :key="'keamanan-' + rating"
                   class="cursor-pointer"
                 >
-                  <input 
-                    type="radio" 
-                    :value="rating" 
+                  <input
+                    type="radio"
+                    :value="rating"
                     v-model="form.ratings.keamanan"
                     class="sr-only"
                   />
-                  <span 
-                    class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 transition-colors"
-                    :class="form.ratings.keamanan === rating ? 'border-black bg-black text-white' : 'border-gray-300 text-gray-600 hover:border-gray-400'"
+                  <span
+                    class="inline-flex items-center justify-center w-7 h-7 md:w-8 md:h-8 rounded-full border-2 transition-colors text-xs md:text-sm"
+                    :class="
+                      form.ratings.keamanan === rating
+                        ? 'border-[#1F1F1F] bg-[#1F1F1F] text-white'
+                        : 'border-bg-gray text-[#1F1F1F] hover:border-secondary-gray'
+                    "
                   >
                     {{ rating }}
                   </span>
@@ -167,24 +238,31 @@
               </div>
             </div>
 
-            <!-- Kegiatan Sekolah -->
-            <div class="flex items-center justify-between">
-              <span class="text-sm font-medium">Kegiatan Sekolah</span>
-              <div class="flex gap-4">
-                <label 
-                  v-for="rating in 5" 
+            <div
+              class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+            >
+              <span class="text-xs md:text-sm font-medium"
+                >Kegiatan Sekolah</span
+              >
+              <div class="flex gap-2 sm:gap-3 md:gap-4">
+                <label
+                  v-for="rating in 5"
                   :key="'kegiatan-' + rating"
                   class="cursor-pointer"
                 >
-                  <input 
-                    type="radio" 
-                    :value="rating" 
+                  <input
+                    type="radio"
+                    :value="rating"
                     v-model="form.ratings.kegiatan"
                     class="sr-only"
                   />
-                  <span 
-                    class="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 transition-colors"
-                    :class="form.ratings.kegiatan === rating ? 'border-black bg-black text-white' : 'border-gray-300 text-gray-600 hover:border-gray-400'"
+                  <span
+                    class="inline-flex items-center justify-center w-7 h-7 md:w-8 md:h-8 rounded-full border-2 transition-colors text-xs md:text-sm"
+                    :class="
+                      form.ratings.kegiatan === rating
+                        ? 'border-[#1F1F1F] bg-[#1F1F1F] text-white'
+                        : 'border-bg-gray text-[#1F1F1F] hover:border-secondary-gray'
+                    "
                   >
                     {{ rating }}
                   </span>
@@ -194,46 +272,68 @@
           </div>
         </div>
 
-        <!-- Pengalaman Anda -->
-        <div class="mb-8">
-          <h2 class="text-lg font-semibold mb-4">Pengalaman Anda di {{ schoolName }}</h2>
-          <p class="text-sm text-gray-600 mb-4">Bagikan pemikiran Anda di sini</p>
+        <div class="mb-6 md:mb-8">
+          <h2 class="text-base md:text-lg font-semibold mb-3 md:mb-4">
+            Pengalaman Anda di {{ schoolName }}
+          </h2>
+          <p class="text-xs md:text-sm text-[#1F1F1F] mb-3 md:mb-4">
+            Bagikan pemikiran Anda di sini
+          </p>
 
-          <!-- Apa yang paling Anda sukai? -->
-          <div class="mb-6">
-            <label class="block text-sm font-medium mb-2">Apa yang paling Anda sukai?</label>
+          <div class="mb-4 md:mb-6">
+            <label class="block text-xs md:text-sm font-medium mb-2"
+              >Apa yang paling Anda sukai?</label
+            >
             <textarea
               v-model="form.experience.liked"
               rows="4"
               maxlength="1000"
               placeholder="Jelaskan apa yang paling Anda sukai"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              class="w-full px-3 py-2 md:px-4 md:py-3 border border-bg-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none text-xs md:text-sm"
             ></textarea>
-            <p class="text-xs text-gray-500 mt-1 text-right">{{ form.experience.liked.length }}/1000</p>
+            <p class="text-xs text-gray-500 mt-1 text-right">
+              {{ form.experience.liked.length }}/1000
+            </p>
           </div>
 
-          <!-- Apa yang bisa diperbaiki? -->
-          <div class="mb-6">
-            <label class="block text-sm font-medium mb-2">Apa yang bisa diperbaiki?</label>
+          <div class="mb-4 md:mb-6">
+            <label class="block text-xs md:text-sm font-medium mb-2"
+              >Apa yang bisa diperbaiki?</label
+            >
             <textarea
               v-model="form.experience.improved"
               rows="4"
               maxlength="1000"
               placeholder="Jelaskan apa yang bisa diperbaiki"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              class="w-full px-3 py-2 md:px-4 md:py-3 border border-bg-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none text-xs md:text-sm"
             ></textarea>
-            <p class="text-xs text-gray-500 mt-1 text-right">{{ form.experience.improved.length }}/1000</p>
+            <p class="text-xs text-gray-500 mt-1 text-right">
+              {{ form.experience.improved.length }}/1000
+            </p>
           </div>
         </div>
 
-        <!-- Buttons -->
-        <div class="flex justify-between pt-6">
-          <button 
+        <div
+          class="flex flex-col-reverse sm:flex-row sm:justify-between gap-3 sm:gap-0 pt-4 md:pt-6"
+        >
+          <button
             @click="handlePrev"
-            class="px-6 py-3 text-gray-700 font-medium hover:bg-gray-100 rounded-lg transition-colors flex items-center"
+            class="w-full sm:w-auto px-4 md:px-4 py-2.5 md:py-3 text-sm md:text-base text-primary-gray font-medium border border-border-gray rounded-xl transition-colors flex items-center justify-center gap-3"
           >
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            <svg
+              width="21"
+              height="21"
+              viewBox="0 0 21 21"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M16.625 10.5H4.375M4.375 10.5L10.5 16.625M4.375 10.5L10.5 4.375"
+                stroke="#082519"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
             Kembali
           </button>
@@ -241,15 +341,27 @@
             @click="handleNext"
             :disabled="!isFormValid"
             :class="[
-              'px-8 py-3 rounded-lg font-medium transition-colors flex items-center',
+              'w-full sm:w-auto px-5 md:px-5 py-2.5 md:py-3 text-sm md:text-base border border-border-gray rounded-xl font-medium transition-colors flex items-center justify-center gap-3',
               isFormValid
-                ? 'bg-black text-white hover:bg-gray-800'
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                ? 'bg-[#1F1F1F] text-white'
+                : 'bg-border-gray text-bg-light cursor-not-allowed',
             ]"
           >
             Berikutnya
-            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            <svg
+              width="21"
+              height="21"
+              viewBox="0 0 21 21"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M4.375 10.5H16.625M16.625 10.5L10.5 4.375M16.625 10.5L10.5 16.625"
+                stroke="white"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
           </button>
         </div>
@@ -262,15 +374,15 @@
 const props = defineProps({
   schoolName: {
     type: String,
-    default: 'Jakarta Intercultural School'
+    default: "Jakarta Intercultural School",
   },
   formData: {
     type: Object,
-    default: () => ({})
-  }
-})
+    default: () => ({}),
+  },
+});
 
-const emit = defineEmits(['next', 'prev', 'updateFormData'])
+const emit = defineEmits(["next", "prev", "updateFormData"]);
 
 const form = ref({
   ratings: {
@@ -278,70 +390,68 @@ const form = ref({
     pembelajaran: null,
     layanan: null,
     keamanan: null,
-    kegiatan: null
+    kegiatan: null,
   },
   experience: {
-    liked: '',
-    improved: ''
-  }
-})
+    liked: "",
+    improved: "",
+  },
+});
 
-const overallRating = ref(0)
+const overallRating = ref(0);
 
-// Load data dari props saat mounted
 onMounted(() => {
   if (props.formData?.step2) {
-    form.value = { ...props.formData.step2 }
+    form.value = { ...props.formData.step2 };
   }
-})
+});
 
-// Watch props untuk update saat kembali dari step berikutnya
-watch(() => props.formData?.step2, (newData) => {
-  if (newData) {
-    form.value = { ...newData }
-  }
-}, { deep: true })
+watch(
+  () => props.formData?.step2,
+  (newData) => {
+    if (newData) {
+      form.value = { ...newData };
+    }
+  },
+  { deep: true }
+);
 
-// Computed untuk validasi form
 const isFormValid = computed(() => {
-  return form.value.ratings.fasilitas !== null &&
-         form.value.ratings.pembelajaran !== null &&
-         form.value.ratings.layanan !== null &&
-         form.value.ratings.keamanan !== null &&
-         form.value.ratings.kegiatan !== null &&
-         form.value.experience.liked.trim() !== '' &&
-         form.value.experience.improved.trim() !== ''
-})
+  return (
+    form.value.ratings.fasilitas !== null &&
+    form.value.ratings.pembelajaran !== null &&
+    form.value.ratings.layanan !== null &&
+    form.value.ratings.keamanan !== null &&
+    form.value.ratings.kegiatan !== null &&
+    form.value.experience.liked.trim() !== "" &&
+    form.value.experience.improved.trim() !== ""
+  );
+});
 
-// Watch perubahan ratings untuk update overall rating
-watch(() => form.value.ratings, (newRatings) => {
-  const allRatings = Object.values(newRatings)
-  if (allRatings.every(r => r !== null)) {
-    const sum = allRatings.reduce((acc, val) => acc + val, 0)
-    overallRating.value = Math.round(sum / allRatings.length)
-  } else {
-    overallRating.value = 0
-  }
-}, { deep: true })
+watch(
+  () => form.value.ratings,
+  (newRatings) => {
+    const allRatings = Object.values(newRatings);
+    if (allRatings.every((r) => r !== null)) {
+      const sum = allRatings.reduce((acc, val) => acc + val, 0);
+      overallRating.value = Math.round(sum / allRatings.length);
+    } else {
+      overallRating.value = 0;
+    }
+  },
+  { deep: true }
+);
 
-// Handle prev
-// Handle prev
 const handlePrev = () => {
-  // Simpan data dulu sebelum kembali
-  emit('save', { step2: form.value })
-  emit('prev')
-}
+  emit("updateFormData", { step2: form.value });
+  emit("prev");
+};
 
-// Handle next
 const handleNext = () => {
-  if (!isFormValid.value) return
-  
-  // Emit data ke parent
-  emit('save', { step2: form.value })
-  
-  // Lanjut ke step 3
-  emit('next')
-}
+  if (!isFormValid.value) return;
+  emit("updateFormData", { step2: form.value });
+  emit("next");
+};
 </script>
 
 <style scoped>

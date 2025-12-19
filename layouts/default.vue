@@ -2,19 +2,21 @@
   <div class="flex flex-col min-h-screen">
     <header class="w-full border-b border-gray-200 bg-white sticky top-0 z-50">
       <div
-        class="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between"
+        class="max-w-7xl mx-auto px-3 xs:px-4 sm:px-5 lg:px-8 h-20 flex items-center justify-between"
       >
         <div class="flex items-center">
           <nuxt-link to="/" class="flex items-center">
-            <div class="w-8 h-8 mr-2">
+            <div class="w-8 h-12 sm:w-9 sm:h-9 lg:w-10 lg:h-10">
               <Logo/>
             </div>
           </nuxt-link>
         </div>
 
-        <div class="flex items-center space-x-6">
-          <nav class="flex items-center space-x-6 text-sm">
-            <a href="/" class="text-gray-700 hover:text-gray-900"> Beranda </a>
+        <div class="flex items-center space-x-3 sm:space-x-3 lg:space-x-6">
+          <nav class="hidden sm:flex items-center space-x-3 lg:space-x-6 text-xs lg:text-sm">
+            <a href="/" class="text-gray-700 hover:text-gray-900 whitespace-nowrap"> 
+              Beranda 
+            </a>
 
             <div
               class="relative"
@@ -22,12 +24,12 @@
               @mouseleave="isDropdownOpen = false"
             >
               <button
-                class="text-gray-700 hover:text-gray-900 flex items-center gap-1"
+                class="text-gray-700 hover:text-gray-900 flex items-center gap-1 whitespace-nowrap"
                 @click="isDropdownOpen = !isDropdownOpen"
               >
                 Jelajahi
                 <svg
-                  class="w-4 h-4 transition-transform duration-200"
+                  class="w-3 h-3 sm:w-3.5 sm:h-3.5 lg:w-4 lg:h-4 transition-transform duration-200"
                   :class="{ 'rotate-180': isDropdownOpen }"
                   fill="none"
                   stroke="currentColor"
@@ -52,7 +54,7 @@
               >
                 <div
                   v-if="isDropdownOpen"
-                  class="absolute left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-100 py-2 z-50"
+                  class="absolute left-0 mt-2 w-[320px] sm:w-[360px] md:w-[400px] lg:w-[440px] xl:w-[480px] bg-white rounded-lg shadow-xl border border-gray-100 py-3 z-50"
                 >
                   <div v-if="loading" class="px-4 py-3 text-gray-400 text-sm">
                     Loading...
@@ -63,89 +65,89 @@
                   </div>
 
                   <template v-else>
-                    <div class="flex p-2 min-h-[120px]">
-                      <div class="w-1/2 pr-1">
-                        <div class="flex flex-col gap-1">
+                    <div class="flex p-3 min-h-[140px]">
+                      <div class="w-1/2 pr-2">
+                        <div class="flex flex-col gap-2">
                           <nuxt-link
                             to="/schools/sd"
-                            class="flex items-center px-3 py-2 hover:bg-gray-50 transition-colors group rounded-md"
+                            class="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors group rounded-md"
                             @click="isDropdownOpen = false"
                           >
                             <div
-                              class="w-4 h-4 mr-2 text-gray-700 group-hover:text-gray-900 flex-shrink-0"
+                              class="w-5 h-5 sm:w-6 sm:h-6 mr-3 text-gray-700 group-hover:text-gray-900 flex-shrink-0"
                             >
                               <IconSD class="w-full h-full" />
                             </div>
                             <span
-                              class="text-gray-700 text-sm group-hover:text-gray-900"
+                              class="text-gray-700 text-sm sm:text-base group-hover:text-gray-900 font-medium"
                               >SD</span
                             >
                           </nuxt-link>
 
                           <nuxt-link
                             to="/schools/smp"
-                            class="flex items-center px-3 py-2 hover:bg-gray-50 transition-colors group rounded-md"
+                            class="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors group rounded-md"
                             @click="isDropdownOpen = false"
                           >
                             <div
-                              class="w-4 h-4 mr-2 text-gray-700 group-hover:text-gray-900 flex-shrink-0"
+                              class="w-5 h-5 sm:w-6 sm:h-6 mr-3 text-gray-700 group-hover:text-gray-900 flex-shrink-0"
                             >
                               <IconSMP class="w-full h-full" />
                             </div>
                             <span
-                              class="text-gray-700 text-sm group-hover:text-gray-900"
+                              class="text-gray-700 text-sm sm:text-base group-hover:text-gray-900 font-medium"
                               >SMP</span
                             >
                           </nuxt-link>
 
                           <nuxt-link
                             to="/schools/sma"
-                            class="flex items-center px-3 py-2 hover:bg-gray-50 transition-colors group rounded-md"
+                            class="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors group rounded-md"
                             @click="isDropdownOpen = false"
                           >
                             <div
-                              class="w-4 h-4 mr-2 text-gray-700 group-hover:text-gray-900 flex-shrink-0"
+                              class="w-5 h-5 sm:w-6 sm:h-6 mr-3 text-gray-700 group-hover:text-gray-900 flex-shrink-0"
                             >
                               <IconSMA class="w-full h-full" />
                             </div>
                             <span
-                              class="text-gray-700 text-sm group-hover:text-gray-900"
+                              class="text-gray-700 text-sm sm:text-base group-hover:text-gray-900 font-medium"
                               >SMA</span
                             >
                           </nuxt-link>
                         </div>
                       </div>
 
-                      <div class="w-1/2 pl-1">
-                        <div class="flex flex-col gap-1">
+                      <div class="w-1/2 pl-2">
+                        <div class="flex flex-col gap-2">
                           <nuxt-link
                             to="/schools/smk"
-                            class="flex items-center px-3 py-2 hover:bg-gray-50 transition-colors group rounded-md"
+                            class="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors group rounded-md"
                             @click="isDropdownOpen = false"
                           >
                             <div
-                              class="w-4 h-4 mr-2 text-gray-700 group-hover:text-gray-900 flex-shrink-0"
+                              class="w-5 h-5 sm:w-6 sm:h-6 mr-3 text-gray-700 group-hover:text-gray-900 flex-shrink-0"
                             >
                               <IconSMK class="w-full h-full" />
                             </div>
                             <span
-                              class="text-gray-700 text-sm group-hover:text-gray-900"
+                              class="text-gray-700 text-sm sm:text-base group-hover:text-gray-900 font-medium"
                               >SMK</span
                             >
                           </nuxt-link>
 
                           <nuxt-link
                             to="/schools/universitas"
-                            class="flex items-center px-3 py-2 hover:bg-gray-50 transition-colors group rounded-md"
+                            class="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors group rounded-md"
                             @click="isDropdownOpen = false"
                           >
                             <div
-                              class="w-4 h-4 mr-2 text-gray-700 group-hover:text-gray-900 flex-shrink-0"
+                              class="w-5 h-5 sm:w-6 sm:h-6 mr-3 text-gray-700 group-hover:text-gray-900 flex-shrink-0"
                             >
                               <IconUniversity class="w-full h-full" />
                             </div>
                             <span
-                              class="text-gray-700 text-sm group-hover:text-gray-900"
+                              class="text-gray-700 text-sm sm:text-base group-hover:text-gray-900 font-medium"
                               >Universitas</span
                             >
                           </nuxt-link>
@@ -157,16 +159,16 @@
               </transition>
             </div>
 
-            <a href="/about-us" class="text-gray-700 hover:text-gray-900">
+            <a href="/about-us" class="text-gray-700 hover:text-gray-900 whitespace-nowrap">
               Tentang Kami
             </a>
-            <a href="/ranking" class="text-gray-700 hover:text-gray-900">
+            <a href="/ranking" class="text-gray-700 hover:text-gray-900 whitespace-nowrap">
               Peringkat Sekolah
             </a>
           </nav>
 
           <div
-            class="relative"
+            class="relative hidden sm:block"
             @mouseenter="isLangOpen = true"
             @mouseleave="isLangOpen = false"
           >
@@ -174,9 +176,9 @@
               class="flex items-center gap-1 text-gray-700 hover:text-gray-900"
               @click="isLangOpen = !isLangOpen"
             >
-              <IndoFlag/>
+              <IndoFlag class="w-5 h-5"/>
               <svg
-                class="w-4 h-4 transition-transform duration-200"
+                class="w-3 h-3 sm:w-3.5 sm:h-3.5 lg:w-4 lg:h-4 transition-transform duration-200"
                 :class="{ 'rotate-180': isLangOpen }"
                 fill="none"
                 stroke="currentColor"
@@ -201,20 +203,20 @@
             >
               <div
                 v-if="isLangOpen"
-                class="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-xl border border-gray-100 py-2 z-50"
+                class="absolute right-0 mt-2 w-[160px] sm:w-[180px] md:w-[200px] lg:w-[220px] bg-white rounded-lg shadow-xl border border-gray-100 py-2 z-50"
               >
                 <button
                   @click="changeLang('id')"
-                  class="w-full flex items-center px-4 py-2 hover:bg-gray-50 transition-colors"
+                  class="w-full flex items-center px-4 py-3 hover:bg-gray-50 transition-colors"
                 >
-                  <IndoFlag/>
+                  <IndoFlag class="w-5 h-5"/>
                   <span class="ml-2 text-sm">Indonesia</span>
                 </button>
                 <button
                   @click="changeLang('en')"
-                  class="w-full flex items-center px-4 py-2 hover:bg-gray-50 transition-colors"
+                  class="w-full flex items-center px-4 py-3 hover:bg-gray-50 transition-colors"
                 >
-                  <EngFlag/>
+                  <EngFlag class="w-5 h-5"/>
                   <span class="ml-2 text-sm">English</span>
                 </button>
               </div>
@@ -222,48 +224,177 @@
           </div>
 
           <AuthMenu />
+          
+          <!-- Mobile Menu Button -->
+          <button
+            @click="isMobileMenuOpen = !isMobileMenuOpen"
+            class="sm:hidden text-gray-700 hover:text-gray-900"
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                v-if="!isMobileMenuOpen"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+              <path
+                v-else
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
         </div>
       </div>
+
+      <transition
+        enter-active-class="transition ease-out duration-300"
+        enter-from-class="opacity-0 -translate-y-4"
+        enter-to-class="opacity-100 translate-y-0"
+        leave-active-class="transition ease-in duration-200"
+        leave-from-class="opacity-100 translate-y-0"
+        leave-to-class="opacity-0 -translate-y-4"
+      >
+        <div
+          v-if="isMobileMenuOpen"
+          class="sm:hidden bg-white border-t border-gray-200 shadow-lg"
+        >
+          <div class="px-4 py-3 space-y-3">
+            <a
+              href="/"
+              class="block py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg px-3"
+              @click="isMobileMenuOpen = false"
+            >
+              Beranda
+            </a>
+            
+            <div class="py-2 px-3">
+              <div class="font-medium text-gray-900 mb-3">Jelajahi</div>
+              <div class="grid grid-cols-2 gap-2">
+                <nuxt-link
+                  to="/schools/sd"
+                  class="flex items-center py-3 px-3 hover:bg-gray-50 rounded-lg"
+                  @click="isMobileMenuOpen = false"
+                >
+                  <IconSD class="w-5 h-5 mr-2" />
+                  <span class="text-gray-700">SD</span>
+                </nuxt-link>
+                <nuxt-link
+                  to="/schools/smp"
+                  class="flex items-center py-3 px-3 hover:bg-gray-50 rounded-lg"
+                  @click="isMobileMenuOpen = false"
+                >
+                  <IconSMP class="w-5 h-5 mr-2" />
+                  <span class="text-gray-700">SMP</span>
+                </nuxt-link>
+                <nuxt-link
+                  to="/schools/sma"
+                  class="flex items-center py-3 px-3 hover:bg-gray-50 rounded-lg"
+                  @click="isMobileMenuOpen = false"
+                >
+                  <IconSMA class="w-5 h-5 mr-2" />
+                  <span class="text-gray-700">SMA</span>
+                </nuxt-link>
+                <nuxt-link
+                  to="/schools/smk"
+                  class="flex items-center py-3 px-3 hover:bg-gray-50 rounded-lg"
+                  @click="isMobileMenuOpen = false"
+                >
+                  <IconSMK class="w-5 h-5 mr-2" />
+                  <span class="text-gray-700">SMK</span>
+                </nuxt-link>
+                <nuxt-link
+                  to="/schools/universitas"
+                  class="flex items-center py-3 px-3 hover:bg-gray-50 rounded-lg col-span-2"
+                  @click="isMobileMenuOpen = false"
+                >
+                  <IconUniversity class="w-5 h-5 mr-2" />
+                  <span class="text-gray-700">Universitas</span>
+                </nuxt-link>
+              </div>
+            </div>
+            
+            <a
+              href="/about-us"
+              class="block py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg px-3"
+              @click="isMobileMenuOpen = false"
+            >
+              Tentang Kami
+            </a>
+            <a
+              href="/ranking"
+              class="block py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg px-3"
+              @click="isMobileMenuOpen = false"
+            >
+              Peringkat Sekolah
+            </a>
+            
+            <div class="pt-4 border-t border-gray-200">
+              <div class="font-medium text-gray-900 mb-3">Bahasa</div>
+              <div class="flex gap-2">
+                <button
+                  @click="changeLang('id')"
+                  class="flex items-center px-4 py-3 bg-gray-100 rounded-lg flex-1 justify-center"
+                >
+                  <IndoFlag class="w-5 h-5 mr-2" />
+                  <span class="text-sm">Indonesia</span>
+                </button>
+                <button
+                  @click="changeLang('en')"
+                  class="flex items-center px-4 py-3 bg-gray-100 rounded-lg flex-1 justify-center"
+                >
+                  <EngFlag class="w-5 h-5 mr-2" />
+                  <span class="text-sm">English</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
     </header>
 
     <main class="flex-grow">
       <slot />
     </main>
 
-    <footer class="py-16">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+    <footer class="py-8 sm:py-12 lg:py-16">
+      <div class="max-w-6xl mx-auto px-3 xs:px-4 sm:px-5 lg:px-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-8 sm:mb-10 lg:mb-12">
           <div class="lg:col-span-1">
-            <div class="flex items-center mb-6">
-              <div
-                class="bg-black rounded-full flex items-center justify-center mr-3"
-              >
-                <nuxt-link to="/">
-                  <img
-                    src="assets/images/logo-footer.png"
-                    alt="School Advisor"
-                    class="h-10"
-                  />
+            <div class="flex items-center mb-4 sm:mb-6">
+              <div class="flex items-center mr-3">
+                <nuxt-link to="/" class="flex items-center">
+                  <div class="w-8 h-8 sm:w-10 sm:h-10">
+                    <Logo/>
+                  </div>
                 </nuxt-link>
               </div>
             </div>
 
-            <div class="mb-6">
-              <p class="text-sm text-gray-600 mb-2">General Inquiry</p>
+            <div class="mb-4 sm:mb-6">
+              <p class="text-xs sm:text-sm text-gray-600 mb-1 sm:mb-2">General Inquiry</p>
               <a
                 href="mailto:hallo@schoolaadvisor.com"
-                class="text-gray-900 hover:text-gray-700 transition-colors"
+                class="text-gray-900 hover:text-gray-700 transition-colors text-sm sm:text-base"
               >
                 hallo@schoolaadvisor.com
               </a>
             </div>
 
-            <div class="flex space-x-4">
+            <div class="flex space-x-3 sm:space-x-4">
               <a
                 href="#"
                 class="text-gray-400 hover:text-gray-600 transition-colors"
               >
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
                   <path
                     fill-rule="evenodd"
                     d="M2 5a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3 1h6v4l-3-2-3 2V6z"
@@ -275,7 +406,7 @@
                 href="#"
                 class="text-gray-400 hover:text-gray-600 transition-colors"
               >
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
                   <path
                     fill-rule="evenodd"
                     d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
@@ -287,7 +418,7 @@
                 href="#"
                 class="text-gray-400 hover:text-gray-600 transition-colors"
               >
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
                   <path
                     d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"
                   />
@@ -297,7 +428,7 @@
                 href="#"
                 class="text-gray-400 hover:text-gray-600 transition-colors"
               >
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
                   <path
                     fill-rule="evenodd"
                     d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z"
@@ -309,11 +440,11 @@
           </div>
 
           <div>
-            <ul class="space-y-4">
+            <ul class="space-y-2 sm:space-y-3 lg:space-y-4">
               <li>
                 <NuxtLink
                   to="/"
-                  class="text-gray-900 hover:text-gray-700 transition-colors font-medium"
+                  class="text-gray-900 hover:text-gray-700 transition-colors font-medium text-sm sm:text-base"
                 >
                   Home
                 </NuxtLink>
@@ -321,7 +452,7 @@
               <li>
                 <NuxtLink
                   to="/explore-school"
-                  class="text-gray-600 hover:text-gray-800 transition-colors"
+                  class="text-gray-600 hover:text-gray-800 transition-colors text-xs sm:text-sm lg:text-base"
                 >
                   Explore School
                 </NuxtLink>
@@ -329,7 +460,7 @@
               <li>
                 <NuxtLink
                   to="/about"
-                  class="text-gray-600 hover:text-gray-800 transition-colors"
+                  class="text-gray-600 hover:text-gray-800 transition-colors text-xs sm:text-sm lg:text-base"
                 >
                   About Us
                 </NuxtLink>
@@ -337,7 +468,7 @@
               <li>
                 <NuxtLink
                   to="/contact"
-                  class="text-gray-600 hover:text-gray-800 transition-colors"
+                  class="text-gray-600 hover:text-gray-800 transition-colors text-xs sm:text-sm lg:text-base"
                 >
                   Contact Us
                 </NuxtLink>
@@ -346,11 +477,11 @@
           </div>
 
           <div>
-            <ul class="space-y-4">
+            <ul class="space-y-2 sm:space-y-3 lg:space-y-4">
               <li>
                 <NuxtLink
                   to="/privacy"
-                  class="text-gray-600 hover:text-gray-800 transition-colors"
+                  class="text-gray-600 hover:text-gray-800 transition-colors text-xs sm:text-sm lg:text-base"
                 >
                   Privacy Policy
                 </NuxtLink>
@@ -358,7 +489,7 @@
               <li>
                 <NuxtLink
                   to="/terms"
-                  class="text-gray-600 hover:text-gray-800 transition-colors"
+                  class="text-gray-600 hover:text-gray-800 transition-colors text-xs sm:text-sm lg:text-base"
                 >
                   Terms & Condition
                 </NuxtLink>
@@ -366,7 +497,7 @@
               <li>
                 <NuxtLink
                   to="/review-guide"
-                  class="text-gray-600 hover:text-gray-800 transition-colors"
+                  class="text-gray-600 hover:text-gray-800 transition-colors text-xs sm:text-sm lg:text-base"
                 >
                   Review Writing Guide
                 </NuxtLink>
@@ -374,7 +505,7 @@
               <li>
                 <NuxtLink
                   to="/career"
-                  class="text-gray-600 hover:text-gray-800 transition-colors"
+                  class="text-gray-600 hover:text-gray-800 transition-colors text-xs sm:text-sm lg:text-base"
                 >
                   Career/Collaboration
                 </NuxtLink>
@@ -383,51 +514,51 @@
           </div>
 
           <div>
-            <div class="mb-6">
-              <h4 class="text-lg font-semibold text-gray-900 mb-4">
+            <div class="mb-4 sm:mb-6">
+              <h4 class="text-base sm:text-lg font-semibold text-gray-900 mb-2 sm:mb-3 lg:mb-4">
                 Subscribe to our newsletter
               </h4>
-              <form class="space-y-3">
+              <form class="space-y-2 sm:space-y-3">
                 <div>
                   <label for="email" class="sr-only">Email Address</label>
                   <input
                     type="email"
                     id="email"
                     placeholder="Email Address"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                    class="w-full px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                   />
                 </div>
                 <button
                   type="submit"
-                  class="w-full bg-gray-900 text-white py-3 px-6 rounded-lg hover:bg-gray-800 transition-colors font-medium"
+                  class="w-full bg-gray-900 text-white py-2 sm:py-3 px-4 sm:px-6 text-xs sm:text-sm rounded-lg hover:bg-gray-800 transition-colors font-medium"
                 >
                   Submit
                 </button>
               </form>
             </div>
 
-            <div class="space-y-3">
+            <div class="space-y-2 sm:space-y-3">
               <a
                 href="#"
-                class="block text-gray-600 hover:text-gray-800 transition-colors"
+                class="block text-gray-600 hover:text-gray-800 transition-colors text-xs sm:text-sm lg:text-base"
               >
                 Instagram
               </a>
               <a
                 href="#"
-                class="block text-gray-600 hover:text-gray-800 transition-colors"
+                class="block text-gray-600 hover:text-gray-800 transition-colors text-xs sm:text-sm lg:text-base"
               >
                 Tiktok
               </a>
               <a
                 href="#"
-                class="block text-gray-600 hover:text-gray-800 transition-colors"
+                class="block text-gray-600 hover:text-gray-800 transition-colors text-xs sm:text-sm lg:text-base"
               >
                 Facebook
               </a>
               <a
                 href="#"
-                class="block text-gray-600 hover:text-gray-800 transition-colors"
+                class="block text-gray-600 hover:text-gray-800 transition-colors text-xs sm:text-sm lg:text-base"
               >
                 Youtube
               </a>
@@ -435,8 +566,8 @@
           </div>
         </div>
 
-        <div class="border-t border-gray-200 pt-8">
-          <p class="text-sm text-gray-600 text-left lg:text-left">
+        <div class="border-t border-gray-200 pt-6 sm:pt-8">
+          <p class="text-xs sm:text-sm text-gray-600 text-left">
             Copyright © 2025 School Advisor. All Rights Reserved. Powered by PT.
             Timedoor Indonesia.
           </p>
@@ -461,6 +592,7 @@ import EngFlag from "~/assets/EngFlag.vue";
 
 const isDropdownOpen = ref(false);
 const isLangOpen = ref(false);
+const isMobileMenuOpen = ref(false);
 const educationLevels = ref([]);
 const loading = ref(false);
 const error = ref(null);
@@ -482,8 +614,12 @@ const fetchEducationLevels = async () => {
 
 const changeLang = (lang) => {
   console.log("Change language to:", lang);
-  // Implementasi ganti bahasa
   isLangOpen.value = false;
+  isMobileMenuOpen.value = false;
+};
+
+const closeMobileMenu = () => {
+  isMobileMenuOpen.value = false;
 };
 
 onMounted(() => {
@@ -522,5 +658,25 @@ header {
 .absolute.left-0::-webkit-scrollbar-thumb:hover,
 .absolute.right-0::-webkit-scrollbar-thumb:hover {
   background: #9ca3af;
+}
+
+button {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+@media (max-width: 640px) {
+  button {
+    min-height: 40px;
+    min-width: 40px;
+  }
+  
+  .absolute.left-0,
+  .absolute.right-0 {
+    width: 100vw;
+    max-width: 320px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 </style>

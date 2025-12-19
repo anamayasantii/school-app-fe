@@ -1,7 +1,5 @@
 <template>
-  <!-- Education Level Tabs -->
-  <div class="mb-6 sm:mb-8">
-    <!-- Mobile: Stack vertically -->
+  <div class="mb-4 sm:mb-6 md:mb-8">
     <div
       class="flex flex-col sm:hidden bg-white border border-border-gray rounded-xl p-1 gap-1 w-full"
     >
@@ -21,7 +19,6 @@
       </button>
     </div>
 
-    <!-- Desktop: Horizontal - FULL WIDTH VERSION -->
     <div
       class="hidden sm:flex bg-white border border-border-gray rounded-xl p-1 gap-1 w-full"
     >
@@ -42,133 +39,221 @@
     </div>
   </div>
 
-  <div class="flex flex-col sm:flex-row gap-4 mb-8">
-    <!-- Province Filter -->
-    <div class="flex-1">
+  <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8">
+    <div class="w-full sm:flex-1 relative">
       <div
-        class="relative flex items-center bg-white border border-border-gray font-medium rounded-lg p-2 py-0.5"
+        @click="toggleProvince"
+        class="relative flex items-center bg-white border border-border-gray font-medium rounded-lg p-2 py-3 cursor-pointer"
       >
-        <label class="text-sm text-secondary-gray mr-2">Province:</label>
-        <select
-          :value="filters.province"
-          @change="onProvinceChange"
-          class="appearance-none block w-full px-4 py-2 bg-transparent text-gray-700 focus:outline-none text-sm"
+        <label class="text-xs sm:text-sm text-secondary-gray mr-2 flex-shrink-0">Province:</label>
+        <span class="flex-1 text-xs sm:text-sm" :class="filters.province ? 'text-gray-700' : 'text-gray-400'">
+          {{ filters.province || 'Semua' }}
+        </span>
+        <svg
+          class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 transition-transform"
+          :class="{ 'rotate-180': showProvinceDropdown }"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
         >
-          <option value="">Semua</option>
-          <option
-            v-for="province in provinces"
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"
+          ></path>
+        </svg>
+      </div>
+
+      <div
+        v-if="showProvinceDropdown"
+        class="absolute top-full left-0 right-0 mt-2 bg-white border border-border-gray rounded-xl shadow-lg max-h-64 overflow-y-auto z-50"
+      >
+        <div
+          @click="selectProvince('')"
+          class="px-4 py-3 hover:bg-gray-50 cursor-pointer flex items-center justify-between text-sm border-b border-border-gray"
+        >
+          <span :class="!filters.province ? 'text-primary-green font-medium' : 'text-gray-700'">Semua</span>
+          <svg
+            v-if="!filters.province"
+            class="w-5 h-5 text-primary-green"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+        </div>
+        
+        <template v-for="(group, letter) in groupedProvinces" :key="letter">
+          <div class="px-4 py-2 bg-gray-50 text-xs font-medium text-gray-500 uppercase sticky top-0">
+            {{ letter }}
+          </div>
+          <div
+            v-for="province in group"
             :key="province.id"
-            :value="province.name"
+            @click="selectProvince(province.name)"
+            class="px-4 py-3 hover:bg-gray-50 cursor-pointer flex items-center justify-between text-sm border-b border-border-gray last:border-b-0"
           >
-            {{ province.name }}
-          </option>
-        </select>
-        <div
-          class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
-        >
-          <svg
-            class="h-5 w-5 text-gray-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M19 9l-7 7-7-7"
-            ></path>
-          </svg>
-        </div>
+            <span :class="filters.province === province.name ? 'text-primary-green font-medium' : 'text-gray-700'">
+              {{ province.name }}
+            </span>
+            <svg
+              v-if="filters.province === province.name"
+              class="w-5 h-5 text-primary-green"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+          </div>
+        </template>
       </div>
     </div>
 
-    <!-- District Filter -->
-    <div class="flex-1">
+    <div class="w-full sm:flex-1 relative">
       <div
-        class="relative flex items-center bg-white border border-border-gray font-medium rounded-lg p-2 py-0.5"
+        @click="toggleDistrict"
+        class="relative flex items-center bg-white border border-border-gray font-medium rounded-lg p-2 py-3 cursor-pointer"
+        :class="{ 'opacity-50 cursor-not-allowed': !filters.province }"
       >
-        <label class="text-sm text-secondary-gray mr-2">District:</label>
-        <select
-          :value="filters.district"
-          @change="onDistrictChange"
-          :disabled="!filters.province"
-          class="appearance-none block w-full px-4 py-2 bg-transparent focus:outline-none text-sm disabled:cursor-not-allowed"
-          :class="!filters.province ? 'text-gray-400' : 'text-gray-700'"
+        <label class="text-xs sm:text-sm text-secondary-gray mr-2 flex-shrink-0">District:</label>
+        <span class="flex-1 text-xs sm:text-sm" :class="filters.district ? 'text-gray-700' : 'text-gray-400'">
+          {{ filters.district || 'Semua' }}
+        </span>
+        <svg
+          class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 transition-transform"
+          :class="{ 'rotate-180': showDistrictDropdown }"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
         >
-          <option value="">Semua</option>
-          <option
-            v-for="district in districts"
-            :key="district.id"
-            :value="district.name"
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"
+          ></path>
+        </svg>
+      </div>
+
+      <div
+        v-if="showDistrictDropdown && filters.province"
+        class="absolute top-full left-0 right-0 mt-2 bg-white border border-border-gray rounded-xl shadow-lg max-h-64 overflow-y-auto z-50"
+      >
+        <div
+          @click="selectDistrict('')"
+          class="px-4 py-3 hover:bg-gray-50 cursor-pointer flex items-center justify-between text-sm border-b border-border-gray"
+        >
+          <span :class="!filters.district ? 'text-primary-green font-medium' : 'text-gray-700'">Semua</span>
+          <svg
+            v-if="!filters.district"
+            class="w-5 h-5 text-primary-green"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
           >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+        </div>
+        
+        <div
+          v-for="district in districts"
+          :key="district.id"
+          @click="selectDistrict(district.name)"
+          class="px-4 py-3 hover:bg-gray-50 cursor-pointer flex items-center justify-between text-sm border-b border-border-gray last:border-b-0"
+        >
+          <span :class="filters.district === district.name ? 'text-primary-green font-medium' : 'text-gray-700'">
             {{ district.name }}
-          </option>
-        </select>
-        <div
-          class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
-        >
+          </span>
           <svg
-            class="h-5 w-5 text-gray-400"
+            v-if="filters.district === district.name"
+            class="w-5 h-5 text-primary-green"
             fill="none"
-            viewBox="0 0 24 24"
             stroke="currentColor"
+            viewBox="0 0 24 24"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M19 9l-7 7-7-7"
-            ></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
           </svg>
         </div>
       </div>
     </div>
 
-    <!-- Sub District Filter -->
-    <div class="flex-1">
+    <div class="w-full sm:flex-1 relative">
       <div
-        class="relative flex items-center bg-white border border-border-gray font-medium rounded-lg p-2 py-0.5"
+        @click="toggleSubDistrict"
+        class="relative flex items-center bg-white border border-border-gray font-medium rounded-lg p-2 py-3 cursor-pointer"
+        :class="{ 'opacity-50 cursor-not-allowed': !filters.district }"
       >
-        <label class="text-sm text-secondary-gray mr-2 whitespace-nowrap"
-          >Sub District:</label
+        <label class="text-xs sm:text-sm text-secondary-gray mr-2 whitespace-nowrap flex-shrink-0">Sub District:</label>
+        <span class="flex-1 text-xs sm:text-sm" :class="filters.subDistrict ? 'text-gray-700' : 'text-gray-400'">
+          {{ filters.subDistrict || 'Semua' }}
+        </span>
+        <svg
+          class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 transition-transform"
+          :class="{ 'rotate-180': showSubDistrictDropdown }"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
         >
-        <select
-          :value="filters.subDistrict"
-          @change="onSubDistrictChange"
-          :disabled="!filters.district"
-          class="appearance-none flex-1 px-4 py-2 bg-transparent focus:outline-none text-sm disabled:cursor-not-allowed"
-          :class="!filters.district ? 'text-gray-400' : 'text-gray-700'"
-        >
-          <option value="">Semua</option>
-          <option
-            v-for="subDistrict in subDistricts"
-            :key="subDistrict.id"
-            :value="subDistrict.name"
-          >
-            {{ subDistrict.name }}
-          </option>
-        </select>
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"
+          ></path>
+        </svg>
+      </div>
+
+      <div
+        v-if="showSubDistrictDropdown && filters.district"
+        class="absolute top-full left-0 right-0 mt-2 bg-white border border-border-gray rounded-xl shadow-lg max-h-64 overflow-y-auto z-50"
+      >
         <div
-          class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+          @click="selectSubDistrict('')"
+          class="px-4 py-3 hover:bg-gray-50 cursor-pointer flex items-center justify-between text-sm border-b border-border-gray"
         >
+          <span :class="!filters.subDistrict ? 'text-primary-green font-medium' : 'text-gray-700'">Semua</span>
           <svg
-            class="h-5 w-5 text-gray-400"
+            v-if="!filters.subDistrict"
+            class="w-5 h-5 text-primary-green"
             fill="none"
-            viewBox="0 0 24 24"
             stroke="currentColor"
+            viewBox="0 0 24 24"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M19 9l-7 7-7-7"
-            ></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+        </div>
+        
+        <div
+          v-for="subDistrict in subDistricts"
+          :key="subDistrict.id"
+          @click="selectSubDistrict(subDistrict.name)"
+          class="px-4 py-3 hover:bg-gray-50 cursor-pointer flex items-center justify-between text-sm border-b border-border-gray last:border-b-0"
+        >
+          <span :class="filters.subDistrict === subDistrict.name ? 'text-primary-green font-medium' : 'text-gray-700'">
+            {{ subDistrict.name }}
+          </span>
+          <svg
+            v-if="filters.subDistrict === subDistrict.name"
+            class="w-5 h-5 text-primary-green"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
           </svg>
         </div>
       </div>
     </div>
   </div>
+
+  <div
+    v-if="showProvinceDropdown || showDistrictDropdown || showSubDistrictDropdown"
+    @click="closeAllDropdowns"
+    class="fixed inset-0 z-40"
+  ></div>
 </template>
 
 <script setup>
@@ -191,6 +276,10 @@ const emit = defineEmits(["updateFilters", "changeEducationLevel"]);
 const provinces = ref([]);
 const districts = ref([]);
 const subDistricts = ref([]);
+
+const showProvinceDropdown = ref(false);
+const showDistrictDropdown = ref(false);
+const showSubDistrictDropdown = ref(false);
 
 const educationTabs = [
   {
@@ -229,6 +318,81 @@ const educationTabs = [
     </svg>`,
   },
 ];
+
+const groupedProvinces = computed(() => {
+  const grouped = {};
+  provinces.value.forEach(province => {
+    const firstLetter = province.name.charAt(0).toUpperCase();
+    if (!grouped[firstLetter]) {
+      grouped[firstLetter] = [];
+    }
+    grouped[firstLetter].push(province);
+  });
+  return grouped;
+});
+
+const toggleProvince = () => {
+  showProvinceDropdown.value = !showProvinceDropdown.value;
+  showDistrictDropdown.value = false;
+  showSubDistrictDropdown.value = false;
+};
+
+const toggleDistrict = () => {
+  if (!props.filters.province) return;
+  showDistrictDropdown.value = !showDistrictDropdown.value;
+  showProvinceDropdown.value = false;
+  showSubDistrictDropdown.value = false;
+};
+
+const toggleSubDistrict = () => {
+  if (!props.filters.district) return;
+  showSubDistrictDropdown.value = !showSubDistrictDropdown.value;
+  showProvinceDropdown.value = false;
+  showDistrictDropdown.value = false;
+};
+
+const closeAllDropdowns = () => {
+  showProvinceDropdown.value = false;
+  showDistrictDropdown.value = false;
+  showSubDistrictDropdown.value = false;
+};
+
+const selectProvince = async (provinceName) => {
+  emit("updateFilters", {
+    province: provinceName,
+    district: "",
+    subDistrict: "",
+  });
+  closeAllDropdowns();
+  
+  if (provinceName) {
+    await fetchDistricts(provinceName);
+  } else {
+    districts.value = [];
+  }
+  subDistricts.value = [];
+};
+
+const selectDistrict = async (districtName) => {
+  emit("updateFilters", {
+    district: districtName,
+    subDistrict: "",
+  });
+  closeAllDropdowns();
+  
+  if (districtName) {
+    await fetchSubDistricts(districtName);
+  } else {
+    subDistricts.value = [];
+  }
+};
+
+const selectSubDistrict = (subDistrictName) => {
+  emit("updateFilters", {
+    subDistrict: subDistrictName,
+  });
+  closeAllDropdowns();
+};
 
 const fetchProvinces = async () => {
   try {
@@ -279,42 +443,13 @@ const fetchSubDistricts = async (districtName) => {
   }
 };
 
-const onProvinceChange = async (event) => {
-  const province = event.target.value;
-  emit("updateFilters", {
-    province: province,
-    district: "", 
-    subDistrict: "", 
-  });
-  if (province) {
-    await fetchDistricts(province);
-  } else {
-    districts.value = [];
-  }
-  subDistricts.value = [];
-};
-
-const onDistrictChange = async (event) => {
-  const district = event.target.value;
-  emit("updateFilters", {
-    district: district,
-    subDistrict: "",
-  });
-  if (district) {
-    await fetchSubDistricts(district);
-  } else {
-    subDistricts.value = [];
-  }
-};
-
-const onSubDistrictChange = (event) => {
-  const subDistrict = event.target.value;
-  emit("updateFilters", {
-    subDistrict: subDistrict,
-  });
-};
-
 onMounted(() => {
   fetchProvinces();
 });
 </script>
+
+<style scoped>
+button {
+  user-select: none;
+}
+</style>

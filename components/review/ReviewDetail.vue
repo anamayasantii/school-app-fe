@@ -32,11 +32,17 @@ const selectSortOption = (sort) => {
 };
 
 const schoolRating = computed(() => {
-  if (!meta.value) {
+  if (!meta.value || !reviews.value.length) {
     return {
       overall: "0.0",
       showRecommended: false,
-      categories: [],
+      categories: [
+        { score: "0.0", label: "Fasilitas & Peralatan" },
+        { score: "0.0", label: "Proses Pembelajaran" },
+        { score: "0.0", label: "Layanan Sekolah" },
+        { score: "0.0", label: "Keamanan Sekolah" },
+        { score: "0.0", label: "Kegiatan Sekolah" },
+      ],
     };
   }
 
@@ -214,8 +220,7 @@ onMounted(fetchReviews);
 </script>
 
 <template>
-  <div class="max-w-7xl mx-auto px-4 py-8 border-t border-b border-border-gray">
-    <!-- Loading -->
+  <div class="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6 md:py-8 border-t border-b border-border-gray">
     <div v-if="loading" class="text-center py-12">
       <div
         class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-green"
@@ -223,7 +228,6 @@ onMounted(fetchReviews);
       <p class="mt-2 text-secondary-gray">Memuat data...</p>
     </div>
 
-    <!-- Error -->
     <div
       v-else-if="error"
       class="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700"
@@ -231,16 +235,14 @@ onMounted(fetchReviews);
       {{ error }}
     </div>
 
-    <!-- Content -->
     <template v-else>
-      <!-- Rating Overview -->
-      <div class="p-6 mb-6">
-        <div class="flex items-center gap-3 mb-6">
+      <div class="p-3 sm:p-4 md:p-6 mb-4 md:mb-6">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
           <StarRatingOverall />
-          <span class="text-4xl font-bold text-primary-green mr-4">{{
+          <span class="text-2xl sm:text-3xl md:text-4xl font-bold text-primary-green sm:mr-4">{{
             schoolRating.overall
           }}</span>
-          <span>
+          <span class="hidden sm:inline">
             <svg
               width="2"
               height="16"
@@ -253,19 +255,18 @@ onMounted(fetchReviews);
           </span>
           <div
             v-if="schoolRating.showRecommended"
-            class="flex items-center gap-2 ml-4"
+            class="flex items-center gap-2 sm:ml-4"
           >
             <Smiley />
 
-            <span class="text-sm text-[#1F1F1F] font-medium"
+            <span class="text-xs sm:text-sm text-[#1F1F1F] font-medium"
               >Direkomendasikan oleh sebagian besar pengguna</span
             >
           </div>
         </div>
 
-        <div class="grid grid-cols-6 gap-6">
-          <!-- Rating Distribution -->
-          <div class="space-y-2.5">
+        <div class="grid grid-cols-1 md:grid-cols-6 gap-4 md:gap-6">
+          <div class="space-y-2 md:space-y-2.5">
             <div
               v-for="item in ratingDistribution"
               :key="item.stars"
@@ -283,48 +284,45 @@ onMounted(fetchReviews);
             </div>
           </div>
 
-          <!-- Categories -->
           <div
             v-for="cat in schoolRating.categories"
             :key="cat.label"
-            class="border-r border-border-gray last:border-r-0"
+            class="border-r border-border-gray last:border-r-0 pr-3 md:pr-0"
           >
-            <div class="text-lg font-semibold text-primary-green mb-10">
+            <div class="text-base sm:text-lg font-semibold text-primary-green mb-2 md:mb-10">
               {{ cat.score }}
             </div>
-            <div class="text-sm text-secondary-gray">{{ cat.label }}</div>
+            <div class="text-xs sm:text-sm text-secondary-gray">{{ cat.label }}</div>
           </div>
         </div>
 
         <button
           @click="goToWriteReview"
-          class="mt-6 w-full sm:w-auto px-6 py-2.5 bg-primary-green text-white rounded-lg text-sm font-medium"
+          class="mt-4 md:mt-6 w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-2.5 bg-primary-green text-white rounded-lg text-xs sm:text-sm font-medium"
         >
           Tulis Ulasan
         </button>
       </div>
 
-      <div class="flex flex-col lg:flex-row gap-6">
-        <!-- Sidebar Filter -->
+      <div class="flex flex-col lg:flex-row gap-4 md:gap-6">
         <div class="lg:w-64 flex-shrink-0">
-          <div class="rounded-xl p-4 sticky top-20 border border-border-gray">
+          <div class="rounded-xl p-3 sm:p-4 lg:sticky lg:top-20 border border-border-gray">
             <div
-              class="flex items-center justify-between mb-4 border-b border-border-gray pb-4"
+              class="flex items-center justify-between mb-3 sm:mb-4 border-b border-border-gray pb-3 sm:pb-4"
             >
-              <h3 class="font-semibold text-primary-green">Filter</h3>
+              <h3 class="font-semibold text-sm sm:text-base text-primary-green">Filter</h3>
               <button
                 @click="resetFilter"
-                class="text-xs bg-primary-green w-14 h-7 rounded-full text-white"
+                class="text-xs bg-primary-green w-12 sm:w-14 h-6 sm:h-7 rounded-full text-white"
               >
                 Hapus
               </button>
             </div>
 
-            <!-- Rating Filter -->
-            <div class="border-b border-gray-100 pb-4 mb-4">
+            <div class="border-b border-gray-100 pb-3 sm:pb-4 mb-3 sm:mb-4">
               <button
                 @click="showRatingFilter = !showRatingFilter"
-                class="flex items-center justify-between w-full py-2 text-left"
+                class="flex items-center justify-between w-full py-2 text-left text-sm sm:text-base"
               >
                 <span class="font-semibold text-primary-green">Rating</span>
                 <svg
@@ -373,11 +371,10 @@ onMounted(fetchReviews);
               </div>
             </div>
 
-            <!-- User Filter -->
             <div>
               <button
                 @click="showUserFilter = !showUserFilter"
-                class="flex items-center justify-between w-full py-2 text-left"
+                class="flex items-center justify-between w-full py-2 text-left text-sm sm:text-base"
               >
                 <span class="font-semibold text-primary-green">User</span>
                 <svg
@@ -420,27 +417,24 @@ onMounted(fetchReviews);
           </div>
         </div>
 
-        <!-- Reviews List -->
-        <div class="flex-1 border border-border-gray rounded-xl p-6">
-          <div class="flex items-center justify-between mb-3">
-            <h2 class="text-xl font-semibold text-primary-green">
+        <div class="flex-1 border border-border-gray rounded-xl p-3 sm:p-4 md:p-6">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3 sm:mb-3">
+            <h2 class="text-lg sm:text-xl font-semibold text-primary-green">
               {{ meta?.total || 0 }} Ulasan
             </h2>
 
-            <!-- Custom Dropdown Style -->
-            <div class="relative">
+            <div class="relative w-full sm:w-auto">
               <div
-                class="flex items-center border border-border-gray rounded-lg px-4 py-2 text-sm text-primary-green"
+                class="flex flex-col sm:flex-row sm:items-center border border-border-gray rounded-lg px-3 sm:px-4 py-2 text-xs sm:text-sm text-primary-green gap-2 sm:gap-0"
               >
-                <span class="text-secondary-gray mr-2"
+                <span class="text-secondary-gray sm:mr-2"
                   >Urutkan Berdasarkan:</span
                 >
 
-                <!-- Custom Dropdown -->
-                <div class="relative">
+                <div class="relative w-full sm:w-auto">
                   <button
                     @click="showSortDropdown = !showSortDropdown"
-                    class="flex items-center gap-2 pl-3 pr-8 py-1 min-w-[120px] text-left rounded-lg hover:bg-bg-light transition-colors"
+                    class="flex items-center gap-2 pl-2 sm:pl-3 pr-6 sm:pr-8 py-1 w-full sm:min-w-[120px] text-left rounded-lg hover:bg-bg-light transition-colors"
                   >
                     <span>{{
                       selectedSort === "newest" ? "Terbaru" : "Terlama"
@@ -461,7 +455,6 @@ onMounted(fetchReviews);
                     </svg>
                   </button>
 
-                  <!-- Dropdown Menu -->
                   <div
                     v-if="showSortDropdown"
                     class="absolute top-full left-0 mt-1 w-full border border-border-gray rounded-lg shadow-lg z-10 overflow-hidden bg-white"
@@ -486,27 +479,25 @@ onMounted(fetchReviews);
             </div>
           </div>
 
-          <!-- Reviews -->
-          <div v-if="reviews.length > 0" class="space-y-4">
+          <div v-if="reviews.length > 0" class="space-y-3 sm:space-y-4">
             <div
               v-for="review in reviews"
               :key="review.id"
-              class="rounded-xl p-6"
+              class="rounded-xl p-3 sm:p-4 md:p-6"
             >
-              <!-- Reviewer Info -->
-              <div class="flex items-start gap-4 mb-4 border-t pt-6">
+              <div class="flex items-start gap-2 sm:gap-3 md:gap-4 mb-3 sm:mb-4 border-t pt-4 sm:pt-6">
                 <div
-                  class="w-12 h-12 bg-primary-green rounded-full flex items-center justify-center text-white font-semibold"
+                  class="w-10 h-10 sm:w-12 sm:h-12 bg-primary-green rounded-full flex items-center justify-center text-white font-semibold text-sm sm:text-base flex-shrink-0"
                 >
                   {{ getInitials(review.fullname) }}
                 </div>
-                <div class="flex-1">
-                  <h3 class="font-semibold text-primary-green">
+                <div class="flex-1 min-w-0">
+                  <h3 class="font-semibold text-sm sm:text-base text-primary-green truncate">
                     {{ review.fullname }}
                   </h3>
-                  <div class="flex flex-wrap items-center gap-2 mt-1">
+                  <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mt-1">
                     <span
-                      class="inline-flex items-center gap-1 px-2 py-1 bg-[#FFF4EE] text-[#FA9E53] rounded-full text-sm font-medium capitalize"
+                      class="inline-flex items-center gap-1 px-2 py-0.5 sm:py-1 bg-[#FFF4EE] text-[#FA9E53] rounded-full text-xs sm:text-sm font-medium capitalize"
                     >
                       <Verify />
 
@@ -514,14 +505,14 @@ onMounted(fetchReviews);
                     </span>
                     <span
                       v-if="review.userStatus"
-                      class="inline-flex items-center gap-1 px-2 py-1 bg-[#E5F3FE] text-[#0789F2] rounded-full text-sm font-medium capitalize"
+                      class="inline-flex items-center gap-1 px-2 py-0.5 sm:py-1 bg-[#E5F3FE] text-[#0789F2] rounded-full text-xs sm:text-sm font-medium capitalize"
                     >
                       <UserStatus />
 
                       {{ review.userStatus }}
                     </span>
                     <span
-                      class="inline-flex items-center gap-1 px-2 py-1 border border-border-gray text-primary-green rounded-full text-sm font-medium"
+                      class="inline-flex items-center gap-1 px-2 py-0.5 sm:py-1 border border-border-gray text-primary-green rounded-full text-xs sm:text-sm font-medium"
                     >
                       {{ review.schoolDetailName }}
                     </span>
@@ -529,17 +520,16 @@ onMounted(fetchReviews);
                 </div>
               </div>
 
-              <!-- Rating and Date -->
-              <div class="flex items-center gap-4 mb-4 border-t pt-6">
+              <div class="flex flex-wrap items-center gap-2 sm:gap-4 mb-3 sm:mb-4 border-t pt-4 sm:pt-6">
                 <div class="flex items-center gap-1">
-                  <span class="font-semibold text-primary-green">{{
+                  <span class="font-semibold text-sm sm:text-base text-primary-green">{{
                     parseFloat(review.rating).toFixed(1)
                   }}</span>
                   <div class="flex">
                     <svg
                       v-for="i in 5"
                       :key="i"
-                      class="w-4 h-4"
+                      class="w-3 h-3 sm:w-4 sm:h-4"
                       :class="
                         i <= Math.floor(parseFloat(review.rating))
                           ? 'text-yellow-400'
@@ -554,73 +544,71 @@ onMounted(fetchReviews);
                     </svg>
                   </div>
                 </div>
-                <svg
-                  width="2"
-                  height="16"
-                  viewBox="0 0 2 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect width="2" height="16" rx="1" fill="#F8F9FA" />
-                </svg>
+                <span class="hidden sm:inline">
+                  <svg
+                    width="2"
+                    height="16"
+                    viewBox="0 0 2 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <rect width="2" height="16" rx="1" fill="#F8F9FA" />
+                  </svg>
+                </span>
 
-                <span class="text-sm text-secondary-gray">{{
+                <span class="text-xs sm:text-sm text-secondary-gray">{{
                   formatDate(review.createdAt)
                 }}</span>
               </div>
 
-              <!-- Review Text -->
-              <p class="text-primary-green text-sm mb-4">
+              <p class="text-primary-green text-xs sm:text-sm mb-3 sm:mb-4">
                 {{ review.reviewText }}
               </p>
 
-              <!-- Detailed Ratings -->
-              <div class="grid grid-cols-5 gap-4 mb-4">
+              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-3 md:gap-4 mb-3 sm:mb-4">
                 <div
                   v-for="detail in review.review_details"
                   :key="detail.id"
                   class="border border-border-gray rounded-lg py-2 px-2"
                 >
-                  <div class="text-lg font-semibold text-primary-green mb-5">
+                  <div class="text-base sm:text-lg font-semibold text-primary-green mb-2 sm:mb-5">
                     {{ parseFloat(detail.score).toFixed(0) }}
                   </div>
-                  <div class="text-xs text-primary-green">
+                  <div class="text-[10px] sm:text-xs text-primary-green leading-tight">
                     {{ detail.question }}
                   </div>
                 </div>
               </div>
 
-              <!-- Helpful Button -->
-              <div class="flex items-center gap-2">
+              <div class="flex flex-col sm:flex-row sm:items-center gap-2">
                 <button
                   @click="handleLikeReview(review.id)"
-                  class="inline-flex items-center gap-2 px-4 py-2 text-sm text-secondary-gray hover:bg-bg-light rounded-lg transition-colors"
+                  class="inline-flex items-center justify-center sm:justify-start gap-2 px-3 sm:px-4 py-2 text-xs sm:text-sm text-secondary-gray hover:bg-bg-light rounded-lg transition-colors"
                 >
                   <ThumbIcon />
                   <span class="font-medium">Bermanfaat?</span>
                 </button>
-                <span v-if="review.liked" class="text-sm text-secondary-gray"
+                <span v-if="review.liked" class="text-xs sm:text-sm text-secondary-gray text-center sm:text-left"
                   >{{ review.liked }} orang menganggap ini bermanfaat</span
                 >
               </div>
             </div>
           </div>
 
-          <!-- Empty State -->
           <div v-else class="text-center py-12">
             <p class="text-secondary-gray">
-              Tidak ada ulasan yang sesuai dengan filter
+              Data belum tersedia.
             </p>
           </div>
 
-          <!-- Pagination -->
           <div
-            class="flex justify-center items-center gap-5 mt-6"
+            v-if="meta && meta.last_page > 1"
+            class="flex flex-wrap justify-center items-center gap-2 sm:gap-3 md:gap-5 mt-4 sm:mt-6"
           >
             <button
               @click="goToPage(currentPage - 1)"
               :disabled="currentPage === 1"
-              class="px-4 py-2 text-sm font-medium text-primary-green bg-[#F8F9FA] hover:bg-bg-light rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              class="px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-primary-green bg-[#F8F9FA] hover:bg-bg-light rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               Previous
             </button>
@@ -630,7 +618,7 @@ onMounted(fetchReviews);
               :key="index"
               @click="goToPage(page)"
               :disabled="page === '...'"
-              class="w-8 h-8 text-sm font-medium rounded-lg transition-colors"
+              class="w-7 h-7 sm:w-8 sm:h-8 text-xs sm:text-sm font-medium rounded-lg transition-colors"
               :class="{
                 'bg-primary-green text-[#F8F9FA]': page === currentPage,
                 'text-primary-green hover:bg-bg-light':
@@ -643,8 +631,8 @@ onMounted(fetchReviews);
 
             <button
               @click="goToPage(currentPage + 1)"
-              :disabled="currentPage === meta.last_page"
-              class="px-4 py-2 text-sm font-medium text-primary-green bg-[#F8F9FA] hover:bg-bg-light rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              :disabled="currentPage === meta?.last_page"
+              class="px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-primary-green bg-[#F8F9FA] hover:bg-bg-light rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               Next
             </button>

@@ -2,22 +2,20 @@
   <div class="rounded-xl bg-white border border-border-gray">
     <NuxtLink :to="`/school-details/${school.id}`" class="block cursor-pointer">
       <div class="relative overflow-hidden rounded-t-xl bg-gray-100">
-        <!-- Actual Image -->
         <img
           v-if="school.galleryImages && school.galleryImages.length > 0"
           :src="school.galleryImages[0]"
           :alt="school.name"
-          class="w-full h-48 object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
+          class="w-full h-40 sm:h-44 md:h-48 object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
         />
 
-        <!-- Placeholder when no image -->
         <div
           v-else
-          class="w-full h-48 flex items-center justify-center bg-gradient-to-br rounded-xl bg-[#F2ECE3] cursor-pointer hover:scale-105 transition-transform duration-300"
+          class="w-full h-40 sm:h-44 md:h-48 flex items-center justify-center bg-gradient-to-br rounded-xl bg-[#F2ECE3] cursor-pointer hover:scale-105 transition-transform duration-300"
         >
-          <div class="text-center">
+          <div class="text-center px-4">
             <svg
-              class="w-16 h-16 mx-auto text-[#76685A] mb-2"
+              class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 mx-auto text-[#76685A] mb-2"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -29,7 +27,7 @@
                 d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
               ></path>
             </svg>
-            <p class="text-[#76685A] font-medium text-sm">
+            <p class="text-[#76685A] font-medium text-xs sm:text-sm line-clamp-1">
               {{ school.name }}
             </p>
             <p class="text-[#76685A] text-xs">No image available</p>
@@ -37,16 +35,14 @@
         </div>
       </div>
 
-      <div class="p-4">
-        <h3 class="font-semibold text-[#1D2B29] mb-2 line-clamp-2">
+      <div class="p-3 sm:p-4">
+        <h3 class="font-semibold text-[#1D2B29] mb-2 line-clamp-2 text-sm sm:text-base">
           {{ school.name }}
         </h3>
 
-        <div class="flex items-center text-sm mb-3">
+        <div class="flex items-center text-xs sm:text-sm mb-2 sm:mb-3">
           <svg
-            class="w-4 h-4 mr-2 flex-shrink-0"
-            width="16"
-            height="16"
+            class="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 flex-shrink-0"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -57,7 +53,7 @@
             />
           </svg>
 
-          <span class="leading-none">
+          <span class="leading-none line-clamp-1">
             {{ school.subDistrictName }}, {{ school.districtName }}
           </span>
         </div>
@@ -65,8 +61,7 @@
         <div class="flex items-center">
           <div class="flex items-center text-yellow-400">
             <svg
-              width="16"
-              height="16"
+              class="w-3 h-3 sm:w-4 sm:h-4"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -77,12 +72,12 @@
               />
             </svg>
 
-            <span class="ml-1 text-sm text-primary-green font-medium">
+            <span class="ml-1 text-xs sm:text-sm text-primary-green font-medium">
               {{ school.rating }}
             </span>
           </div>
 
-          <span class="ml-2 text-sm text-primary-green">
+          <span class="ml-1.5 sm:ml-2 text-xs sm:text-sm text-primary-green">
             ({{ school.reviewers }} Ulasan)
           </span>
         </div>
@@ -92,7 +87,6 @@
 </template>
 
 <script setup>
-// Define props
 const props = defineProps({
   school: {
     type: Object,
@@ -102,7 +96,13 @@ const props = defineProps({
 </script>
 
 <style scoped>
-/* Custom line-clamp utility if not available in your CSS framework */
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;

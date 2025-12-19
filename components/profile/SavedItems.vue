@@ -1,44 +1,37 @@
-<!-- components/profile/SavedItems.vue -->
 <template>
-  <div class="bg-white rounded-lg shadow-sm border border-gray-100">
-    <!-- Header -->
-    <div class="px-6 py-4 border-b border-gray-100">
-      <h2 class="text-xl font-semibold text-gray-900">Disimpan</h2>
+  <div class="bg-white rounded-lg shadow-sm border border-gray-100 w-full max-w-full">
+    <div class="px-4 py-3 md:px-6 md:py-4 border-b border-gray-100">
+      <h2 class="text-lg md:text-xl font-semibold text-gray-900">Disimpan</h2>
     </div>
 
-    <!-- Content -->
-    <div class="p-6">
-      <!-- Loading State -->
-      <div v-if="isLoading" class="flex justify-center items-center py-16">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500"></div>
+    <div class="p-4 md:p-6">
+      <div v-if="isLoading" class="flex justify-center items-center py-12 md:py-16">
+        <div class="animate-spin rounded-full h-10 w-10 md:h-12 md:w-12 border-b-2 border-pink-500"></div>
       </div>
 
-      <!-- Error State -->
-      <div v-else-if="error" class="text-center py-16">
-        <svg class="w-16 h-16 text-red-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div v-else-if="error" class="text-center py-12 md:py-16">
+        <svg class="w-12 h-12 md:w-16 md:h-16 text-red-300 mx-auto mb-3 md:mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
-        <h3 class="text-lg font-medium text-gray-900 mb-2">Gagal memuat data</h3>
-        <p class="text-gray-600 mb-4">{{ error }}</p>
+        <h3 class="text-base md:text-lg font-medium text-gray-900 mb-2">Gagal memuat data</h3>
+        <p class="text-sm md:text-base text-gray-600 mb-3 md:mb-4 px-4">{{ error }}</p>
         <button
           @click="fetchSavedSchools"
-          class="px-6 py-2 bg-pink-500 text-white text-sm font-medium rounded-lg hover:bg-pink-600 transition-colors"
+          class="px-4 py-2 md:px-6 md:py-2 bg-pink-500 text-white text-xs md:text-sm font-medium rounded-lg hover:bg-pink-600 transition-colors"
         >
           Coba Lagi
         </button>
       </div>
 
-      <!-- Saved Schools List -->
-      <div v-else-if="savedSchools.length > 0" class="space-y-6">
+      <div v-else-if="savedSchools.length > 0" class="space-y-4 md:space-y-6">
         <div 
           v-for="(school, index) in savedSchools" 
           :key="school.id"
-          class="flex items-start space-x-4 relative"
+          class="flex items-start space-x-3 md:space-x-4 relative"
         >
-          <!-- School Image -->
           <NuxtLink
             :to="`/school-details/${school.id}`"
-            class="bg-gray-200 rounded-lg overflow-hidden flex-shrink-0 w-28 h-20 cursor-pointer"
+            class="bg-gray-200 rounded-lg overflow-hidden flex-shrink-0 w-20 h-16 md:w-28 md:h-20 cursor-pointer"
           >
             <img 
               :src="getSchoolImage(school)" 
@@ -48,21 +41,18 @@
             />
           </NuxtLink>
 
-          <!-- School Details -->
           <div class="flex-1 min-w-0">
             <NuxtLink :to="`/school-details/${school.id}`">
-              <h3 class="text-lg font-semibold text-gray-900 mb-2 hover:text-pink-600 transition-colors cursor-pointer">
+              <h3 class="text-sm md:text-lg font-semibold text-gray-900 mb-1.5 md:mb-2 hover:text-pink-600 transition-colors cursor-pointer line-clamp-2">
                 {{ school.name }}
               </h3>
             </NuxtLink>
             
-            <!-- School Info Row -->
-            <div class="flex items-center space-x-6 text-sm">
-              <!-- Akreditasi -->
+            <div class="flex flex-col space-y-2 md:flex-row md:items-center md:space-x-6 md:space-y-0 text-xs md:text-sm">
               <div class="flex items-center">
                 <div
                   :class="[
-                    'inline-flex items-center px-5 py-1 rounded-full text-xs font-bold',
+                    'inline-flex items-center px-3 py-0.5 md:px-5 md:py-1 rounded-full text-xs font-bold',
                     getGradeColor(school.accreditationCode),
                   ]"
                 >
@@ -70,50 +60,48 @@
                 </div>
               </div>
               
-              <!-- Rating -->
-              <div class="flex items-center">
-                <svg class="w-4 h-4 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                </svg>
-                <span class="text-gray-900 font-medium">{{ school.rating || 0 }}</span>
-              </div>
-              
-              <!-- Location -->
-              <div class="flex items-center">
-                <svg class="w-4 h-4 text-pink-500 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
-                </svg>
-                <span class="text-gray-600 truncate">{{ getLocation(school) }}</span>
+              <div class="flex items-center space-x-4 md:space-x-6">
+                <div class="flex items-center">
+                  <svg class="w-3.5 h-3.5 md:w-4 md:h-4 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                  </svg>
+                  <span class="text-gray-900 font-medium">{{ school.rating || 0 }}</span>
+                </div>
+                
+                <div class="flex items-center flex-1 min-w-0">
+                  <svg class="w-3.5 h-3.5 md:w-4 md:h-4 text-pink-500 mr-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                  </svg>
+                  <span class="text-gray-600 truncate">{{ getLocation(school) }}</span>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Actions Menu -->
-          <div class="relative">
+          <div class="relative flex-shrink-0">
             <button
               @click="toggleMenu(index)"
               class="p-1 text-gray-400 hover:text-gray-600 transition-colors"
             >
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <svg class="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"/>
               </svg>
             </button>
             
-            <!-- Dropdown Menu -->
             <div 
               v-show="activeMenu === index"
-              class="absolute right-0 top-8 w-40 bg-white rounded-lg shadow-lg border border-gray-100 py-2 z-10"
+              class="absolute right-0 top-8 w-36 md:w-40 bg-white rounded-lg shadow-lg border border-gray-100 py-2 z-10"
             >
               <NuxtLink :to="`/school-details/${school.id}`">
                 <button
-                  class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                  class="w-full px-3 py-2 md:px-4 md:py-2 text-left text-xs md:text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                 >
                   Lihat Detail
                 </button>
               </NuxtLink>
               <button
                 @click="removeFromSaved(school, index)"
-                class="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-50 transition-colors"
+                class="w-full px-3 py-2 md:px-4 md:py-2 text-left text-xs md:text-sm text-red-600 hover:bg-gray-50 transition-colors"
                 :disabled="removingId === school.id"
               >
                 {{ removingId === school.id ? 'Menghapus...' : 'Hapus' }}
@@ -123,20 +111,18 @@
         </div>
       </div>
 
-      <!-- Empty State -->
-      <div v-else class="text-center py-16">
-        <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div v-else class="text-center py-12 md:py-16">
+        <svg class="w-12 h-12 md:w-16 md:h-16 text-gray-300 mx-auto mb-3 md:mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
         </svg>
-        <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada sekolah tersimpan</h3>
-        <p class="text-gray-600">Sekolah yang Anda simpan akan muncul di sini</p>
+        <h3 class="text-base md:text-lg font-medium text-gray-900 mb-2">Belum ada sekolah tersimpan</h3>
+        <p class="text-sm md:text-base text-gray-600 px-4">Sekolah yang Anda simpan akan muncul di sini</p>
       </div>
 
-      <!-- Remove All Button -->
-      <div v-if="savedSchools.length > 0" class="flex justify-end mt-8">
+      <div v-if="savedSchools.length > 0" class="flex justify-end mt-6 md:mt-8">
         <button
           @click="removeAllSaved"
-          class="px-6 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-600 transition-colors disabled:opacity-50"
+          class="px-4 py-2 md:px-6 md:py-2 bg-red-500 text-white text-xs md:text-sm font-medium rounded-lg hover:bg-red-600 transition-colors disabled:opacity-50"
           :disabled="isRemoving"
         >
           {{ isRemoving ? 'Menghapus...' : 'Hapus Semua' }}

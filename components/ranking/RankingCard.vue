@@ -1,12 +1,11 @@
 <template>
   <div>
-    <div class="p-10">
-      <div class="flex items-start gap-6">
-        <!-- Rank Badge -->
+    <div class="p-4 sm:p-6 md:p-10">
+      <div class="flex items-start gap-3 sm:gap-4 md:gap-6">
         <div class="flex-shrink-0 self-center">
           <div
             :class="[
-              'w-7 h-7 rounded-lg flex items-center justify-center text-black font-bold text-xs',
+              'w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center text-black font-bold text-xs',
               getRankColor(rank),
             ]"
           >
@@ -14,22 +13,19 @@
           </div>
         </div>
 
-        <!-- School Image -->
         <div v-if="rank <= 3" class="flex-shrink-0">
-          <!-- Gambar jika tersedia -->
           <img
             v-if="school.galleryImages && school.galleryImages.length > 0"
             :src="school.galleryImages[0]"
             :alt="school.schoolName"
-            class="w-40 h-30 object-cover rounded-2xl"
+            class="w-20 h-16 sm:w-28 sm:h-20 md:w-40 md:h-28 object-cover rounded-xl sm:rounded-2xl"
             @error="handleImageError"
           />
 
-          <!-- Placeholder ketika tidak ada gambar -->
-          <div v-else class="w-40 h-30 flex items-center justify-center">
-            <div class="text-center">
+          <div v-else class="w-20 h-16 sm:w-28 sm:h-20 md:w-40 md:h-30 flex items-center justify-center rounded-xl sm:rounded-2xl bg-gray-100">
+            <div class="text-center px-2">
               <svg
-                class="w-30 h-20 mx-auto text-primary-green-dark"
+                class="w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16 mx-auto text-primary-green-dark"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -41,36 +37,30 @@
                   d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                 ></path>
               </svg>
-              <p class="text-primary-green-dark text-xs mt-1">{{ school.schoolName }}</p>
+              <p class="text-primary-green-dark text-xs mt-1 line-clamp-1 hidden sm:block">{{ school.schoolName }}</p>
             </div>
           </div>
         </div>
 
-        <!-- School Info -->
         <div class="flex-1 min-w-0 self-center">
-          <div class="mb-4">
-            <h3 class="text-xl font-bold text-gray-900 mb-1">
+          <div class="mb-2 sm:mb-3 md:mb-4">
+            <h3 class="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-gray-900 mb-1 line-clamp-2">
               {{ school.schoolName }}
             </h3>
-            <!-- <p class="text-sm text-gray-600">
-              {{ school.subDistrictName }}, {{ school.districtName }}, {{ school.provinceName }}
-            </p> -->
           </div>
 
-          <!-- Grade and Rating -->
-          <div class="flex items-center gap-4 mb-2">
-            <!-- Grade Badge -->
+          <div class="flex flex-wrap items-center gap-2 sm:gap-3 md:gap-4 mb-2">
             <div
               :class="[
-                'inline-flex items-center px-5 py-1 rounded-full text-xs font-bold',
+                'inline-flex items-center px-2.5 sm:px-3 md:px-5 py-0.5 sm:py-1 rounded-full text-xs font-bold',
                 getGradeColor(school.accreditationCode),
               ]"
             >
               {{ school.accreditationCode }}
             </div>
-            <span class="ml-1 text-xs">Overall Grade</span>
+            <span class="text-xs">Overall Grade</span>
 
-            <span class="ml-1 text-xs"
+            <span class="text-xs hidden sm:inline"
               ><svg
                 width="2"
                 height="17"
@@ -82,11 +72,9 @@
               </svg>
             </span>
 
-            <!-- Rating -->
             <div class="flex items-center gap-1">
               <svg
-                width="20"
-                height="20"
+                class="w-4 h-4 sm:w-5 sm:h-5"
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -97,51 +85,23 @@
                 />
               </svg>
 
-              <span class="text-sm font-semibold text-gray-900">
+              <span class="text-xs sm:text-sm font-semibold text-gray-900">
                 {{ school.rating.toFixed(1) }}
               </span>
             </div>
           </div>
-
-          <!-- Achievement Badge (if available) -->
-          <!-- <div v-if="getAchievementBadge(rank)" class="mb-2">
-            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-              <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-              </svg>
-              {{ getAchievementBadge(rank) }}
-            </span>
-          </div> -->
-
-          <!-- School Stats -->
-          <!-- <div class="flex items-center gap-4 text-sm text-gray-600">
-            <div class="flex items-center gap-1">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
-              </svg>
-              <span>{{ school.numStudent.toLocaleString() }} students</span>
-            </div>
-            <div class="flex items-center gap-1">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
-              </svg>
-              <span>{{ school.numTeacher }} teachers</span>
-            </div>
-          </div> -->
         </div>
 
-        <!-- Action Arrow -->
         <div class="flex-shrink-0 self-center">
           <NuxtLink
             :to="`/school-details/${school.id}`"
             class="block cursor-pointer"
           >
             <button
-              class="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+              class="p-1.5 sm:p-2 text-gray-400 hover:text-gray-600 transition-colors"
             >
               <svg
-                width="24"
-                height="24"
+                class="w-5 h-5 sm:w-6 sm:h-6"
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -197,7 +157,21 @@ const getGradeColor = (accreditationCode) => {
 
 const viewDetails = (school) => {
   console.log("View details for:", school.schoolName);
-  // add navigation logic here
-  // navigateTo(`/school/${school.schoolId}`)
 };
 </script>
+
+<style scoped>
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+}
+</style>
