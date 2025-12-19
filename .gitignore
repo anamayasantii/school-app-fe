@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Nuxt dev/build outputs
 .output
 .data
@@ -22,6 +23,7 @@ logs
 .env
 .env.*
 !.env.example
+=======
 # These are some examples of commonly ignored file patterns.
 # You should customize this list as applicable to your project.
 # Learn more about .gitignore:
@@ -72,6 +74,4 @@ Thumbs.db
 *.mov
 *.wmv
 
-bun.lock
-yarn.lock
-pnpm-lock.yaml
+>>>>>>> Initial commit
