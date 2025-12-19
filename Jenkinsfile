@@ -45,7 +45,7 @@ pipeline {
                     sh 'chmod 600 .env'
 
                     sh 'docker run --rm -v "$(pwd)":/app -w /app --entrypoint npm node:20 install'
-                    sh 'docker run --rm -v "$(pwd)":/app -w /app --entrypoint npm node:20 build'
+                    sh 'docker run --rm -v "$(pwd)":/app -w /app --entrypoint npm node:20 run build'
 
                     sshagent(credentials: ['jenkins']) {
                         sh "rsync --stats --update --checksum -zrSlhp -e 'ssh -p 22 -o StrictHostKeyChecking=no' . ${USER}@${SERVER_IP}:${projectDir}"
