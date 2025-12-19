@@ -4,6 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ["~/styles/tailwind.css"],
   modules: ['@pinia/nuxt', "@nuxtjs/google-fonts"],
+
   googleFonts: {
     families: {
       Poppins: [300, 400, 500, 600, 700],
@@ -13,29 +14,46 @@ export default defineNuxtConfig({
     preconnect: true,
     preload: true,
   },
+
   build: {
     transpile: ["pinia"],
   },
+
+  // ✅ FIX: paksa Vue tidak di-externalize di SSR/Nitro bundle
+  nitro: {
+    externals: {
+      inline: ['vue'],
+    },
+  },
+  vite: {
+    ssr: {
+      noExternal: ['vue'],
+    },
+  },
+
   devServer: {
     port: 3890,
   },
+
   pinia: {
     storesDirs: ["~/store/"],
   },
+
   postcss: {
     plugins: {
       tailwindcss: {},
       autoprefixer: {},
     },
   },
+
   app: {
     head: {
       script: process.env.NODE_ENV === 'development' ? [
-        { 
+        {
           src: 'https://cdn.jsdelivr.net/npm/eruda',
           tagPosition: 'bodyClose'
         },
-        { 
+        {
           innerHTML: 'eruda.init();',
           tagPosition: 'bodyClose'
         }
