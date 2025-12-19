@@ -26,15 +26,15 @@ pipeline {
                     if (branchName == 'development') {
                         projectDir = DEV_DIR
                         env.FRONTEND_ENV = FRONTEND_ENV_DEV
-                        pm2Name = 'shigenshogo-dev'
+                        pm2Name = 'sch-dir-dev'
                     } else if (branchName == 'staging') {
                         projectDir = STAGING_DIR
                         env.FRONTEND_ENV = FRONTEND_ENV_STAGING
-                        pm2Name = 'shigenshogo-staging'
+                        pm2Name = 'sch-dir-staging'
                     } else if (branchName == 'main') {
                         projectDir = PRODUCTION_DIR
                         env.FRONTEND_ENV = FRONTEND_ENV_PRODUCTION
-                        pm2Name = 'shigenshogo-production'
+                        pm2Name = 'sch-dir-production'
                     } else {
                         echo "Unsupported branch: ${branchName}"
                         currentBuild.result = 'ABORTED'
