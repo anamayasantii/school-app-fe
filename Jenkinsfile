@@ -1,8 +1,8 @@
 pipeline {
     environment {
-        DISCORD_WEBHOOK_URL = credentials('project-discord-webhook-url')
-        SERVER_IP = credentials('host-ip')
-        USER = credentials('user-server')
+        DISCORD_WEBHOOK_URL = credentials('discord-webhook-url')
+        SERVER_IP = credentials('ssh-host')
+        USER = credentials('ssh-username')
         FRONTEND_ENV_DEV = credentials('file-env-dev')
         FRONTEND_ENV_STAGING = credentials('file-env-staging')
         FRONTEND_ENV_PRODUCTION = credentials('file-env-production')
