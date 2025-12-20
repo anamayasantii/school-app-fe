@@ -2,7 +2,7 @@
   <div class="flex flex-col min-h-screen">
     <header class="w-full border-b border-gray-200 bg-white sticky top-0 z-50">
       <div
-        class="max-w-7xl mx-auto px-3 xs:px-4 sm:px-5 lg:px-8 h-20 flex items-center justify-between"
+        class="max-w-5xl mx-auto px-3 xs:px-4 sm:px-5 lg:px-8 h-20 flex items-center justify-between"
       >
         <div class="flex items-center">
           <nuxt-link to="/" class="flex items-center">

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="schoolData.id" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12">
+  <div v-if="schoolData.id" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12">
     <div class="text-center mb-8 sm:mb-12 md:mb-16">
       <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold leading-tight">
         <span class="text-primary-green">Sorotan sekolah —</span>
@@ -8,7 +8,7 @@
       </h1>
     </div>
 
-    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-start">
+    <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-start">
       <div class="rounded-2xl sm:rounded-3xl overflow-hidden">
         <img
           v-if="schoolData.galleryImages && schoolData.galleryImages.length > 0"

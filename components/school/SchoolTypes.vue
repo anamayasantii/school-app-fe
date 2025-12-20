@@ -1,6 +1,6 @@
 <template>
   <div class="py-6 sm:py-8 flex flex-col items-center justify-center">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
 
       <div class="grid grid-cols-3 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 mb-3 sm:mb-4 md:mb-8 w-full">
         <NuxtLink

@@ -53,14 +53,14 @@
             Pembuatan Akun Berhasil!
           </h1>
 
-          <p class="text-sm sm:text-base text-gray-600 mb-8">
+          <p class="text-sm sm:text-base text-gray-900 mb-8">
             Selamat! Kamu telah berhasil membuat akun dengan sukses.
           </p>
 
           <button
             type="button"
             @click="handleNext"
-            class="w-full px-6 py-3 bg-gray-900 text-white rounded-lg font-medium hover:bg-gray-800 transition-colors text-sm sm:text-base"
+            class="w-full px-6 py-3 bg-gray-950 text-white rounded-lg font-medium hover:bg-gray-800 transition-colors text-sm sm:text-base"
           >
             Selanjutnya
           </button>

@@ -1,6 +1,6 @@
 <template>
   <section class="bg-white py-20">
-    <div class="max-w-7xl mx-auto px-6 text-center">
+    <div class="max-w-5xl mx-auto px-6 text-center">
       <!-- Heading -->
       <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
         Proses yang disederhanakan<br />dalam satu platform.
@@ -31,7 +31,7 @@
     </div>
   </section>
   <section class="bg-white py-16">
-    <div class="max-w-7xl mx-auto px-6">
+    <div class="max-w-5xl mx-auto px-6">
       <!-- Hero Image -->
       <div class="mb-16">
         <img 
@@ -70,7 +70,7 @@
     </div>
   </section>
   <section class="bg-white py-16">
-    <div class="max-w-7xl mx-auto px-6">
+    <div class="max-w-5xl mx-auto px-6">
       <!-- Section Title -->
       <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-16">
         Jelajahi sekolah-sekolah<br />Anda berdasarkan kategori.

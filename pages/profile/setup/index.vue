@@ -1,4 +1,3 @@
-<!-- pages/profile/setup/index.vue -->
 <template>
     <component 
       :is="FormComponents[currentStep]" 
@@ -19,6 +18,7 @@ import { useAuthStore } from '@/store/auth'
 import FormStepOne from '@/components/auth/ProfileStep1.vue'
 import FormStepTwo from '@/components/auth/ProfileStep2.vue'
 import FormStepThree from '@/components/auth/ProfileStep3.vue'
+import FormStepSuccess from '@/components/auth/ProfileStepSuccess.vue'
 
 definePageMeta({
   layout: 'authPage'
@@ -36,11 +36,12 @@ const formData = ref({
 const FormComponents = {
   1: FormStepOne,
   2: FormStepTwo,
-  3: FormStepThree
+  3: FormStepThree,
+  4: FormStepSuccess
 }
 
 const handleNextStep = () => {
-  if (currentStep.value < 3) {
+  if (currentStep.value < 4) {
     currentStep.value++
   }
 }
@@ -98,7 +99,7 @@ const handleFinalSubmit = async () => {
     console.log('User data refreshed:', authStore.user)
     console.log('Is logged in:', authStore.isLoggedIn)
     
-    await navigateTo('/')
+    currentStep.value = 4
     
   } catch (error) {
     console.error('Setup failed:', error)

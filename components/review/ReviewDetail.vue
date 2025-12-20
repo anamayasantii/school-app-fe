@@ -12,6 +12,7 @@ const route = useRoute();
 const router = useRouter();
 const showRatingFilter = ref(false);
 const showUserFilter = ref(false);
+const showMobileFilter = ref(false);
 const loading = ref(true);
 const error = ref(null);
 const reviews = ref([]);
@@ -48,12 +49,13 @@ const schoolRating = computed(() => {
 
   const finalRating = parseFloat(meta.value.finalRating) || 0;
 
-  const questionLabels = {};
-  if (reviews.value.length > 0 && reviews.value[0].review_details) {
-    reviews.value[0].review_details.forEach((detail) => {
-      questionLabels[detail.questionId] = detail.question;
-    });
-  }
+  const questionLabels = {
+    1: "Fasilitas & Peralatan",
+    2: "Proses Pembelajaran",
+    3: "Layanan Sekolah",
+    4: "Keamanan Sekolah",
+    5: "Kegiatan Sekolah",
+  };
 
   return {
     overall: finalRating.toFixed(1),
@@ -134,6 +136,11 @@ const formatDate = (dateString) => {
   });
 };
 
+const getDetailScore = (reviewDetails, questionId) => {
+  const detail = reviewDetails.find((d) => d.questionId === questionId);
+  return detail ? parseFloat(detail.score).toFixed(0) : "0";
+};
+
 const fetchReviews = async () => {
   try {
     loading.value = true;
@@ -177,6 +184,7 @@ const resetFilter = () => {
   selectedRole.value = null;
   selectedSort.value = "newest";
   currentPage.value = 1;
+  showMobileFilter.value = false;
   fetchReviews();
 };
 
@@ -208,7 +216,7 @@ const handleLikeReview = async (reviewId) => {
     if (data.status === "success") {
       const review = reviews.value.find((r) => r.id === reviewId);
       if (review) {
-        review.liked = (review.liked || 0) + 1;
+        review.likesCount = (review.likesCount || 0) + 1;
       }
     }
   } catch (err) {
@@ -220,7 +228,9 @@ onMounted(fetchReviews);
 </script>
 
 <template>
-  <div class="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6 md:py-8 border-t border-b border-border-gray">
+  <div
+    class="max-w-5xl mx-auto px-3 sm:px-4 py-4 sm:py-6 md:py-8 border-t border-b border-border-gray"
+  >
     <div v-if="loading" class="text-center py-12">
       <div
         class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-green"
@@ -236,13 +246,19 @@ onMounted(fetchReviews);
     </div>
 
     <template v-else>
-      <div class="p-3 sm:p-4 md:p-6 mb-4 md:mb-6">
-        <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-          <StarRatingOverall />
-          <span class="text-2xl sm:text-3xl md:text-4xl font-bold text-primary-green sm:mr-4">{{
-            schoolRating.overall
-          }}</span>
-          <span class="hidden sm:inline">
+      <!-- Rating Overview Section -->
+      <div class="p-2 sm:p-4 mb-4 sm:mb-6">
+        <!-- Overall Rating -->
+        <div
+          class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-4 sm:mb-6"
+        >
+          <div class="flex items-center gap-3">
+            <StarRatingOverall />
+            <span class="text-2xl sm:text-3xl font-bold text-primary-green">
+              {{ schoolRating.overall }}
+            </span>
+          </div>
+          <span class="hidden sm:inline mx-2">
             <svg
               width="2"
               height="16"
@@ -255,26 +271,27 @@ onMounted(fetchReviews);
           </span>
           <div
             v-if="schoolRating.showRecommended"
-            class="flex items-center gap-2 sm:ml-4"
+            class="flex items-center gap-2"
           >
             <Smiley />
-
-            <span class="text-xs sm:text-sm text-[#1F1F1F] font-medium"
-              >Direkomendasikan oleh sebagian besar pengguna</span
-            >
+            <span class="text-xs sm:text-sm text-[#1F1F1F] font-medium">
+              Direkomendasikan oleh sebagian besar pengguna
+            </span>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-6 gap-4 md:gap-6">
-          <div class="space-y-2 md:space-y-2.5">
+        <!-- Rating Distribution & Categories -->
+        <div class="flex flex-col lg:flex-row gap-4 lg:gap-8 mb-4 sm:mb-6">
+          <!-- Rating Distribution -->
+          <div class="space-y-1.5 w-full sm:w-40 lg:w-32">
             <div
               v-for="item in ratingDistribution"
               :key="item.stars"
               class="flex items-center gap-2"
             >
-              <span class="text-xs font-medium text-primary-green w-2">{{
-                item.stars
-              }}</span>
+              <span class="text-xs font-medium text-primary-green w-2">
+                {{ item.stars }}
+              </span>
               <div class="flex-1 h-2 bg-bg-light rounded-full overflow-hidden">
                 <div
                   class="h-full bg-primary-green rounded-full transition-all"
@@ -284,49 +301,99 @@ onMounted(fetchReviews);
             </div>
           </div>
 
+          <!-- Category Scores -->
           <div
-            v-for="cat in schoolRating.categories"
-            :key="cat.label"
-            class="border-r border-border-gray last:border-r-0 pr-3 md:pr-0"
+            class="flex-1 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-4"
           >
-            <div class="text-base sm:text-lg font-semibold text-primary-green mb-2 md:mb-10">
-              {{ cat.score }}
+            <div
+              v-for="(cat, index) in schoolRating.categories"
+              :key="cat.label"
+              class="flex items-center"
+              :class="{
+                'lg:border-l lg:border-border-gray lg:pl-4': index > 0,
+              }"
+            >
+              <div class="flex flex-col gap-2 lg:gap-8">
+                <div
+                  class="text-base sm:text-lg font-semibold text-primary-green"
+                >
+                  {{ cat.score }}
+                </div>
+                <div
+                  class="text-[9px] sm:text-[10px] text-primary-green leading-tight"
+                >
+                  {{ cat.label }}
+                </div>
+              </div>
             </div>
-            <div class="text-xs sm:text-sm text-secondary-gray">{{ cat.label }}</div>
           </div>
         </div>
 
         <button
           @click="goToWriteReview"
-          class="mt-4 md:mt-6 w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-2.5 bg-primary-green text-white rounded-lg text-xs sm:text-sm font-medium"
+          class="w-full sm:w-auto px-6 py-2 bg-primary-green text-white rounded-lg text-sm font-medium"
         >
           Tulis Ulasan
         </button>
       </div>
 
-      <div class="flex flex-col lg:flex-row gap-4 md:gap-6">
-        <div class="lg:w-64 flex-shrink-0">
-          <div class="rounded-xl p-3 sm:p-4 lg:sticky lg:top-20 border border-border-gray">
+      <!-- Mobile Filter Button -->
+      <div class="lg:hidden mb-4">
+        <button
+          @click="showMobileFilter = !showMobileFilter"
+          class="w-full flex items-center justify-between border border-border-gray rounded-lg px-4 py-3 text-sm font-semibold text-primary-green"
+        >
+          <span>Filter & Urutkan</span>
+          <svg
+            class="w-5 h-5 transition-transform"
+            :class="{ 'rotate-180': showMobileFilter }"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Reviews Section -->
+      <div class="flex flex-col lg:flex-row gap-4 lg:gap-6">
+        <!-- Filter Sidebar (Desktop) / Dropdown (Mobile) -->
+        <div
+          class="w-full lg:w-48 lg:flex-shrink-0"
+          :class="{ 'hidden lg:block': !showMobileFilter }"
+        >
+          <div
+            class="rounded-xl p-4 border border-border-gray lg:sticky lg:top-20"
+          >
             <div
-              class="flex items-center justify-between mb-3 sm:mb-4 border-b border-border-gray pb-3 sm:pb-4"
+              class="flex items-center justify-between mb-4 pb-4 border-b border-border-gray"
             >
-              <h3 class="font-semibold text-sm sm:text-base text-primary-green">Filter</h3>
+              <h3 class="font-semibold text-sm text-primary-green">Filter</h3>
               <button
                 @click="resetFilter"
-                class="text-xs bg-primary-green w-12 sm:w-14 h-6 sm:h-7 rounded-full text-white"
+                class="text-xs bg-primary-green px-3 h-6 rounded-full text-white"
               >
                 Hapus
               </button>
             </div>
 
-            <div class="border-b border-gray-100 pb-3 sm:pb-4 mb-3 sm:mb-4">
+            <!-- Rating Filter -->
+            <div class="pb-4 mb-4 border-b border-border-gray">
               <button
                 @click="showRatingFilter = !showRatingFilter"
-                class="flex items-center justify-between w-full py-2 text-left text-sm sm:text-base"
+                class="flex items-center justify-between w-full py-2 text-left"
               >
-                <span class="font-semibold text-primary-green">Rating</span>
+                <span class="font-semibold text-sm text-primary-green"
+                  >Rating</span
+                >
                 <svg
-                  class="w-5 h-5 text-gray-400 transition-transform"
+                  class="w-4 h-4 text-gray-400 transition-transform"
                   :class="{ 'rotate-180': !showRatingFilter }"
                   fill="none"
                   stroke="currentColor"
@@ -341,11 +408,11 @@ onMounted(fetchReviews);
                 </svg>
               </button>
 
-              <div v-show="showRatingFilter" class="mt-3 space-y-3">
+              <div v-show="showRatingFilter" class="mt-3 space-y-2">
                 <label
                   v-for="item in ratingDistribution"
                   :key="item.stars"
-                  class="flex items-center gap-3 cursor-pointer group"
+                  class="flex items-center gap-2 cursor-pointer group"
                   @click="applyRatingFilter(item.stars)"
                 >
                   <input
@@ -353,32 +420,34 @@ onMounted(fetchReviews);
                     name="rating"
                     :value="item.stars"
                     :checked="selectedRating === item.stars"
-                    class="w-5 h-5 text-primary-green accent-black cursor-pointer pointer-events-none"
+                    class="w-4 h-4 text-primary-green accent-black cursor-pointer pointer-events-none"
                   />
                   <svg
-                    class="w-5 h-5 text-yellow-400 fill-current"
+                    class="w-4 h-4 text-yellow-400 fill-current"
                     viewBox="0 0 24 24"
                   >
                     <path
                       d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
                     />
                   </svg>
-                  <span
-                    class="text-sm text-primary-green group-hover:text-primary-green"
-                    >{{ item.stars }}</span
-                  >
+                  <span class="text-sm text-primary-green">{{
+                    item.stars
+                  }}</span>
                 </label>
               </div>
             </div>
 
+            <!-- User Filter -->
             <div>
               <button
                 @click="showUserFilter = !showUserFilter"
-                class="flex items-center justify-between w-full py-2 text-left text-sm sm:text-base"
+                class="flex items-center justify-between w-full py-2 text-left"
               >
-                <span class="font-semibold text-primary-green">User</span>
+                <span class="font-semibold text-sm text-primary-green"
+                  >User</span
+                >
                 <svg
-                  class="w-5 h-5 text-gray-400 transition-transform"
+                  class="w-4 h-4 text-gray-400 transition-transform"
                   :class="{ 'rotate-180': !showUserFilter }"
                   fill="none"
                   stroke="currentColor"
@@ -393,11 +462,11 @@ onMounted(fetchReviews);
                 </svg>
               </button>
 
-              <div v-show="showUserFilter" class="mt-3 space-y-3">
+              <div v-show="showUserFilter" class="mt-3 space-y-2">
                 <label
                   v-for="type in ['student', 'parent']"
                   :key="type"
-                  class="flex items-center gap-3 cursor-pointer group"
+                  class="flex items-center gap-2 cursor-pointer group"
                   @click="applyRoleFilter(type)"
                 >
                   <input
@@ -405,42 +474,45 @@ onMounted(fetchReviews);
                     name="role"
                     :value="type"
                     :checked="selectedRole === type"
-                    class="w-5 h-5 accent-black cursor-pointer text-primary-green border-gray-300 pointer-events-none"
+                    class="w-4 h-4 accent-black cursor-pointer text-primary-green border-gray-300 pointer-events-none"
                   />
-                  <span
-                    class="text-sm text-primary-green group-hover:text-primary-green capitalize"
-                    >{{ type }}</span
-                  >
+                  <span class="text-sm text-primary-green capitalize">
+                    {{ type }}
+                  </span>
                 </label>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="flex-1 border border-border-gray rounded-xl p-3 sm:p-4 md:p-6">
-          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3 sm:mb-3">
-            <h2 class="text-lg sm:text-xl font-semibold text-primary-green">
+        <!-- Reviews List -->
+        <div class="flex-1 border border-border-gray rounded-xl p-3 sm:p-6">
+          <!-- Header -->
+          <div
+            class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4"
+          >
+            <h2 class="text-base sm:text-lg font-semibold text-primary-green">
               {{ meta?.total || 0 }} Ulasan
             </h2>
 
-            <div class="relative w-full sm:w-auto">
+            <div class="relative">
               <div
-                class="flex flex-col sm:flex-row sm:items-center border border-border-gray rounded-lg px-3 sm:px-4 py-2 text-xs sm:text-sm text-primary-green gap-2 sm:gap-0"
+                class="flex items-center border border-border-gray rounded-lg px-3 py-1.5 text-xs sm:text-sm text-primary-green gap-2"
               >
-                <span class="text-secondary-gray sm:mr-2"
+                <span class="text-secondary-gray hidden sm:inline"
                   >Urutkan Berdasarkan:</span
                 >
-
-                <div class="relative w-full sm:w-auto">
+                <span class="text-secondary-gray sm:hidden">Urutkan:</span>
+                <div class="relative">
                   <button
                     @click="showSortDropdown = !showSortDropdown"
-                    class="flex items-center gap-2 pl-2 sm:pl-3 pr-6 sm:pr-8 py-1 w-full sm:min-w-[120px] text-left rounded-lg hover:bg-bg-light transition-colors"
+                    class="flex items-center gap-2 pl-2 pr-6 py-1 min-w-[70px] sm:min-w-[80px] text-left rounded-lg hover:bg-bg-light transition-colors"
                   >
                     <span>{{
                       selectedSort === "newest" ? "Terbaru" : "Terlama"
                     }}</span>
                     <svg
-                      class="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 transition-transform"
+                      class="absolute right-1 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 transition-transform"
                       :class="{ 'rotate-180': showSortDropdown }"
                       fill="none"
                       stroke="currentColor"
@@ -457,18 +529,18 @@ onMounted(fetchReviews);
 
                   <div
                     v-if="showSortDropdown"
-                    class="absolute top-full left-0 mt-1 w-full border border-border-gray rounded-lg shadow-lg z-10 overflow-hidden bg-white"
+                    class="absolute top-full right-0 mt-1 w-32 border border-border-gray rounded-lg shadow-lg z-10 overflow-hidden bg-white"
                   >
                     <button
                       @click="selectSortOption('newest')"
-                      class="w-full px-4 py-3 text-left hover:bg-bg-light transition-colors border-b border-border-gray last:border-b-0"
+                      class="w-full px-3 py-2 text-sm text-left hover:bg-bg-light transition-colors"
                       :class="{ 'bg-bg-light': selectedSort === 'newest' }"
                     >
                       Terbaru
                     </button>
                     <button
                       @click="selectSortOption('oldest')"
-                      class="w-full px-4 py-3 text-left hover:bg-bg-light transition-colors"
+                      class="w-full px-3 py-2 text-sm text-left hover:bg-bg-light transition-colors"
                       :class="{ 'bg-bg-light': selectedSort === 'oldest' }"
                     >
                       Terlama
@@ -479,40 +551,40 @@ onMounted(fetchReviews);
             </div>
           </div>
 
-          <div v-if="reviews.length > 0" class="space-y-3 sm:space-y-4">
+          <!-- Reviews -->
+          <div v-if="reviews.length > 0" class="space-y-4">
             <div
               v-for="review in reviews"
               :key="review.id"
-              class="rounded-xl p-3 sm:p-4 md:p-6"
+              class="border-t pt-4"
             >
-              <div class="flex items-start gap-2 sm:gap-3 md:gap-4 mb-3 sm:mb-4 border-t pt-4 sm:pt-6">
+              <!-- User Info -->
+              <div class="flex items-start gap-3 mb-3">
                 <div
-                  class="w-10 h-10 sm:w-12 sm:h-12 bg-primary-green rounded-full flex items-center justify-center text-white font-semibold text-sm sm:text-base flex-shrink-0"
+                  class="w-10 h-10 bg-primary-green rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0"
                 >
                   {{ getInitials(review.fullname) }}
                 </div>
                 <div class="flex-1 min-w-0">
-                  <h3 class="font-semibold text-sm sm:text-base text-primary-green truncate">
+                  <h3 class="font-semibold text-sm text-primary-green truncate">
                     {{ review.fullname }}
                   </h3>
-                  <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mt-1">
+                  <div class="flex flex-wrap items-center gap-1.5 mt-1">
                     <span
-                      class="inline-flex items-center gap-1 px-2 py-0.5 sm:py-1 bg-[#FFF4EE] text-[#FA9E53] rounded-full text-xs sm:text-sm font-medium capitalize"
+                      class="inline-flex items-center gap-1 px-2 py-0.5 bg-[#FFF4EE] text-[#FA9E53] rounded-full text-xs font-medium capitalize"
                     >
                       <Verify />
-
                       {{ review.status }}
                     </span>
                     <span
                       v-if="review.userStatus"
-                      class="inline-flex items-center gap-1 px-2 py-0.5 sm:py-1 bg-[#E5F3FE] text-[#0789F2] rounded-full text-xs sm:text-sm font-medium capitalize"
+                      class="inline-flex items-center gap-1 px-2 py-0.5 bg-[#E5F3FE] text-[#0789F2] rounded-full text-xs font-medium capitalize"
                     >
                       <UserStatus />
-
                       {{ review.userStatus }}
                     </span>
                     <span
-                      class="inline-flex items-center gap-1 px-2 py-0.5 sm:py-1 border border-border-gray text-primary-green rounded-full text-xs sm:text-sm font-medium"
+                      class="inline-flex items-center gap-1 px-2 py-0.5 border border-border-gray text-primary-green rounded-full text-xs font-medium"
                     >
                       {{ review.schoolDetailName }}
                     </span>
@@ -520,16 +592,17 @@ onMounted(fetchReviews);
                 </div>
               </div>
 
-              <div class="flex flex-wrap items-center gap-2 sm:gap-4 mb-3 sm:mb-4 border-t pt-4 sm:pt-6">
+              <!-- Rating & Date -->
+              <div class="flex items-center gap-3 mb-3">
                 <div class="flex items-center gap-1">
-                  <span class="font-semibold text-sm sm:text-base text-primary-green">{{
-                    parseFloat(review.rating).toFixed(1)
-                  }}</span>
+                  <span class="font-semibold text-sm text-primary-green">
+                    {{ parseFloat(review.rating).toFixed(1) }}
+                  </span>
                   <div class="flex">
                     <svg
                       v-for="i in 5"
                       :key="i"
-                      class="w-3 h-3 sm:w-4 sm:h-4"
+                      class="w-3 h-3"
                       :class="
                         i <= Math.floor(parseFloat(review.rating))
                           ? 'text-yellow-400'
@@ -544,7 +617,7 @@ onMounted(fetchReviews);
                     </svg>
                   </div>
                 </div>
-                <span class="hidden sm:inline">
+                <span>
                   <svg
                     width="2"
                     height="16"
@@ -555,60 +628,92 @@ onMounted(fetchReviews);
                     <rect width="2" height="16" rx="1" fill="#F8F9FA" />
                   </svg>
                 </span>
-
-                <span class="text-xs sm:text-sm text-secondary-gray">{{
-                  formatDate(review.createdAt)
-                }}</span>
+                <span class="text-xs text-secondary-gray">
+                  {{ formatDate(review.createdAt) }}
+                </span>
               </div>
 
-              <p class="text-primary-green text-xs sm:text-sm mb-3 sm:mb-4">
-                {{ review.reviewText }}
-              </p>
+              <!-- Review Text -->
+              <div class="mb-3">
+                <p class="text-primary-green text-sm font-semibold mb-1">
+                  Komentar :
+                </p>
+                <p
+                  v-if="review.reviewText"
+                  class="text-primary-green text-sm leading-relaxed"
+                >
+                  {{ review.reviewText }}
+                </p>
+              </div>
 
-              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-3 md:gap-4 mb-3 sm:mb-4">
+              <!-- Liked Section -->
+              <div v-if="review.liked" class="mb-3">
+                <p class="text-primary-green text-sm font-semibold mb-1">
+                  Apa yang disukai dari sekolah ini?
+                </p>
+                <p class="text-primary-green text-sm leading-relaxed">
+                  {{ review.liked }}
+                </p>
+              </div>
+
+              <!-- Improved Section -->
+              <div v-if="review.improved" class="mb-3">
+                <p class="text-primary-green text-sm font-semibold mb-1">
+                  Apa yang bisa diperbaiki dari sekolah ini?
+                </p>
+                <p class="text-primary-green text-sm leading-relaxed">
+                  {{ review.improved }}
+                </p>
+              </div>
+
+              <!-- Detail Scores -->
+              <div class="grid grid-cols-5 gap-2 sm:gap-3 mb-3">
                 <div
-                  v-for="detail in review.review_details"
-                  :key="detail.id"
+                  v-for="questionId in [1, 2, 3, 4, 5]"
+                  :key="questionId"
                   class="border border-border-gray rounded-lg py-2 px-2"
                 >
-                  <div class="text-base sm:text-lg font-semibold text-primary-green mb-2 sm:mb-5">
-                    {{ parseFloat(detail.score).toFixed(0) }}
+                  <div class="text-base font-semibold text-primary-green mb-5">
+                    {{ getDetailScore(review.reviewDetails, questionId) }}
                   </div>
-                  <div class="text-[10px] sm:text-xs text-primary-green leading-tight">
-                    {{ detail.question }}
+                  <div class="text-[9px] text-primary-green leading-tight">
+                    {{ schoolRating.categories[questionId - 1]?.label || "" }}
                   </div>
                 </div>
               </div>
 
+              <!-- Like Button -->
               <div class="flex flex-col sm:flex-row sm:items-center gap-2">
                 <button
                   @click="handleLikeReview(review.id)"
-                  class="inline-flex items-center justify-center sm:justify-start gap-2 px-3 sm:px-4 py-2 text-xs sm:text-sm text-secondary-gray hover:bg-bg-light rounded-lg transition-colors"
+                  class="inline-flex items-center justify-center sm:justify-start gap-2 px-3 py-1.5 text-xs text-secondary-gray hover:bg-bg-light rounded-lg transition-colors"
                 >
                   <ThumbIcon />
                   <span class="font-medium">Bermanfaat?</span>
                 </button>
-                <span v-if="review.liked" class="text-xs sm:text-sm text-secondary-gray text-center sm:text-left"
-                  >{{ review.liked }} orang menganggap ini bermanfaat</span
+                <span
+                  v-if="review.likesCount > 0"
+                  class="text-xs text-secondary-gray text-center sm:text-left"
                 >
+                  {{ review.likesCount }} orang menganggap ini bermanfaat
+                </span>
               </div>
             </div>
           </div>
 
           <div v-else class="text-center py-12">
-            <p class="text-secondary-gray">
-              Data belum tersedia.
-            </p>
+            <p class="text-secondary-gray">Data belum tersedia.</p>
           </div>
 
+          <!-- Pagination -->
           <div
             v-if="meta && meta.last_page > 1"
-            class="flex flex-wrap justify-center items-center gap-2 sm:gap-3 md:gap-5 mt-4 sm:mt-6"
+            class="flex flex-wrap justify-center items-center gap-2 sm:gap-3 mt-6"
           >
             <button
               @click="goToPage(currentPage - 1)"
               :disabled="currentPage === 1"
-              class="px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-primary-green bg-[#F8F9FA] hover:bg-bg-light rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              class="px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-medium text-primary-green bg-[#F8F9FA] hover:bg-bg-light rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               Previous
             </button>
@@ -632,7 +737,7 @@ onMounted(fetchReviews);
             <button
               @click="goToPage(currentPage + 1)"
               :disabled="currentPage === meta?.last_page"
-              class="px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-primary-green bg-[#F8F9FA] hover:bg-bg-light rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              class="px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-medium text-primary-green bg-[#F8F9FA] hover:bg-bg-light rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               Next
             </button>

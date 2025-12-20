@@ -45,9 +45,14 @@
         @click="toggleProvince"
         class="relative flex items-center bg-white border border-border-gray font-medium rounded-lg p-2 py-3 cursor-pointer"
       >
-        <label class="text-xs sm:text-sm text-secondary-gray mr-2 flex-shrink-0">Province:</label>
-        <span class="flex-1 text-xs sm:text-sm" :class="filters.province ? 'text-gray-700' : 'text-gray-400'">
-          {{ filters.province || 'Semua' }}
+        <label class="text-xs sm:text-sm text-secondary-gray mr-2 flex-shrink-0"
+          >Province:</label
+        >
+        <span
+          class="flex-1 text-xs sm:text-sm"
+          :class="filters.province ? 'text-secondary-gray font-medium' : 'text-gray-400'"
+        >
+          {{ filters.province || "Semua" }}
         </span>
         <svg
           class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 transition-transform"
@@ -71,42 +76,77 @@
       >
         <div
           @click="selectProvince('')"
-          class="px-4 py-3 hover:bg-gray-50 cursor-pointer flex items-center justify-between text-sm border-b border-border-gray"
+          class="px-4 py-2 hover:bg-gray-50 cursor-pointer flex items-center justify-between text-sm"
         >
-          <span :class="!filters.province ? 'text-primary-green font-medium' : 'text-gray-700'">Semua</span>
+          <span
+            :class="
+              !filters.province
+                ? 'text-[#FC6E4C] font-medium'
+                : 'text-secondary-gray font-medium'
+            "
+            >Semua</span
+          >
           <svg
             v-if="!filters.province"
-            class="w-5 h-5 text-primary-green"
+            class="w-5 h-5 text-[#FC6E4C]"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
           >
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 13l4 4L19 7"
+            ></path>
           </svg>
         </div>
-        
+
         <template v-for="(group, letter) in groupedProvinces" :key="letter">
-          <div class="px-4 py-2 bg-gray-50 text-xs font-medium text-gray-500 uppercase sticky top-0">
-            {{ letter }}
+          <div class="flex items-center px-4 py-1.5 bg-white">
+            <div class="w-6 text-xs font-medium text-border-gray uppercase">
+              {{ letter }}
+            </div>
+            <div class="flex-1 h-px bg-gray-200 ml-2"></div>
           </div>
           <div
             v-for="province in group"
             :key="province.id"
             @click="selectProvince(province.name)"
-            class="px-4 py-3 hover:bg-gray-50 cursor-pointer flex items-center justify-between text-sm border-b border-border-gray last:border-b-0"
+            class="cursor-pointer text-sm"
           >
-            <span :class="filters.province === province.name ? 'text-primary-green font-medium' : 'text-gray-700'">
-              {{ province.name }}
-            </span>
-            <svg
-              v-if="filters.province === province.name"
-              class="w-5 h-5 text-primary-green"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+            <div
+              class="mx-2 px-3 py-2 rounded-lg flex items-center justify-between"
+              :class="
+                filters.province === province.name
+                  ? 'bg-[#FFF9F8]'
+                  : 'hover:bg-gray-50'
+              "
             >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-            </svg>
+              <span
+                :class="
+                  filters.province === province.name
+                    ? 'text-[#FC6E4C] font-medium'
+                    : 'text-secondary-gray font-medium'
+                "
+              >
+                {{ province.name }}
+              </span>
+              <svg
+                v-if="filters.province === province.name"
+                class="w-5 h-5 text-[#FC6E4C]"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                ></path>
+              </svg>
+            </div>
           </div>
         </template>
       </div>
@@ -118,9 +158,14 @@
         class="relative flex items-center bg-white border border-border-gray font-medium rounded-lg p-2 py-3 cursor-pointer"
         :class="{ 'opacity-50 cursor-not-allowed': !filters.province }"
       >
-        <label class="text-xs sm:text-sm text-secondary-gray mr-2 flex-shrink-0">District:</label>
-        <span class="flex-1 text-xs sm:text-sm" :class="filters.district ? 'text-gray-700' : 'text-gray-400'">
-          {{ filters.district || 'Semua' }}
+        <label class="text-xs sm:text-sm text-secondary-gray mr-2 flex-shrink-0"
+          >District:</label
+        >
+        <span
+          class="flex-1 text-xs sm:text-sm"
+          :class="filters.district ? 'text-secondary-gray font-medium' : 'text-gray-400'"
+        >
+          {{ filters.district || "Semua" }}
         </span>
         <svg
           class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 transition-transform"
@@ -144,39 +189,79 @@
       >
         <div
           @click="selectDistrict('')"
-          class="px-4 py-3 hover:bg-gray-50 cursor-pointer flex items-center justify-between text-sm border-b border-border-gray"
+          class="px-4 py-2 hover:bg-gray-50 cursor-pointer flex items-center justify-between text-sm"
         >
-          <span :class="!filters.district ? 'text-primary-green font-medium' : 'text-gray-700'">Semua</span>
+          <span
+            :class="
+              !filters.district
+                ? 'text-[#FC6E4C] font-medium'
+                : 'text-secondary-gray font-medium'
+            "
+            >Semua</span
+          >
           <svg
             v-if="!filters.district"
-            class="w-5 h-5 text-primary-green"
+            class="w-5 h-5 text-[#FC6E4C]"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
           >
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 13l4 4L19 7"
+            ></path>
           </svg>
         </div>
-        
-        <div
-          v-for="district in districts"
-          :key="district.id"
-          @click="selectDistrict(district.name)"
-          class="px-4 py-3 hover:bg-gray-50 cursor-pointer flex items-center justify-between text-sm border-b border-border-gray last:border-b-0"
-        >
-          <span :class="filters.district === district.name ? 'text-primary-green font-medium' : 'text-gray-700'">
-            {{ district.name }}
-          </span>
-          <svg
-            v-if="filters.district === district.name"
-            class="w-5 h-5 text-primary-green"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+
+        <template v-for="(group, letter) in groupedDistricts" :key="letter">
+          <div class="flex items-center px-4 py-1.5 bg-white">
+            <div class="w-6 text-xs font-medium text-border-gray uppercase">
+              {{ letter }}
+            </div>
+            <div class="flex-1 h-px bg-gray-200 ml-2"></div>
+          </div>
+          <div
+            v-for="district in group"
+            :key="district.id"
+            @click="selectDistrict(district.name)"
+            class="cursor-pointer text-sm"
           >
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-          </svg>
-        </div>
+            <div
+              class="mx-2 px-3 py-2 rounded-lg flex items-center justify-between"
+              :class="
+                filters.district === district.name
+                  ? 'bg-[#FFF9F8]'
+                  : 'hover:bg-gray-50'
+              "
+            >
+              <span
+                :class="
+                  filters.district === district.name
+                    ? 'text-[#FC6E4C] font-medium'
+                    : 'text-secondary-gray font-medium'
+                "
+              >
+                {{ district.name }}
+              </span>
+              <svg
+                v-if="filters.district === district.name"
+                class="w-5 h-5 text-[#FC6E4C]"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                ></path>
+              </svg>
+            </div>
+          </div>
+        </template>
       </div>
     </div>
 
@@ -186,9 +271,15 @@
         class="relative flex items-center bg-white border border-border-gray font-medium rounded-lg p-2 py-3 cursor-pointer"
         :class="{ 'opacity-50 cursor-not-allowed': !filters.district }"
       >
-        <label class="text-xs sm:text-sm text-secondary-gray mr-2 whitespace-nowrap flex-shrink-0">Sub District:</label>
-        <span class="flex-1 text-xs sm:text-sm" :class="filters.subDistrict ? 'text-gray-700' : 'text-gray-400'">
-          {{ filters.subDistrict || 'Semua' }}
+        <label
+          class="text-xs sm:text-sm text-secondary-gray mr-2 whitespace-nowrap flex-shrink-0"
+          >Sub District:</label
+        >
+        <span
+          class="flex-1 text-xs sm:text-sm"
+          :class="filters.subDistrict ? 'text-secondary-gray font-medium' : 'text-gray-400'"
+        >
+          {{ filters.subDistrict || "Semua" }}
         </span>
         <svg
           class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 transition-transform"
@@ -212,45 +303,87 @@
       >
         <div
           @click="selectSubDistrict('')"
-          class="px-4 py-3 hover:bg-gray-50 cursor-pointer flex items-center justify-between text-sm border-b border-border-gray"
+          class="px-4 py-2 hover:bg-gray-50 cursor-pointer flex items-center justify-between text-sm"
         >
-          <span :class="!filters.subDistrict ? 'text-primary-green font-medium' : 'text-gray-700'">Semua</span>
+          <span
+            :class="
+              !filters.subDistrict
+                ? 'text-[#FC6E4C] font-medium'
+                : 'text-secondary-gray font-medium'
+            "
+            >Semua</span
+          >
           <svg
             v-if="!filters.subDistrict"
-            class="w-5 h-5 text-primary-green"
+            class="w-5 h-5 text-[#FC6E4C]"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
           >
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 13l4 4L19 7"
+            ></path>
           </svg>
         </div>
-        
-        <div
-          v-for="subDistrict in subDistricts"
-          :key="subDistrict.id"
-          @click="selectSubDistrict(subDistrict.name)"
-          class="px-4 py-3 hover:bg-gray-50 cursor-pointer flex items-center justify-between text-sm border-b border-border-gray last:border-b-0"
-        >
-          <span :class="filters.subDistrict === subDistrict.name ? 'text-primary-green font-medium' : 'text-gray-700'">
-            {{ subDistrict.name }}
-          </span>
-          <svg
-            v-if="filters.subDistrict === subDistrict.name"
-            class="w-5 h-5 text-primary-green"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+
+        <template v-for="(group, letter) in groupedSubDistricts" :key="letter">
+          <div class="flex items-center px-4 py-1.5 bg-white">
+            <div class="w-6 text-xs font-medium text-border-gray uppercase">
+              {{ letter }}
+            </div>
+            <div class="flex-1 h-px bg-gray-200 ml-2"></div>
+          </div>
+          <div
+            v-for="subDistrict in group"
+            :key="subDistrict.id"
+            @click="selectSubDistrict(subDistrict.name)"
+            class="cursor-pointer text-sm"
           >
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-          </svg>
-        </div>
+            <div
+              class="mx-2 px-3 py-2 rounded-lg flex items-center justify-between"
+              :class="
+                filters.subDistrict === subDistrict.name
+                  ? 'bg-[#FFF9F8]'
+                  : 'hover:bg-gray-50'
+              "
+            >
+              <span
+                :class="
+                  filters.subDistrict === subDistrict.name
+                    ? 'text-primary-green font-medium'
+                    : 'text-secondary-gray font-medium'
+                "
+              >
+                {{ subDistrict.name }}
+              </span>
+              <svg
+                v-if="filters.subDistrict === subDistrict.name"
+                class="w-5 h-5 text-primary-green"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                ></path>
+              </svg>
+            </div>
+          </div>
+        </template>
       </div>
     </div>
   </div>
 
   <div
-    v-if="showProvinceDropdown || showDistrictDropdown || showSubDistrictDropdown"
+    v-if="
+      showProvinceDropdown || showDistrictDropdown || showSubDistrictDropdown
+    "
     @click="closeAllDropdowns"
     class="fixed inset-0 z-40"
   ></div>
@@ -321,12 +454,36 @@ const educationTabs = [
 
 const groupedProvinces = computed(() => {
   const grouped = {};
-  provinces.value.forEach(province => {
+  provinces.value.forEach((province) => {
     const firstLetter = province.name.charAt(0).toUpperCase();
     if (!grouped[firstLetter]) {
       grouped[firstLetter] = [];
     }
     grouped[firstLetter].push(province);
+  });
+  return grouped;
+});
+
+const groupedDistricts = computed(() => {
+  const grouped = {};
+  districts.value.forEach((district) => {
+    const firstLetter = district.name.charAt(0).toUpperCase();
+    if (!grouped[firstLetter]) {
+      grouped[firstLetter] = [];
+    }
+    grouped[firstLetter].push(district);
+  });
+  return grouped;
+});
+
+const groupedSubDistricts = computed(() => {
+  const grouped = {};
+  subDistricts.value.forEach((subDistrict) => {
+    const firstLetter = subDistrict.name.charAt(0).toUpperCase();
+    if (!grouped[firstLetter]) {
+      grouped[firstLetter] = [];
+    }
+    grouped[firstLetter].push(subDistrict);
   });
   return grouped;
 });
@@ -364,7 +521,7 @@ const selectProvince = async (provinceName) => {
     subDistrict: "",
   });
   closeAllDropdowns();
-  
+
   if (provinceName) {
     await fetchDistricts(provinceName);
   } else {
@@ -379,7 +536,7 @@ const selectDistrict = async (districtName) => {
     subDistrict: "",
   });
   closeAllDropdowns();
-  
+
   if (districtName) {
     await fetchSubDistricts(districtName);
   } else {

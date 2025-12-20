@@ -7,7 +7,7 @@
       @confirm="confirmLocation"
     />
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-10">
       <nav class="mt-6 sm:mt-8 px-4 sm:px-6 font-medium">
         <ol
           class="flex flex-wrap items-center space-x-2 text-xs sm:text-sm text-secondary-gray"

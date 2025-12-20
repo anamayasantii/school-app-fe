@@ -1,6 +1,6 @@
 <template>
   <section class="py-8 sm:py-12 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-8 sm:mb-12">
         <h2 class="text-xl sm:text-3xl md:text-4xl font-semibold text-primary-green mb-2 sm:mb-4">
           Semua dalam satu platform.

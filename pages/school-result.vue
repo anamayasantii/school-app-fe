@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen">
     <!-- Breadcrumb -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
       <nav class="flex items-center text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6">
         <NuxtLink to="/" class="hover:text-gray-900">Beranda</NuxtLink>
         <span class="mx-2">›</span>
@@ -16,7 +16,7 @@
 
     <!-- Section dengan Background -->
     <section class="bg-bg-light py-6 sm:py-8">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col lg:flex-row gap-4 sm:gap-6">
           <!-- Mobile Filter Button -->
           <div class="lg:hidden">

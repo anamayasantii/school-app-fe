@@ -73,7 +73,8 @@
             v-model="form.fullName"
             type="text"
             placeholder="Contoh: John Doe"
-            class="w-full px-3 py-2 md:px-4 md:py-3 text-sm md:text-base border border-border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled
+            class="w-full text-secondary-gray px-3 py-2 md:px-4 md:py-3 text-sm md:text-base border border-border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
           />
         </div>
 
@@ -85,7 +86,8 @@
             v-model="form.email"
             type="email"
             placeholder="Contoh: john.doe@gmail.com"
-            class="w-full px-3 py-2 md:px-4 md:py-3 text-sm md:text-base border border-border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled
+            class="w-full text-secondary-gray px-3 py-2 md:px-4 md:py-3 text-sm md:text-base border border-border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
           />
         </div>
 
@@ -438,6 +440,9 @@ const handleFileDelete = () => {
 
 const handleNext = () => {
   if (!isFormValid.value) return;
+
+  console.log("Form data saat next:", form.value); // CEK INI
+  console.log("User Status:", form.value.userStatus); // CEK INI
 
   emit("updateFormData", { step1: form.value });
   emit("next");

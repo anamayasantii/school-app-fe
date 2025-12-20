@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="mb-4 sm:mb-6 flex justify-between items-center">
       <h1 class="text-xl sm:text-2xl font-bold text-primary-green">
         Sekolah terbaik yang terdaftar di Indonesia

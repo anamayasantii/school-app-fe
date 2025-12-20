@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen">
     <section class="bg-gradient-to-br py-8 sm:py-12 md:py-16 pb-0">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="mb-6 sm:mb-8 flex justify-center px-4">
           <NuxtLink to="/ranking" class="figma-button w-full sm:w-[360px]">
             <span class="text-[#F9F6F1] underline text-sm sm:text-base">

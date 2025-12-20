@@ -2,12 +2,12 @@
   <div class="min-h-screen bg-[#FBFBFB]">
     <!-- Header -->
     <div class="bg-white border-b border-gray-200">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6 lg:py-8">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6 lg:py-8">
         <h1 class="text-xl md:text-2xl font-semibold text-primary-green">Pengaturan</h1>
       </div>
     </div>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6 lg:py-8 pb-24 md:pb-8">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6 lg:py-8 pb-24 md:pb-8">
       <div class="flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8">
         <div class="hidden md:block md:w-56 lg:w-64 flex-shrink-0">
           <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden sticky top-24">

@@ -1,6 +1,6 @@
 <template>
   <div class="bg-bg-light">
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16">
+    <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16">
       <div class="text-center mb-8 sm:mb-10 md:mb-12">
         <h2 class="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-900 mb-2 sm:mb-4">
           Beberapa hal mendalam untuk membantu
@@ -14,15 +14,15 @@
       </div>
 
       <div class="relative">
-        <div class="hidden md:grid md:grid-cols-2 gap-4 md:gap-6">
+        <div class="hidden md:grid md:grid-cols-2 gap-3 md:gap-4">
           <article
             v-for="review in visibleReviews"
             :key="review.id"
-            class="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 shadow-sm hover:shadow-md transition-shadow"
+            class="bg-white rounded-2xl border border-gray-200 p-4 sm:p-5"
           >
             <div class="flex items-center gap-2 mb-4 sm:mb-6">
               <div class="border border-border-gray rounded-full px-2 sm:px-3 py-1.5 sm:py-2 flex items-center gap-1.5 sm:gap-2">
-                <span class="text-xs sm:text-sm text-secondary-gray">Review untuk</span>
+                <span class="text-xs sm:text-xs text-secondary-gray">Review untuk</span>
                 <NuxtLink
                   :to="`/school-details/${review.schoolDetailId}`"
                   class="flex items-center gap-1 sm:gap-1.5 underline"
@@ -36,7 +36,7 @@
                       <path d="M12 2L2 7l10 5 10-5-10-5z" />
                       <path d="M2 17l10 5 10-5M2 12l10 5 10-5" />
                     </svg>
-                    <span class="font-semibold text-primary-green text-xs sm:text-sm">{{
+                    <span class="line-clamp-1 font-semibold text-primary-green text-xs sm:text-sm">{{
                       review.schoolDetailName
                     }}</span>
                   </div>
@@ -109,14 +109,14 @@
               class="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4 pt-3 sm:pt-4 border-t border-border-gray"
             >
               <div class="flex items-center gap-1">
-                <span class="text-base sm:text-lg font-bold text-gray-900">{{
+                <span class="text-base sm:text-xs font-bold text-gray-900">{{
                   review.rating
                 }}</span>
                 <div class="flex">
                   <svg
                     v-for="star in 5"
                     :key="star"
-                    class="w-4 h-4 sm:w-5 sm:h-5"
+                    class="w-4 h-4 sm:w-4 sm:h-4"
                     viewBox="0 0 24 24"
                     :fill="star <= review.rating ? '#FFB800' : 'none'"
                     :stroke="star <= review.rating ? '#FFB800' : '#E5E7EB'"
@@ -128,22 +128,39 @@
                   </svg>
                 </div>
               </div>
-              <span class="text-xs sm:text-sm text-gray-500">
+              <span class="text-xs sm:text-xs text-gray-500">
                 {{ formatDate(review.createdAt) }}
               </span>
             </div>
 
-            <p class="text-xs sm:text-sm text-gray-700 leading-relaxed line-clamp-3 mb-3 sm:mb-4">
-              {{ review.reviewText }}
-            </p>
+            <div class="mb-3 sm:mb-4">
+              <p class="text-xs sm:text-sm font-semibold text-gray-900 mb-1">Komentar:</p>
+              <p class="text-xs sm:text-sm text-gray-700 leading-relaxed">
+                {{ review.reviewText }}
+              </p>
+            </div>
+
+            <div class="mb-3 sm:mb-4">
+              <p class="text-xs sm:text-sm font-semibold text-gray-900 mb-1">Apa yang disukai dari sekolah ini?</p>
+              <p class="text-xs sm:text-sm text-gray-700 leading-relaxed">
+                {{ review.liked }}
+              </p>
+            </div>
+
+            <div class="mb-3 sm:mb-4">
+              <p class="text-xs sm:text-sm font-semibold text-gray-900 mb-1">Apa yang perlu diperbaiki dari sekolah ini?</p>
+              <p class="text-xs sm:text-sm text-gray-700 leading-relaxed">
+                {{ review.improved }}
+              </p>
+            </div>
 
             <div class="flex items-center gap-2 pt-3 sm:pt-4">
               <div class="border border-border-gray rounded-full px-2 sm:px-3 py-1.5 sm:py-2 flex items-center gap-1.5 sm:gap-2">
                 <span class="text-xs sm:text-sm text-secondary-gray">Helpful?</span>
-                <button>
+                <button @click="handleLikeClick(review.id)">
                   <svg
                     class="w-3.5 h-3.5 sm:w-4 sm:h-4"
-                    fill="none"
+                    :fill="reviewLikes[review.id]?.isLiked ? 'currentColor' : 'none'"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -157,7 +174,7 @@
                 </button>
               </div>
               <span class="text-xs sm:text-sm text-gray-600"
-                >25 orang menganggap ini bermanfaat</span
+                >{{ reviewLikes[review.id]?.likesCount || 0 }} orang menganggap ini bermanfaat</span
               >
             </div>
           </article>
@@ -282,17 +299,34 @@
               </span>
             </div>
 
-            <p class="text-xs text-gray-700 leading-relaxed line-clamp-3 mb-3">
-              {{ review.reviewText }}
-            </p>
+            <div class="mb-3">
+              <p class="text-xs font-semibold text-gray-900 mb-1">Komentar:</p>
+              <p class="text-xs text-gray-700 leading-relaxed">
+                {{ review.reviewText }}
+              </p>
+            </div>
+
+            <div class="mb-3">
+              <p class="text-xs font-semibold text-gray-900 mb-1">Apa yang disukai dari sekolah ini?</p>
+              <p class="text-xs text-gray-700 leading-relaxed">
+                {{ review.liked }}
+              </p>
+            </div>
+
+            <div class="mb-3">
+              <p class="text-xs font-semibold text-gray-900 mb-1">Apa yang perlu diperbaiki dari sekolah ini?</p>
+              <p class="text-xs text-gray-700 leading-relaxed">
+                {{ review.improved }}
+              </p>
+            </div>
 
             <div class="flex items-center gap-2 pt-3">
               <div class="border border-border-gray rounded-full px-2 py-1.5 flex items-center gap-1.5">
                 <span class="text-xs text-secondary-gray">Helpful?</span>
-                <button>
+                <button @click="handleLikeClick(review.id)">
                   <svg
                     class="w-3.5 h-3.5"
-                    fill="none"
+                    :fill="reviewLikes[review.id]?.isLiked ? 'currentColor' : 'none'"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -305,6 +339,9 @@
                   </svg>
                 </button>
               </div>
+              <span class="text-xs text-gray-600"
+                >{{ reviewLikes[review.id]?.likesCount || 0 }} orang menganggap ini bermanfaat</span
+              >
             </div>
           </article>
         </div>
@@ -345,23 +382,118 @@
         </div>
       </div>
     </section>
+
+    <Modal
+      :isOpen="showLoginModal"
+      type="warning"
+      title="Login Diperlukan"
+      message="Anda harus login terlebih dahulu untuk memberikan like pada review ini."
+      confirmText="Login"
+      cancelText="Batal"
+      :showCancel="true"
+      @confirm="goToLogin"
+      @close="showLoginModal = false"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import axios from "@/lib/axios";
+import { useAuthStore } from "@/store/auth";
+import Modal from "@/components/common/Modal.vue";
+
+const router = useRouter();
+const authStore = useAuthStore();
 
 const reviews = ref([]);
 const currentPage = ref(0);
+const reviewLikes = ref({});
+const showLoginModal = ref(false);
 
 const fetchReviews = async () => {
   try {
     const { data } = await axios.get("/reviews/recent");
     reviews.value = data.data;
+    
+    console.log("Data reviews dari API:", reviews.value);
+    
+    reviews.value.forEach(review => {
+      console.log(`Review ID ${review.id} - likesCount:`, review.likesCount);
+      reviewLikes.value[review.id] = {
+        isLiked: false,
+        likesCount: review.likesCount || 0
+      };
+    });
+    
+    console.log("reviewLikes setelah init:", reviewLikes.value);
+    
+    if (authStore.isLoggedIn) {
+      await fetchLikesStatus();
+    }
+    
+    console.log("reviewLikes setelah fetchLikesStatus:", reviewLikes.value);
   } catch (error) {
     console.error("Error fetching reviews:", error);
   }
+};
+
+const fetchLikesStatus = async () => {
+  try {
+    const promises = reviews.value.map(async (review) => {
+      try {
+        const { data } = await axios.get(`/reviews/${review.id}/likes/check`);
+        return { 
+          id: review.id, 
+          isLiked: data.data.isLiked,
+          likesCount: review.likesCount || 0
+        };
+      } catch (error) {
+        return { 
+          id: review.id, 
+          isLiked: false, 
+          likesCount: review.likesCount || 0 
+        };
+      }
+    });
+    const results = await Promise.all(promises);
+    results.forEach(item => {
+      const review = reviews.value.find(r => r.id === item.id);
+      reviewLikes.value[item.id] = {
+        isLiked: item.isLiked,
+        likesCount: review?.likesCount || 0
+      };
+    });
+  } catch (error) {
+    console.error("Error fetching likes status:", error);
+  }
+};
+
+const handleLikeClick = (reviewId) => {
+  if (!authStore.isLoggedIn) {
+    showLoginModal.value = true;
+    return;
+  }
+  toggleLike(reviewId);
+};
+
+const toggleLike = async (reviewId) => {
+  try {
+    const { data } = await axios.post(`/reviews/${reviewId}/like`);
+    if (data.success) {
+      reviewLikes.value[reviewId] = {
+        isLiked: data.data.action === "liked",
+        likesCount: data.data.likesCount
+      };
+    }
+  } catch (error) {
+    console.error("Error toggling like:", error);
+  }
+};
+
+const goToLogin = () => {
+  router.push("/auth/login");
 };
 
 const visibleReviews = computed(() => {

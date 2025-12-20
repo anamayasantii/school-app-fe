@@ -2,7 +2,7 @@
   <div class="min-h-screen container mx-auto py-6 px-16">
     <!-- Search Bar - Full Width at Top -->
     <div class="py-4">
-      <div class="max-w-7xl mx-auto">
+      <div class="max-w-5xl mx-auto">
         <div class="relative">
           <div
             class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-4"
@@ -34,7 +34,7 @@
     </div>
 
     <!-- Main Layout: Sidebar + Content -->
-    <div class="max-w-7xl mx-auto flex">
+    <div class="max-w-5xl mx-auto flex">
       <!-- Left Sidebar -->
       <div class="w-[400px] p-6 space-y-8">
         <!-- Level Section -->

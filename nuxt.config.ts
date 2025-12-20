@@ -27,19 +27,19 @@ export default defineNuxtConfig({
       tailwindcss: {},
       autoprefixer: {},
     },
-  },
-  app: {
-    head: {
-      script: process.env.NODE_ENV === 'development' ? [
-        { 
-          src: 'https://cdn.jsdelivr.net/npm/eruda',
-          tagPosition: 'bodyClose'
-        },
-        { 
-          innerHTML: 'eruda.init();',
-          tagPosition: 'bodyClose'
-        }
-      ] : []
-    }
   }
+  // app: {
+  //   head: {
+  //     script: process.env.NODE_ENV === 'development' ? [
+  //       { 
+  //         src: 'https://cdn.jsdelivr.net/npm/eruda',
+  //         tagPosition: 'bodyClose'
+  //       },
+  //       { 
+  //         innerHTML: 'eruda.init();',
+  //         tagPosition: 'bodyClose'
+  //       }
+  //     ] : []
+  //   }
+  // }
 })

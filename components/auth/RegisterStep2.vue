@@ -18,6 +18,10 @@
 
         <form @submit.prevent="handleSubmit" class="space-y-4 md:space-y-6">
           
+          <div v-if="errorMessage" class="p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p class="text-sm text-red-600">{{ errorMessage }}</p>
+          </div>
+
           <div>
             <label for="fullname" class="block text-sm font-medium text-gray-700 mb-2">
               Nama Lengkap
@@ -135,6 +139,7 @@ const emit = defineEmits(['prev', 'save-data'])
 const backgroundImage = backgroundImg
 const showPassword = ref(false)
 const isLoading = ref(false)
+const errorMessage = ref('')
 
 const form = reactive({
   fullname: props.formData?.fullname || '',
@@ -145,6 +150,7 @@ const form = reactive({
 const handleSubmit = async () => {
   try {
     isLoading.value = true
+    errorMessage.value = ''
     
     const registrationData = {
       ...props.formData,
@@ -163,6 +169,14 @@ const handleSubmit = async () => {
     
   } catch (error) {
     console.error('Registration failed:', error)
+    
+    if (error.response?.data?.message) {
+      errorMessage.value = error.response.data.message
+    } else if (error.response?.status === 409 || error.response?.status === 400) {
+      errorMessage.value = 'Email sudah terdaftar. Silakan gunakan email lain.'
+    } else {
+      errorMessage.value = 'Terjadi kesalahan. Silakan coba lagi.'
+    }
   } finally {
     isLoading.value = false
   }
