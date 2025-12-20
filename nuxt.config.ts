@@ -1,20 +1,25 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2025-05-15',
+  compatibilityDate: "2025-05-15",
   devtools: { enabled: true },
   css: ["~/styles/tailwind.css"],
-  modules: ['@pinia/nuxt', "@nuxtjs/google-fonts"],
+  modules: ["@pinia/nuxt", "@nuxtjs/google-fonts"],
   googleFonts: {
     families: {
       Poppins: [300, 400, 500, 600, 700],
     },
-    display: 'swap',
+    display: "swap",
     prefetch: true,
     preconnect: true,
     preload: true,
   },
-   build: {
+  build: {
     transpile: ["pinia"],
+  },
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: process.env.NUXT_PUBLIC_BASE_URL || "",
+    },
   },
   devServer: {
     port: 3890,
@@ -28,4 +33,4 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-})
+});
