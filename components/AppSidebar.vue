@@ -88,6 +88,10 @@ const data = {
         //   title: "Add School",
         //   url: "/dashboard/school-lists/add",
         // },
+        {
+          title: "Add Highlight School",
+          url: "/dashboard/school-lists/add-highlight",
+        }
       ],
     },
     {

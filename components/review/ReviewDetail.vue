@@ -26,6 +26,7 @@ const currentPage = ref(1);
 const showSortDropdown = ref(false);
 
 const selectSortOption = (sort) => {
+  console.log('Sort selected:', sort);
   selectedSort.value = sort;
   showSortDropdown.value = false;
   currentPage.value = 1;
@@ -420,7 +421,7 @@ onMounted(fetchReviews);
                     name="rating"
                     :value="item.stars"
                     :checked="selectedRating === item.stars"
-                    class="w-4 h-4 text-primary-green accent-black cursor-pointer pointer-events-none"
+                    class="w-4 h-4 text-primary-green accent-black cursor-pointer"
                   />
                   <svg
                     class="w-4 h-4 text-yellow-400 fill-current"
@@ -474,7 +475,7 @@ onMounted(fetchReviews);
                     name="role"
                     :value="type"
                     :checked="selectedRole === type"
-                    class="w-4 h-4 accent-black cursor-pointer text-primary-green border-gray-300 pointer-events-none"
+                    class="w-4 h-4 accent-black cursor-pointer text-primary-green border-gray-300"
                   />
                   <span class="text-sm text-primary-green capitalize">
                     {{ type }}
@@ -559,8 +560,16 @@ onMounted(fetchReviews);
               class="border-t pt-4"
             >
               <!-- User Info -->
+              <!-- User Info -->
               <div class="flex items-start gap-3 mb-3">
+                <img
+                  v-if="review.image"
+                  :src="review.image"
+                  :alt="review.fullname"
+                  class="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                />
                 <div
+                  v-else
                   class="w-10 h-10 bg-primary-green rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0"
                 >
                   {{ getInitials(review.fullname) }}
@@ -577,11 +586,11 @@ onMounted(fetchReviews);
                       {{ review.status }}
                     </span>
                     <span
-                      v-if="review.userStatus"
+                      v-if="review.schoolValidation?.[0]?.userStatus"
                       class="inline-flex items-center gap-1 px-2 py-0.5 bg-[#E5F3FE] text-[#0789F2] rounded-full text-xs font-medium capitalize"
                     >
                       <UserStatus />
-                      {{ review.userStatus }}
+                      {{ review.schoolValidation[0].userStatus }}
                     </span>
                     <span
                       class="inline-flex items-center gap-1 px-2 py-0.5 border border-border-gray text-primary-green rounded-full text-xs font-medium"
