@@ -14,7 +14,7 @@ export default defineNuxtConfig({
   },
 
   build: {
-    transpile: ["pinia"],
+    transpile: ["pinia", "vue"],
   },
   runtimeConfig: {
     public: {
