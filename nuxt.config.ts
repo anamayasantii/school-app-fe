@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     preconnect: true,
     preload: true,
   },
+
   build: {
     transpile: ["pinia"],
   },
@@ -23,9 +24,11 @@ export default defineNuxtConfig({
   devServer: {
     port: 3890,
   },
+
   pinia: {
     storesDirs: ["~/store/"],
   },
+
   postcss: {
     plugins: {
       tailwindcss: {},
