@@ -5,7 +5,7 @@
     </div>
   </NuxtLayout>
 </template>
-<script setup>
+<!-- <script setup>
 import { useAuthStore } from '@/store/auth'
 
 const authStore = useAuthStore()
@@ -16,4 +16,4 @@ await authStore.initAuth()
 onMounted(() => {
   authStore.initAuth()
 })
-</script>
+</script> -->

@@ -165,7 +165,7 @@ const handleSubmit = async () => {
     
     const response = await axios.post('/register', registrationData)
     
-    await navigateTo('/auth/login')
+    await navigateTo('/announcement-email')
     
   } catch (error) {
     console.error('Registration failed:', error)

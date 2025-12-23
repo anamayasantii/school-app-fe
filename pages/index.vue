@@ -40,7 +40,9 @@
           </NuxtLink>
         </div>
 
-        <h1 class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-semibold mb-4 py-4 max-w-3xl tracking-tight mx-auto px-4">
+        <h1
+          class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-semibold mb-4 py-4 max-w-3xl tracking-tight mx-auto px-4"
+        >
           Pencarian sekolah lebih sederhana dan mudah.
         </h1>
 
@@ -59,7 +61,9 @@
     </section>
 
     <section class="py-12 sm:py-16">
-      <Leaderboard />
+      <client-only>
+        <Leaderboard />
+      </client-only>
     </section>
 
     <section class="py-12 sm:py-16">
@@ -81,6 +85,7 @@ import IndexSchools from "~/components/home/index.vue";
 import SchoolHighlight from "~/components/school/SchoolHighlight.vue";
 
 const currentYear = new Date().getFullYear();
+
 </script>
 
 <style scoped>
