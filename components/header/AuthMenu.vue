@@ -14,18 +14,11 @@
 
 <script setup>
 import ProfileMenu from './ProfileMenu.vue'
-import { computed, ref, onMounted } from 'vue'
+import { computed } from 'vue'
 import { useAuthStore } from '@/store/auth'
 
 const authStore = useAuthStore()
-const isReady = ref(false)
-
 const isLoggedIn = computed(() => authStore.isLoggedIn)
-
-onMounted(async () => {
-  await authStore.initAuth()
-  isReady.value = true
-})
 </script>
 
 <style scoped>
