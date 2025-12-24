@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 
 export const useAuthStore = defineStore("auth", () => {
   const user = ref(null);
+  const isLoading = ref(false);
 
   const isLoggedIn = computed(() => {
   const token = Cookies.get("token");
@@ -14,7 +15,10 @@ export const useAuthStore = defineStore("auth", () => {
 });
 
   const initAuth = async () => {
+    if (process.server) return;
+    isLoading.value = true; 
     await fetchUser();
+    isLoading.value = false; 
   };
 
   const setAuthToken = (token, expiresAt) => {
@@ -63,6 +67,7 @@ export const useAuthStore = defineStore("auth", () => {
   return {
     user,
     isLoggedIn,
+    isLoading,
     fetchUser,
     logout,
     initAuth,
