@@ -11,7 +11,6 @@ import { useAuthStore } from '@/store/auth'
 
 const authStore = useAuthStore()
 
-onMounted(async () => {
-  await authStore.initAuth()
-})
+// Panggil langsung tanpa onMounted
+authStore.initAuth()
 </script>
