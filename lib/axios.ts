@@ -1,7 +1,9 @@
 import axios from "axios";
 
+const config = useRuntimeConfig();
+
 const instance = axios.create({
-  baseURL: process.env.NUXT_PUBLIC_BASE_URL || process.env.NUXT_PUBLIC_BASE_URL_LOCAL,
+  baseURL: config.public.apiBaseUrl || config.public.apiBaseUrlLocal,
   validateStatus: (status) => {
     return status >= 200 && status < 300;
   },
