@@ -30,34 +30,40 @@ export const useAuthStore = defineStore("auth", () => {
   };
 
   const fetchUser = async () => {
-    try {
-      const token = Cookies.get("token");
+  if (process.server) return null;
+  
+  try {
+    const token = Cookies.get("token");
+    console.log('fetchUser - token:', token);
 
-      if (!token) {
-        user.value = null;
-        return null;
-      }
-
-      const { data: result } = await axios.get("/user", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (result.status === "success") {
-        user.value = result.data;
-        return user.value;
-      }
-
-      return null;
-    } catch (error) {
-      console.error("Fetch user error:", error);
-
-      if (error.response?.status === 401) {
-        logout();
-      }
-
+    if (!token) {
+      user.value = null;
       return null;
     }
-  };
+
+    const { data: result } = await axios.get("/user", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    console.log('fetchUser - result:', result);
+
+    if (result.status === "success") {
+      user.value = result.data;
+      console.log('fetchUser - user set:', user.value);
+      return user.value;
+    }
+
+    return null;
+  } catch (error) {
+    console.error("Fetch user error:", error);
+
+    if (error.response?.status === 401) {
+      logout();
+    }
+
+    return null;
+  }
+};
 
   const logout = () => {
     Cookies.remove("token");
