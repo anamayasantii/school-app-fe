@@ -1,13 +1,13 @@
 <template>
   <div class="header__auth flex justify-start items-center">
-    <NuxtLink v-if="!authStore.isLoading && !isLoggedIn" to="/auth/login">
+    <NuxtLink v-if="!isLoggedIn" to="/auth/login">
       <button class="login-button">
         Login
       </button>
     </NuxtLink>
 
     <div class="profile-menu">
-      <ProfileMenu v-if="!authStore.isLoading && isLoggedIn"/>
+      <ProfileMenu v-if="isLoggedIn"/>
     </div>
   </div>
 </template>
