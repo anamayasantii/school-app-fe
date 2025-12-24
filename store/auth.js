@@ -8,10 +8,10 @@ export const useAuthStore = defineStore("auth", () => {
   const user = ref(null);
 
   const isLoggedIn = computed(() => {
-    const token = Cookies.get("token");
-    console.log('isLoggedIn check - token:', !!token, 'user:', !!user.value);
-    return !!token && !!user.value;
-  });
+  const token = Cookies.get("token");
+  console.log('isLoggedIn check - token:', !!token, 'user:', !!user.value);
+  return !!token;
+});
 
   const initAuth = async () => {
     await fetchUser();

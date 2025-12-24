@@ -11,7 +11,6 @@ import { useAuthStore } from '@/store/auth'
 
 const authStore = useAuthStore()
 
-// Init auth saat app start
 onMounted(async () => {
   await authStore.initAuth()
 })
