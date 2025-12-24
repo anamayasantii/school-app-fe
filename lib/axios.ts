@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: 'https://api.schoolpedia.my.id/api',
   validateStatus: (status) => {
     return status >= 200 && status < 300;
   },
