@@ -1,9 +1,6 @@
 import axios from "axios";
 
-const config = useRuntimeConfig();
-
 const instance = axios.create({
-  baseURL: config.public.apiBaseUrl || config.public.apiBaseUrlLocal,
   validateStatus: (status) => {
     return status >= 200 && status < 300;
   },
