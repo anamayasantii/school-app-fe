@@ -73,7 +73,7 @@
         </p>
 
         <button
-          @click="navigateTo('/login')"
+          @click="navigateTo('/auth/login')"
           class="w-full bg-gray-900 text-white py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors"
         >
           Kembali ke Halaman Login
