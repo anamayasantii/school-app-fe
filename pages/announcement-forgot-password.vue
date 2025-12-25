@@ -10,7 +10,7 @@
           </div>
         </div>
         <h2 class="text-2xl font-bold text-gray-900 mb-3">Periksa Email Anda</h2>
-        <p class="text-gray-600">Silakan periksa pesan email yang ada di kotak masuk atau spam untuk verifikasi akun</p>
+        <p class="text-gray-600">Silakan periksa pesan email yang ada di kotak masuk atau spam untuk mengganti kata sandi</p>
       </div>
     </div>
   </div>
