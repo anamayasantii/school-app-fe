@@ -643,7 +643,7 @@ onMounted(fetchReviews);
               </div>
 
               <!-- Review Text -->
-              <div class="mb-3">
+              <!-- <div class="mb-3">
                 <p class="text-primary-green text-sm font-semibold mb-1">
                   Komentar :
                 </p>
@@ -653,7 +653,7 @@ onMounted(fetchReviews);
                 >
                   {{ review.reviewText }}
                 </p>
-              </div>
+              </div> -->
 
               <!-- Liked Section -->
               <div v-if="review.liked" class="mb-3">

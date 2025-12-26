@@ -116,26 +116,19 @@
               <span class="text-xs md:text-sm font-medium"
                 >Fasilitas & Peralatan</span
               >
-              <div class="flex gap-2 sm:gap-3 md:gap-4">
+              <div class="flex gap-3 md:gap-4">
                 <label
                   v-for="rating in 5"
                   :key="'fasilitas-' + rating"
-                  class="cursor-pointer"
+                  class="cursor-pointer flex items-center gap-2"
                 >
                   <input
                     type="radio"
                     :value="rating"
                     v-model="form.ratings.fasilitas"
-                    class="sr-only"
+                    class="w-4 h-4 md:w-4 md:h-4 cursor-pointer accent-[#1F1F1F]"
                   />
-                  <span
-                    class="inline-flex items-center justify-center w-7 h-7 md:w-8 md:h-8 rounded-full border-2 transition-colors text-xs md:text-sm"
-                    :class="
-                      form.ratings.fasilitas === rating
-                        ? 'border-[#1F1F1F] bg-[#1F1F1F] text-white'
-                        : 'border-bg-gray text-[#1F1F1F] hover:border-secondary-gray'
-                    "
-                  >
+                  <span class="text-sm md:text-base font-medium text-[#1F1F1F]">
                     {{ rating }}
                   </span>
                 </label>
@@ -152,22 +145,15 @@
                 <label
                   v-for="rating in 5"
                   :key="'pembelajaran-' + rating"
-                  class="cursor-pointer"
+                  class="cursor-pointer flex items-center gap-2"
                 >
                   <input
                     type="radio"
                     :value="rating"
                     v-model="form.ratings.pembelajaran"
-                    class="sr-only"
+                    class="w-4 h-4 md:w-4 md:h-4 cursor-pointer accent-[#1F1F1F]"
                   />
-                  <span
-                    class="inline-flex items-center justify-center w-7 h-7 md:w-8 md:h-8 rounded-full border-2 transition-colors text-xs md:text-sm"
-                    :class="
-                      form.ratings.pembelajaran === rating
-                        ? 'border-[#1F1F1F] bg-[#1F1F1F] text-white'
-                        : 'border-bg-gray text-[#1F1F1F] hover:border-secondary-gray'
-                    "
-                  >
+                  <span class="text-sm md:text-base font-medium text-[#1F1F1F]">
                     {{ rating }}
                   </span>
                 </label>
@@ -184,22 +170,15 @@
                 <label
                   v-for="rating in 5"
                   :key="'layanan-' + rating"
-                  class="cursor-pointer"
+                  class="cursor-pointer flex items-center gap-2"
                 >
                   <input
                     type="radio"
                     :value="rating"
                     v-model="form.ratings.layanan"
-                    class="sr-only"
+                    class="w-4 h-4 md:w-4 md:h-4 cursor-pointer accent-[#1F1F1F]"
                   />
-                  <span
-                    class="inline-flex items-center justify-center w-7 h-7 md:w-8 md:h-8 rounded-full border-2 transition-colors text-xs md:text-sm"
-                    :class="
-                      form.ratings.layanan === rating
-                        ? 'border-[#1F1F1F] bg-[#1F1F1F] text-white'
-                        : 'border-bg-gray text-[#1F1F1F] hover:border-secondary-gray'
-                    "
-                  >
+                  <span class="text-sm md:text-base font-medium text-[#1F1F1F]">
                     {{ rating }}
                   </span>
                 </label>
@@ -216,22 +195,15 @@
                 <label
                   v-for="rating in 5"
                   :key="'keamanan-' + rating"
-                  class="cursor-pointer"
+                  class="cursor-pointer flex items-center gap-2"
                 >
                   <input
                     type="radio"
                     :value="rating"
                     v-model="form.ratings.keamanan"
-                    class="sr-only"
+                    class="w-4 h-4 md:w-4 md:h-4 cursor-pointer accent-[#1F1F1F]"
                   />
-                  <span
-                    class="inline-flex items-center justify-center w-7 h-7 md:w-8 md:h-8 rounded-full border-2 transition-colors text-xs md:text-sm"
-                    :class="
-                      form.ratings.keamanan === rating
-                        ? 'border-[#1F1F1F] bg-[#1F1F1F] text-white'
-                        : 'border-bg-gray text-[#1F1F1F] hover:border-secondary-gray'
-                    "
-                  >
+                  <span class="text-sm md:text-base font-medium text-[#1F1F1F]">
                     {{ rating }}
                   </span>
                 </label>
@@ -248,22 +220,15 @@
                 <label
                   v-for="rating in 5"
                   :key="'kegiatan-' + rating"
-                  class="cursor-pointer"
+                  class="cursor-pointer flex items-center gap-2"
                 >
                   <input
                     type="radio"
                     :value="rating"
                     v-model="form.ratings.kegiatan"
-                    class="sr-only"
+                    class="w-4 h-4 md:w-4 md:h-4 cursor-pointer accent-[#1F1F1F]"
                   />
-                  <span
-                    class="inline-flex items-center justify-center w-7 h-7 md:w-8 md:h-8 rounded-full border-2 transition-colors text-xs md:text-sm"
-                    :class="
-                      form.ratings.kegiatan === rating
-                        ? 'border-[#1F1F1F] bg-[#1F1F1F] text-white'
-                        : 'border-bg-gray text-[#1F1F1F] hover:border-secondary-gray'
-                    "
-                  >
+                  <span class="text-sm md:text-base font-medium text-[#1F1F1F]">
                     {{ rating }}
                   </span>
                 </label>
@@ -282,7 +247,7 @@
 
           <div class="mb-4 md:mb-6">
             <label class="block text-xs md:text-sm font-medium mb-2"
-              >Apa yang paling Anda sukai?</label
+              >Apa yang paling Anda sukai dari sekolah ini?</label
             >
             <textarea
               v-model="form.experience.liked"
@@ -298,7 +263,7 @@
 
           <div class="mb-4 md:mb-6">
             <label class="block text-xs md:text-sm font-medium mb-2"
-              >Apa yang bisa diperbaiki?</label
+              >Apa yang bisa diperbaiki dari sekolah ini?</label
             >
             <textarea
               v-model="form.experience.improved"

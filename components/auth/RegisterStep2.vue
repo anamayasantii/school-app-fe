@@ -77,6 +77,35 @@
                 </svg>
               </button>
             </div>
+            
+            <!-- Password Validation Indicators -->
+            <div class="mt-2 space-y-1">
+              <div class="flex items-center text-xs">
+                <span :class="passwordValidation.hasMinLength ? 'text-green-600' : 'text-red-600'">
+                  {{ passwordValidation.hasMinLength ? '✓' : '✗' }} Minimal 8 karakter
+                </span>
+              </div>
+              <div class="flex items-center text-xs">
+                <span :class="passwordValidation.hasUpperCase ? 'text-green-600' : 'text-red-600'">
+                  {{ passwordValidation.hasUpperCase ? '✓' : '✗' }} Huruf besar
+                </span>
+              </div>
+              <div class="flex items-center text-xs">
+                <span :class="passwordValidation.hasLowerCase ? 'text-green-600' : 'text-red-600'">
+                  {{ passwordValidation.hasLowerCase ? '✓' : '✗' }} Huruf kecil
+                </span>
+              </div>
+              <div class="flex items-center text-xs">
+                <span :class="passwordValidation.hasNumber ? 'text-green-600' : 'text-red-600'">
+                  {{ passwordValidation.hasNumber ? '✓' : '✗' }} Angka
+                </span>
+              </div>
+              <div class="flex items-center text-xs">
+                <span :class="passwordValidation.hasSymbol ? 'text-green-600' : 'text-red-600'">
+                  {{ passwordValidation.hasSymbol ? '✓' : '✗' }} Simbol
+                </span>
+              </div>
+            </div>
           </div>
 
           <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-3 sm:space-y-0">
@@ -90,7 +119,7 @@
             
             <button
               type="submit"
-              :disabled="isLoading"
+              :disabled="isLoading || !isPasswordValid"
               class="w-full sm:flex-1 py-2.5 md:py-3 px-4 bg-gray-900 hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-all duration-200 transform hover:scale-105 disabled:hover:scale-100 text-sm sm:text-base"
             >
               <span v-if="!isLoading">Buat Akun</span>
@@ -120,7 +149,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import axios from '@/lib/axios'
 import backgroundImg from '~/assets/images/register.jpg'
 
@@ -145,6 +174,30 @@ const form = reactive({
   fullname: props.formData?.fullname || '',
   email: props.formData?.email || '',
   password: props.formData?.password || ''
+})
+
+const passwordValidation = reactive({
+  hasMinLength: false,
+  hasUpperCase: false,
+  hasLowerCase: false,
+  hasNumber: false,
+  hasSymbol: false
+})
+
+const isPasswordValid = computed(() => {
+  return passwordValidation.hasMinLength &&
+         passwordValidation.hasUpperCase && 
+         passwordValidation.hasLowerCase && 
+         passwordValidation.hasNumber && 
+         passwordValidation.hasSymbol
+})
+
+watch(() => form.password, (newPassword) => {
+  passwordValidation.hasMinLength = newPassword.length >= 8
+  passwordValidation.hasUpperCase = /[A-Z]/.test(newPassword)
+  passwordValidation.hasLowerCase = /[a-z]/.test(newPassword)
+  passwordValidation.hasNumber = /[0-9]/.test(newPassword)
+  passwordValidation.hasSymbol = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(newPassword)
 })
 
 const handleSubmit = async () => {

@@ -133,12 +133,12 @@
               </span>
             </div>
 
-            <div class="mb-3 sm:mb-4">
+            <!-- <div class="mb-3 sm:mb-4">
               <p class="text-xs sm:text-sm font-semibold text-gray-900 mb-1">Komentar:</p>
               <p class="text-xs sm:text-sm text-gray-700 leading-relaxed">
                 {{ review.reviewText }}
               </p>
-            </div>
+            </div> -->
 
             <div class="mb-3 sm:mb-4">
               <p class="text-xs sm:text-sm font-semibold text-gray-900 mb-1">Apa yang disukai dari sekolah ini?</p>
@@ -299,12 +299,12 @@
               </span>
             </div>
 
-            <div class="mb-3">
+            <!-- <div class="mb-3">
               <p class="text-xs font-semibold text-gray-900 mb-1">Komentar:</p>
               <p class="text-xs text-gray-700 leading-relaxed">
                 {{ review.reviewText }}
               </p>
-            </div>
+            </div> -->
 
             <div class="mb-3">
               <p class="text-xs font-semibold text-gray-900 mb-1">Apa yang disukai dari sekolah ini?</p>
