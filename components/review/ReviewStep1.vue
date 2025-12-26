@@ -281,11 +281,12 @@
           class="flex flex-col-reverse sm:flex-row sm:justify-between gap-3 sm:gap-0 pt-4 md:pt-6"
         >
           <button
-            type="button"
-            class="w-full sm:w-auto px-4 md:px-4 py-2.5 md:py-3 text-sm md:text-base text-primary-gray font-medium border border-border-gray rounded-xl transition-colors flex items-center justify-center gap-3"
-          >
-            Batal
-          </button>
+  type="button"
+  @click="handleCancel"
+  class="w-full sm:w-auto px-4 md:px-4 py-2.5 md:py-3 text-sm md:text-base text-primary-gray font-medium border border-border-gray rounded-xl transition-colors flex items-center justify-center gap-3"
+>
+  Batal
+</button>
           <button
             type="button"
             @click="handleNext"
@@ -324,6 +325,7 @@
 import { useAuthStore } from "@/store/auth";
 import axios from "@/lib/axios";
 import Cookies from "js-cookie";
+import { useRoute, useRouter } from 'vue-router';
 
 const props = defineProps({
   formData: {
@@ -332,6 +334,8 @@ const props = defineProps({
   },
 });
 
+const route = useRoute();
+const router = useRouter();
 const emit = defineEmits(["next", "updateFormData"]);
 
 const authStore = useAuthStore();
@@ -441,10 +445,14 @@ const handleFileDelete = () => {
 const handleNext = () => {
   if (!isFormValid.value) return;
 
-  console.log("Form data saat next:", form.value); // CEK INI
-  console.log("User Status:", form.value.userStatus); // CEK INI
+  console.log("Form data saat next:", form.value);
+  console.log("User Status:", form.value.userStatus);
 
   emit("updateFormData", { step1: form.value });
   emit("next");
+};
+
+const handleCancel = () => {
+  router.push(`/school-details/${route.params.id}`);
 };
 </script>

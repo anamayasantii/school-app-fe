@@ -10,7 +10,9 @@
           </div>
         </div>
         <h2 class="text-2xl font-bold text-gray-900 mb-3">Periksa Email Anda</h2>
-        <p class="text-gray-600">Silakan periksa pesan email yang ada di kotak masuk atau spam untuk verifikasi akun</p>
+        <p class="text-gray-600">SILAKAN PERIKSA PESAN EMAIL PADA <b>KOTAK MASUK</b> ATAU <b>FOLDER SPAM</b> UNTUK MELAKUKAN VERIFIKASI AKUN.</p>
+        <br />
+        <p class="text-gray-600 font-extrabold">PERLU DIPERHATIKAN BAHWA EMAIL VERIFIKASI MUNGKIN MENGALAMI KETERLAMBATAN PENGIRIMAN SEKITAR 2–5 MENIT, MOHON DITUNGGU.</p>
       </div>
     </div>
   </div>
