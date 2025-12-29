@@ -164,21 +164,21 @@
               </transition>
             </div>
 
-            <a
+            <!-- <a
               href="/about-us"
               class="text-gray-700 hover:text-gray-900 whitespace-nowrap"
             >
               Tentang Kami
-            </a>
-            <a
+            </a> -->
+            <!-- <a
               href="/ranking"
               class="text-gray-700 hover:text-gray-900 whitespace-nowrap"
             >
               Peringkat Sekolah
-            </a>
+            </a> -->
           </nav>
 
-          <div
+          <!-- <div
             class="relative hidden sm:block"
             @mouseenter="isLangOpen = true"
             @mouseleave="isLangOpen = false"
@@ -232,7 +232,7 @@
                 </button>
               </div>
             </transition>
-          </div>
+          </div> -->
 
           <AuthMenu />
 
@@ -333,22 +333,22 @@
               </div>
             </div>
 
-            <a
+            <!-- <a
               href="/about-us"
               class="block py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg px-3"
               @click="isMobileMenuOpen = false"
             >
               Tentang Kami
-            </a>
-            <a
+            </a> -->
+            <!-- <a
               href="/ranking"
               class="block py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg px-3"
               @click="isMobileMenuOpen = false"
             >
               Peringkat Sekolah
-            </a>
+            </a> -->
 
-            <div class="pt-4 border-t border-gray-200">
+            <!-- <div class="pt-4 border-t border-gray-200">
               <div class="font-medium text-gray-900 mb-3">Bahasa</div>
               <div class="flex gap-2">
                 <button
@@ -366,7 +366,7 @@
                   <span class="text-sm">English</span>
                 </button>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </transition>

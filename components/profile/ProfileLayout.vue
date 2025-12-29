@@ -148,16 +148,16 @@ const menuItems = [
     name: 'Ganti Kata Sandi',
     icon: KeyIcon,
   },
-  {
-    id: 'saved',
-    name: 'Disimpan',
-    icon: BookmarkIcon,
-  },
-  {
-    id: 'reviews',
-    name: 'Ulasan Saya',
-    icon: ReviewIcon,
-  },
+  // {
+  //   id: 'saved',
+  //   name: 'Disimpan',
+  //   icon: BookmarkIcon,
+  // },
+  // {
+  //   id: 'reviews',
+  //   name: 'Ulasan Saya',
+  //   icon: ReviewIcon,
+  // },
   {
     id: 'logout',
     name: 'Keluar',

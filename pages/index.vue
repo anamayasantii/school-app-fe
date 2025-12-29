@@ -3,9 +3,9 @@
     <section class="bg-gradient-to-br py-8 sm:py-12 md:py-16 pb-0">
       <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="mb-6 sm:mb-8 flex justify-center px-4">
-          <NuxtLink to="/ranking" class="figma-button w-full sm:w-[360px]">
+          <button @click="scrollToLeaderboard" class="figma-button w-full sm:w-[360px]">
             <span class="text-[#F9F6F1] underline text-sm sm:text-base">
-              Lihat 10 Sekolah Dasar Terbaik {{ currentYear }}
+              Lihat 10 Sekolah Terbaik {{ currentYear }}
             </span>
             <div class="arrow-container">
               <svg
@@ -37,7 +37,7 @@
                 <path d="M12 5l7 7-7 7" />
               </svg>
             </div>
-          </NuxtLink>
+          </button>
         </div>
 
         <h1
@@ -46,7 +46,7 @@
           Pencarian sekolah lebih sederhana dan mudah.
         </h1>
 
-        <div class="flex justify-center mb-8 sm:mb-12 px-4">
+        <div class="flex justify-center mb-3 sm:mb-3 px-4">
           <SearchSchool />
         </div>
       </div>
@@ -56,19 +56,19 @@
       <SchoolTypes />
     </section>
 
-    <section class="py-6 sm:py-7">
+    <!-- <section class="py-6 sm:py-7">
       <IndexSchools />
-    </section>
+    </section> -->
 
-    <section class="py-12 sm:py-16">
+    <section ref="leaderboardSection" class="py-12 sm:py-16">
       <client-only>
         <Leaderboard />
       </client-only>
     </section>
 
-    <section class="py-12 sm:py-16">
+    <!-- <section class="py-12 sm:py-16">
       <SchoolHighlight />
-    </section>
+    </section> -->
 
     <section class="py-12 sm:py-16">
       <RecentReviews />
@@ -85,7 +85,11 @@ import IndexSchools from "~/components/home/index.vue";
 import SchoolHighlight from "~/components/school/SchoolHighlight.vue";
 
 const currentYear = new Date().getFullYear();
+const leaderboardSection = ref(null);
 
+const scrollToLeaderboard = () => {
+  leaderboardSection.value?.scrollIntoView({ behavior: 'smooth' });
+};
 </script>
 
 <style scoped>

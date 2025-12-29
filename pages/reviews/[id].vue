@@ -37,6 +37,10 @@ import ReviewStep2 from "@/components/review/ReviewStep2.vue";
 import ReviewStep3 from "@/components/review/ReviewStep3.vue";
 import ReviewSuccess from "@/components/review/Success.vue";
 
+definePageMeta({
+  middleware: 'auth'
+})
+
 const route = useRoute();
 const router = useRouter();
 const id = route.params.id;

@@ -45,13 +45,12 @@ const handleSubmit = async () => {
       })
       
       const authStore = useAuthStore()
-      await authStore.fetchUser()
+      const userData = await authStore.fetchUser()
 
-      console.log('User data:', authStore.user)
-      console.log('User roles:', authStore.user?.role)
-      console.log('Has admin role?', authStore.user?.role?.includes('admin'))
+      console.log('User data:', userData)
+      console.log('User role:', userData?.role)
       
-      if (authStore.user?.role !== 'admin') {
+      if (userData?.role !== 'admin') {
         Cookies.remove('token')
         authStore.logout()
         
@@ -59,7 +58,8 @@ const handleSubmit = async () => {
         return
       }
       
-      await navigateTo('/dashboard')
+      // Gunakan replace agar tidak bisa back ke login page
+      await navigateTo('/dashboard', { replace: true })
     } else {
       errorMessage.value = response.data.message || 'Login gagal'
     }
@@ -72,7 +72,7 @@ const handleSubmit = async () => {
     } else if (error.response?.status === 422) {
       errorMessage.value = 'Data tidak valid'
     } else {
-      errorMessage.value = 'Terjadi kesalahan, silakan coba lagi'
+      errorMessage.value = error.response?.data?.message || 'Terjadi kesalahan, silakan coba lagi'
     }
   } finally {
     isLoading.value = false
