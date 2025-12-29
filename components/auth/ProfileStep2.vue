@@ -1,5 +1,14 @@
 <template>
   <div class="min-h-screen bg-gray-50 flex flex-col md:flex-row">
+    <Modal
+      :isOpen="errorModal.isOpen"
+      type="error"
+      :title="errorModal.title"
+      :message="errorModal.message"
+      confirmText="Tutup"
+      @close="closeErrorModal"
+    />
+    
     <div
       class="hidden md:flex md:flex-1 relative bg-cover bg-center bg-no-repeat"
       :style="`background-image: url('${backgroundImage}')`"
@@ -266,6 +275,7 @@ import { ref, computed, watch, onUnmounted } from "vue";
 import { useAuthStore } from "@/store/auth";
 import axios from "@/lib/axios";
 import Cookies from "js-cookie";
+import Modal from "@/components/common/Modal.vue";
 
 const props = defineProps({
   currentStep: Number,
@@ -292,6 +302,12 @@ const selectedSchool = ref(null);
 const showDropdown = ref(false);
 const isSearching = ref(false);
 const searchTimeout = ref(null);
+
+const errorModal = ref({
+  isOpen: false,
+  title: "",
+  message: "",
+});
 
 const userRole = computed(() => {
   const roles = authStore.user?.role;
@@ -326,15 +342,62 @@ const uploadFile = async (file) => {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${token}`,
       },
+      validateStatus: (status) => {
+        return status >= 200 && status < 500;
+      },
     });
 
-    console.log("Upload response:", response.data);
+    console.log("Full response:", response);
+    console.log("Response status:", response.status);
+    console.log("Response data:", response.data);
+
+    // Cek jika response status bukan 2xx
+    if (response.status !== 200 && response.status !== 201) {
+      console.log("Masuk ke error handling, status:", response.status);
+      
+      let errorTitle = "Gagal Mengunggah File";
+      let errorMessage = "Terjadi kesalahan saat mengunggah file. Silakan coba lagi.";
+      
+      if (response.status === 413) {
+        errorTitle = "Ukuran File Terlalu Besar";
+        errorMessage = "Ukuran file melebihi batas maksimum 2MB. Silakan pilih file yang lebih kecil.";
+      } else if (response.status === 422) {
+        errorTitle = "Format File Tidak Valid";
+        errorMessage = response.data?.message || "Format file tidak didukung. Gunakan format JPG, PNG, PDF, DOC, atau DOCX.";
+      } else if (response.status === 401) {
+        errorTitle = "Sesi Berakhir";
+        errorMessage = "Sesi Anda telah berakhir. Silakan login kembali.";
+      } else if (response.data?.message) {
+        errorMessage = response.data.message;
+      }
+      
+      errorModal.value = {
+        isOpen: true,
+        title: errorTitle,
+        message: errorMessage,
+      };
+      
+      throw new Error(errorMessage);
+    }
 
     const fileUrl = response.data.data.urls[0];
     return fileUrl;
   } catch (error) {
-    console.error("Upload error:", error);
-    console.error("Error response:", error.response?.data);
+    console.error("Catch block - Upload error:", error);
+    console.error("errorModal.value.isOpen:", errorModal.value.isOpen);
+    
+    // Jika sudah ada errorModal yang di-set, skip
+    if (!errorModal.value.isOpen) {
+      let errorTitle = "Koneksi Gagal";
+      let errorMessage = "Tidak dapat terhubung ke server. Periksa koneksi internet Anda.";
+      
+      errorModal.value = {
+        isOpen: true,
+        title: errorTitle,
+        message: errorMessage,
+      };
+    }
+    
     throw error;
   }
 };
@@ -464,6 +527,10 @@ const handleNext = () => {
 
 const handlePrev = () => {
   emit("prev");
+};
+
+const closeErrorModal = () => {
+  errorModal.value.isOpen = false;
 };
 
 watch(

@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import axios from "@/lib/axios";
+import { useAuthStore } from '@/store/auth'
 import StarRatingOverall from "~/assets/StarRatingOverall.vue";
 import Smiley from "~/assets/Smiley.vue";
 import Verify from "~/assets/Verify.vue";
@@ -10,6 +11,7 @@ import ThumbIcon from "~/assets/ThumbIcon.vue";
 
 const route = useRoute();
 const router = useRouter();
+const authStore = useAuthStore();
 const showRatingFilter = ref(false);
 const showUserFilter = ref(false);
 const showMobileFilter = ref(false);
@@ -208,7 +210,13 @@ const goToPage = (page) => {
 };
 
 const goToWriteReview = () => {
-  router.push(`/reviews/${route.params.id}`);
+  if (!authStore.isLoggedIn) {
+    useState('showLoginModal').value = true
+    useState('intendedRoute').value = `/reviews/${route.params.id}`
+    useState('fromMiddleware').value = false
+  } else {
+    router.push(`/reviews/${route.params.id}`)
+  }
 };
 
 const handleLikeReview = async (reviewId) => {

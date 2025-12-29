@@ -5,12 +5,15 @@
       <ChangePassword v-else-if="activeTab === 'change-password'" />
         <SavedItems v-else-if="activeTab === 'saved'" />
         <MyReviews v-else-if="activeTab === 'reviews'" />
-      <!-- dst... -->
     </template>
   </ProfileLayout>
 </template>
 
 <script setup>
+  definePageMeta({
+  middleware: 'auth'
+})
+
 import ProfileLayout from '@/components/profile/ProfileLayout.vue'
 import ProfileSettings from '~/components/profile/Profile.vue'
 import ChangePassword from '@/components/profile/ChangePassword.vue'

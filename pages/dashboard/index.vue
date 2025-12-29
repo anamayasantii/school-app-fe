@@ -25,7 +25,7 @@ const fetchSchools = async () => {
   error.value = null
   
   try {
-    const response = await axios.get('http://103.150.226.108/api/ranking/school-details', {
+    const response = await axios.get('/ranking/school-details', {
       params: {
         educationLevelName: selectedLevel.value
       }
