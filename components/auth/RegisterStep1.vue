@@ -23,7 +23,7 @@
                   :class="selectedRole === 'student' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'">
             <div class="flex items-center justify-between">
               <div>
-                <h3 class="font-semibold text-base sm:text-lg text-gray-900 mb-1">Murid</h3>
+                <h3 class="font-semibold text-base sm:text-lg text-gray-900 mb-1">Siswa/Mahasiswa</h3>
                 <p class="text-xs sm:text-sm text-gray-600">
                   Saya disini untuk mencari Sekolah.
                 </p>

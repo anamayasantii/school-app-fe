@@ -223,11 +223,36 @@ const handleSubmit = async () => {
   } catch (error) {
     console.error('Registration failed:', error)
     
-    if (error.response?.data?.message) {
-      errorMessage.value = error.response.data.message
-    } else if (error.response?.status === 409 || error.response?.status === 400) {
+    // Handle error 422 (Validation Error)
+    if (error.response?.status === 422) {
+      const errors = error.response.data.errors
+      
+      if (errors?.email) {
+        errorMessage.value = 'Email sudah terdaftar. Silakan gunakan email lain.'
+      } else if (errors?.fullname) {
+        errorMessage.value = 'Nama lengkap tidak valid.'
+      } else if (errors?.password) {
+        errorMessage.value = 'Password tidak memenuhi persyaratan.'
+      } else {
+        errorMessage.value = 'Data yang Anda masukkan tidak valid.'
+      }
+    } 
+    // Handle error 409 (Conflict)
+    else if (error.response?.status === 409) {
       errorMessage.value = 'Email sudah terdaftar. Silakan gunakan email lain.'
-    } else {
+    }
+    // Handle custom message from backend
+    else if (error.response?.data?.message) {
+      // Translate common backend messages
+      const message = error.response.data.message
+      if (message.includes('email has already been taken')) {
+        errorMessage.value = 'Email sudah terdaftar. Silakan gunakan email lain.'
+      } else {
+        errorMessage.value = message
+      }
+    } 
+    // Default error message
+    else {
       errorMessage.value = 'Terjadi kesalahan. Silakan coba lagi.'
     }
   } finally {

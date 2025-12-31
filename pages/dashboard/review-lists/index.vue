@@ -1,6 +1,7 @@
 <template>
   <DashboardLayout>
     <div class="container mx-auto py-8 px-4">
+      <!-- Toast notification -->
       <div
         v-if="toastMessage"
         class="fixed top-4 right-4 z-50 bg-white border rounded-lg shadow-lg p-4 max-w-md animate-in slide-in-from-top-5"
@@ -28,6 +29,7 @@
         </div>
       </div>
 
+      <!-- Image Modal -->
       <Dialog v-model:open="showImageModal">
         <DialogContent class="max-w-3xl">
           <DialogHeader>
@@ -40,6 +42,44 @@
               alt="Foto bukti"
               class="w-full h-auto rounded-lg"
             />
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <!-- Reject Modal -->
+      <Dialog v-model:open="showRejectModal">
+        <DialogContent class="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Alasan Reject Review</DialogTitle>
+          </DialogHeader>
+          <div class="mt-4 space-y-4">
+            <div>
+              <label class="block text-sm font-medium mb-2">
+                Berikan alasan penolakan
+              </label>
+              <textarea
+                v-model="rejectReason"
+                rows="4"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none"
+                placeholder="Tulis alasan penolakan review..."
+              ></textarea>
+            </div>
+            <div class="flex gap-3 justify-end">
+              <Button
+                variant="outline"
+                @click="closeRejectModal"
+              >
+                Batal
+              </Button>
+              <Button
+                @click="confirmReject"
+                :disabled="!rejectReason.trim() || isRejecting"
+                class="bg-red-600 hover:bg-red-700"
+              >
+                <span v-if="isRejecting">Processing...</span>
+                <span v-else>Reject Review</span>
+              </Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
@@ -119,7 +159,7 @@
                     <Button
                       variant="outline"
                       size="sm"
-                      @click="handleReject(review.id)"
+                      @click="openRejectModal(review)"
                       :disabled="processing[review.id]"
                     >
                       <span v-if="processing[review.id]">Processing...</span>
@@ -175,6 +215,11 @@ const toastVariant = ref("default");
 const showImageModal = ref(false);
 const selectedImage = ref("");
 
+const showRejectModal = ref(false);
+const rejectReason = ref("");
+const selectedReview = ref(null);
+const isRejecting = ref(false);
+
 const showToast = (title, message, variant = "default") => {
   toastTitle.value = title;
   toastMessage.value = message;
@@ -188,6 +233,18 @@ const showToast = (title, message, variant = "default") => {
 const openImageModal = (imageUrl) => {
   selectedImage.value = imageUrl;
   showImageModal.value = true;
+};
+
+const openRejectModal = (review) => {
+  selectedReview.value = review;
+  rejectReason.value = "";
+  showRejectModal.value = true;
+};
+
+const closeRejectModal = () => {
+  showRejectModal.value = false;
+  selectedReview.value = null;
+  rejectReason.value = "";
 };
 
 const fetchPendingReviews = async () => {
@@ -227,24 +284,41 @@ const handleApprove = async (id) => {
   }
 };
 
-const handleReject = async (id) => {
+const confirmReject = async () => {
+  if (!selectedReview.value || !rejectReason.value.trim()) return;
+
   try {
-    processing.value[id] = true;
-    await axios.put(
-      `/reviews/${id}/reject`,
-      {},
+    isRejecting.value = true;
+    
+    console.log('Rejecting review:', {
+      reviewId: selectedReview.value.id,
+      userId: selectedReview.value.userId,
+      adminReason: rejectReason.value.trim()
+    });
+    
+    const response = await axios.put(
+      `/reviews/${selectedReview.value.id}/reject`,
+      {
+        user_id: selectedReview.value.userId,
+        admin_reason: rejectReason.value.trim()
+      },
       {
         headers: {
           Authorization: `Bearer ${Cookies.get("token")}`,
         },
       }
     );
+    
+    console.log('Reject response:', response.data);
+    
     showToast("Success", "Review berhasil direject");
-    reviews.value = reviews.value.filter((r) => r.id !== id);
+    reviews.value = reviews.value.filter((r) => r.id !== selectedReview.value.id);
+    closeRejectModal();
   } catch (error) {
+    console.error('Reject error details:', error.response?.data);
     showToast("Error", "Gagal reject review", "destructive");
   } finally {
-    processing.value[id] = false;
+    isRejecting.value = false;
   }
 };
 

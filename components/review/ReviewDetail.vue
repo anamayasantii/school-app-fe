@@ -700,7 +700,7 @@ onMounted(fetchReviews);
               </div>
 
               <!-- Like Button -->
-              <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+              <!-- <div class="flex flex-col sm:flex-row sm:items-center gap-2">
                 <button
                   @click="handleLikeReview(review.id)"
                   class="inline-flex items-center justify-center sm:justify-start gap-2 px-3 py-1.5 text-xs text-secondary-gray hover:bg-bg-light rounded-lg transition-colors"
@@ -714,7 +714,7 @@ onMounted(fetchReviews);
                 >
                   {{ review.likesCount }} orang menganggap ini bermanfaat
                 </span>
-              </div>
+              </div> -->
             </div>
           </div>
 

@@ -154,7 +154,7 @@
               </p>
             </div>
 
-            <div class="flex items-center gap-2 pt-3 sm:pt-4">
+            <!-- <div class="flex items-center gap-2 pt-3 sm:pt-4">
               <div class="border border-border-gray rounded-full px-2 sm:px-3 py-1.5 sm:py-2 flex items-center gap-1.5 sm:gap-2">
                 <span class="text-xs sm:text-sm text-secondary-gray">Helpful?</span>
                 <button @click="handleLikeClick(review.id)">
@@ -176,7 +176,7 @@
               <span class="text-xs sm:text-sm text-gray-600"
                 >{{ reviewLikes[review.id]?.likesCount || 0 }} orang menganggap ini bermanfaat</span
               >
-            </div>
+            </div> -->
           </article>
         </div>
 
@@ -320,7 +320,7 @@
               </p>
             </div>
 
-            <div class="flex items-center gap-2 pt-3">
+            <!-- <div class="flex items-center gap-2 pt-3">
               <div class="border border-border-gray rounded-full px-2 py-1.5 flex items-center gap-1.5">
                 <span class="text-xs text-secondary-gray">Helpful?</span>
                 <button @click="handleLikeClick(review.id)">
@@ -342,7 +342,7 @@
               <span class="text-xs text-gray-600"
                 >{{ reviewLikes[review.id]?.likesCount || 0 }} orang menganggap ini bermanfaat</span
               >
-            </div>
+            </div> -->
           </article>
         </div>
 

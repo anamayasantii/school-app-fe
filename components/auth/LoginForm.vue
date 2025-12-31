@@ -56,19 +56,20 @@
             </div>
             <div class="relative">
               <input
-                id="password"
-                v-model="form.password"
-                :type="showPassword ? 'text' : 'password'"
-                required
-                :class="[
-                  'w-full px-4 py-2.5 md:py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 pr-12 text-sm sm:text-base',
-                  form.errors.password
-                    ? 'border-red-300 error-input'
-                    : 'border-gray-300',
-                ]"
-                placeholder="Password"
-                @blur="handlePasswordBlur"
-              />
+  id="password"
+  v-model="form.password"
+  :type="showPassword ? 'text' : 'password'"
+  required
+  :class="[
+    'w-full px-4 py-2.5 md:py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 pr-12 text-sm sm:text-base',
+    form.errors.password
+      ? 'border-red-300 error-input'
+      : 'border-gray-300',
+  ]"
+  placeholder="Kata Sandi"
+  @input="validatePassword"
+  @blur="handlePasswordBlur"
+/>
               <button
                 type="button"
                 @click="showPassword = !showPassword"
@@ -238,8 +239,6 @@ const validateEmail = () => {
 };
 
 const validatePassword = () => {
-  if (!form.touched.password) return;
-
   if (!form.password) {
     form.errors.password = "Password wajib diisi";
   } else if (form.password.length < 8) {
@@ -265,7 +264,7 @@ const handleLoginError = (error) => {
       return "Email atau password salah.";
 
     case 422:
-      return "Data tidak valid. Silakan periksa kembali input Anda.";
+      return "Email atau password salah.";
 
     case 500:
       return "Terjadi kesalahan pada server. Silakan coba lagi nanti.";

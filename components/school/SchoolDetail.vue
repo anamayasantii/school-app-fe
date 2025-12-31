@@ -193,7 +193,7 @@
                 ></path>
               </svg>
               <p class="text-sm sm:text-base text-primary-green font-medium">
-                {{ getFullAddress() }}
+                {{ schoolData.street }}
               </p>
             </div>
           </div>
@@ -557,18 +557,18 @@ const fetchSchoolData = async () => {
   }
 };
 
-const getFullAddress = () => {
-  const addressParts = [
-    schoolData.value.street,
-    schoolData.value.village,
-    schoolData.value.subDistrictName,
-    schoolData.value.districtName,
-    schoolData.value.provinceName,
-    schoolData.value.postalCode,
-  ].filter((part) => part);
+// const getFullAddress = () => {
+//   const addressParts = [
+//     schoolData.value.street,
+//     schoolData.value.village,
+//     schoolData.value.subDistrictName,
+//     schoolData.value.districtName,
+//     schoolData.value.provinceName,
+//     schoolData.value.postalCode,
+//   ].filter((part) => part);
 
-  return addressParts.join(", ");
-};
+//   return addressParts.join(", ");
+// };
 
 const formatNumber = (number) => {
   return new Intl.NumberFormat("id-ID").format(number);

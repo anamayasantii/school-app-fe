@@ -281,12 +281,12 @@
           class="flex flex-col-reverse sm:flex-row sm:justify-between gap-3 sm:gap-0 pt-4 md:pt-6"
         >
           <button
-  type="button"
-  @click="handleCancel"
-  class="w-full sm:w-auto px-4 md:px-4 py-2.5 md:py-3 text-sm md:text-base text-primary-gray font-medium border border-border-gray rounded-xl transition-colors flex items-center justify-center gap-3"
->
-  Batal
-</button>
+            type="button"
+            @click="handleCancel"
+            class="w-full sm:w-auto px-4 md:px-4 py-2.5 md:py-3 text-sm md:text-base text-primary-gray font-medium border border-border-gray rounded-xl transition-colors flex items-center justify-center gap-3"
+          >
+            Batal
+          </button>
           <button
             type="button"
             @click="handleNext"
@@ -325,7 +325,7 @@
 import { useAuthStore } from "@/store/auth";
 import axios from "@/lib/axios";
 import Cookies from "js-cookie";
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute, useRouter } from "vue-router";
 
 const props = defineProps({
   formData: {
@@ -389,7 +389,8 @@ const isFormValid = computed(() => {
     form.value.email &&
     form.value.phoneNo &&
     form.value.userStatus &&
-    (form.value.isVerified ? form.value.file : true)
+    form.value.isVerified &&
+    form.value.file
   );
 });
 

@@ -24,6 +24,17 @@
     >
       <p class="text-red-600">Error loading school data</p>
     </div>
+
+    <!-- Modal Error -->
+    <Modal
+      :isOpen="showErrorModal"
+      type="error"
+      :title="errorModalTitle"
+      :message="errorModalMessage"
+      confirmText="Mengerti"
+      @close="closeErrorModal"
+      @confirm="closeErrorModal"
+    />
   </div>
 </template>
 
@@ -36,6 +47,7 @@ import ReviewStep1 from "@/components/review/ReviewStep1.vue";
 import ReviewStep2 from "@/components/review/ReviewStep2.vue";
 import ReviewStep3 from "@/components/review/ReviewStep3.vue";
 import ReviewSuccess from "@/components/review/Success.vue";
+import Modal from "@/components/common/Modal.vue";
 
 definePageMeta({
   middleware: 'auth'
@@ -55,6 +67,11 @@ const reviewFormData = ref({
   step2: null,
   step3: null,
 });
+
+// Modal state
+const showErrorModal = ref(false);
+const errorModalTitle = ref('');
+const errorModalMessage = ref('');
 
 const stepComponents = {
   1: ReviewStep1,
@@ -93,6 +110,11 @@ const handlePrev = () => {
   currentStep.value--;
 };
 
+const closeErrorModal = () => {
+  showErrorModal.value = false;
+  router.push(`/school-details/${id}`);
+};
+
 const handleSubmit = async () => {
   try {
     const token = Cookies.get('token')
@@ -115,16 +137,6 @@ const handleSubmit = async () => {
         { questionId: 5, score: reviewFormData.value.step2?.ratings.kegiatan }
       ]
     }
-
-    console.log('reviewFormData.value.step1:', reviewFormData.value.step1)
-    console.log('status yang dikirim:', reviewPayload.status)
-    console.log('Full payload:', reviewPayload)
-    
-    console.log('=== DEBUG SUBMIT ===')
-    console.log('reviewFormData.value:', reviewFormData.value)
-    console.log('step1 fileUrl:', reviewFormData.value.step1?.fileUrl)
-    console.log('Payload yang dikirim:', reviewPayload)
-    console.log('===================')
     
     const response = await axios.post('/review/submit', reviewPayload, {
       headers: {
@@ -139,8 +151,24 @@ const handleSubmit = async () => {
     
   } catch (error) {
     console.error('Submit error:', error)
-    console.error('Error response:', error.response?.data)
-    alert('Gagal submit review')
+    
+    if (error.response?.status === 400) {
+      const message = error.response.data.message || '';
+      
+      if (message.includes('Belum Divalidasi')) {
+        errorModalTitle.value = 'Review Belum Divalidasi';
+        errorModalMessage.value = 'Review Anda masih belum divalidasi. Silakan tunggu proses validasi terlebih dahulu.';
+      } else {
+        errorModalTitle.value = 'Tidak Dapat Mengulas';
+        errorModalMessage.value = message || 'Anda tidak dapat mengulas sekolah ini.';
+      }
+      
+      showErrorModal.value = true;
+    } else {
+      errorModalTitle.value = 'Gagal Submit Review';
+      errorModalMessage.value = 'Terjadi kesalahan saat mengirim review. Silakan coba lagi.';
+      showErrorModal.value = true;
+    }
   }
 }
 

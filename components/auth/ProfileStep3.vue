@@ -58,7 +58,7 @@
               <span class="text-xs sm:text-sm text-gray-500 font-medium">STATUS</span>
               <span class="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium bg-blue-100 text-blue-800">
                 <span class="w-2 h-2 bg-blue-400 rounded-full mr-1 sm:mr-2"></span>
-                Siswa Aktif
+                Siswa/Mahasiswa
               </span>
             </div>
 

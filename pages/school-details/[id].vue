@@ -104,7 +104,7 @@
             <ShareIcon class="w-8 h-8 sm:w-10 sm:h-10" />
           </button>
 
-          <button
+          <!-- <button
             @click="toggleSave"
             :disabled="isSaving"
             class="transition-all duration-200 p-1.5 sm:p-2 rounded-full hover:bg-gray-100"
@@ -117,7 +117,7 @@
               :color="isSaved ? '#082519' : '#9CA3AF'"
               class="w-8 h-8 sm:w-10 sm:h-10"
             />
-          </button>
+          </button> -->
         </div>
       </div>
     </div>

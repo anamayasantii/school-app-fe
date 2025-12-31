@@ -24,7 +24,7 @@
         </button>
         <div
           v-else
-          class="px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-[#28190C] bg-[#F2ECE3] rounded-md min-w-[32px] sm:min-w-[40px] flex items-center justify-center"
+          class="px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-primary-green bg-[#F8F9FA] rounded-md min-w-[32px] sm:min-w-[40px] flex items-center justify-center"
         >
           ...
         </div>
@@ -88,9 +88,9 @@ const visiblePages = computed(() => {
 
 const buttonClass = (isActive, isDisabled = false) => {
   const baseClasses = "px-2 sm:px-3 py-1.5 sm:py-2 rounded-md transition-colors min-w-[32px] sm:min-w-[40px]";
-  const activeClasses = "bg-[#28190C] text-[#F2ECE3]";
-  const inactiveClasses = "text-[#28190C] bg-[#F2ECE3]";
-  const disabledClasses = "text-[#28190C] bg-[#F2ECE3] cursor-not-allowed opacity-50";
+  const activeClasses = "bg-primary-green text-[#F8F9FA]";
+  const inactiveClasses = "text-primary-green bg-[#F8F9FA]";
+  const disabledClasses = "text-primary-green bg-[#F8F9FA] cursor-not-allowed opacity-50";
   
   if (isDisabled) return `${baseClasses} ${disabledClasses}`;
   if (isActive) return `${baseClasses} ${activeClasses}`;

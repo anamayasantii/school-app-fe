@@ -598,7 +598,7 @@ const formData = ref({
   isRecommended: 0
 })
 
-console.log("3232", formData.facilityIds)
+console.log("Facility Id", formData.facilityIds)
 
 // Fetch dropdown data and school detail
 onMounted(async () => {
@@ -638,7 +638,7 @@ onMounted(async () => {
     const status = statuses.value.find(s => s.name === detail.statusName)
     const educationLevel = educationLevels.value.find(e => e.name === detail.educationLevelName)
 
-    console.log("dfs", detail.contacts)
+    console.log("Detail Contact", detail.contacts)
     formData.value = {
       name: detail.name || '',
       institutionCode: detail.institutionCode || '',

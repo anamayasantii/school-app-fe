@@ -11,11 +11,11 @@
 
         <div
           v-else
-          class="w-full h-40 sm:h-44 md:h-48 flex items-center justify-center bg-gradient-to-br rounded-xl bg-[#F2ECE3] cursor-pointer hover:scale-105 transition-transform duration-300"
+          class="w-full h-40 sm:h-44 md:h-48 flex items-center justify-center bg-gradient-to-br rounded-xl bg-[#F8F9FA] cursor-pointer hover:scale-105 transition-transform duration-300"
         >
           <div class="text-center px-4">
             <svg
-              class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 mx-auto text-[#76685A] mb-2"
+              class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 mx-auto text-primary-green mb-2"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -27,10 +27,10 @@
                 d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
               ></path>
             </svg>
-            <p class="text-[#76685A] font-medium text-xs sm:text-sm line-clamp-1">
+            <p class="text-primary-green font-medium text-xs sm:text-sm line-clamp-1">
               {{ school.name }}
             </p>
-            <p class="text-[#76685A] text-xs">No image available</p>
+            <p class="text-primary-green text-xs">No image available</p>
           </div>
         </div>
       </div>

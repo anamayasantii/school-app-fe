@@ -187,7 +187,7 @@ const getLevelTitle = (levelParam) => {
   const titles = {
     sd: "Sekolah Dasar",
     smp: "Sekolah Menengah Pertama",
-    sma: "Sekolah Menengah Atas",
+    sma: "Sekolah Menengah Akhir",
     smk: "Sekolah Menengah Kejuruan",
     universitas: "Universitas",
   };
