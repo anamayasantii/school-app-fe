@@ -65,10 +65,7 @@
               ></textarea>
             </div>
             <div class="flex gap-3 justify-end">
-              <Button
-                variant="outline"
-                @click="closeRejectModal"
-              >
+              <Button variant="outline" @click="closeRejectModal">
                 Batal
               </Button>
               <Button
@@ -118,24 +115,22 @@
                   </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm mb-3">
-                  <div>
-                    <p class="font-medium text-muted-foreground mb-1">
-                      Review:
-                    </p>
-                    <p class="line-clamp-2">{{ review.reviewText }}</p>
-                  </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm mb-3">
                   <div>
                     <p class="font-medium text-muted-foreground mb-1">
                       Yang Disukai:
                     </p>
-                    <p class="line-clamp-2">{{ review.liked }}</p>
+                    <p class="line-clamp-2" :title="review.liked">
+                      {{ review.liked }}
+                    </p>
                   </div>
                   <div>
                     <p class="font-medium text-muted-foreground mb-1">
                       Perlu Diperbaiki:
                     </p>
-                    <p class="line-clamp-2">{{ review.improved }}</p>
+                    <p class="line-clamp-2" :title="review.improved">
+                      {{ review.improved }}
+                    </p>
                   </div>
                 </div>
 
@@ -289,18 +284,18 @@ const confirmReject = async () => {
 
   try {
     isRejecting.value = true;
-    
-    console.log('Rejecting review:', {
+
+    console.log("Rejecting review:", {
       reviewId: selectedReview.value.id,
       userId: selectedReview.value.userId,
-      adminReason: rejectReason.value.trim()
+      adminReason: rejectReason.value.trim(),
     });
-    
+
     const response = await axios.put(
       `/reviews/${selectedReview.value.id}/reject`,
       {
         user_id: selectedReview.value.userId,
-        admin_reason: rejectReason.value.trim()
+        admin_reason: rejectReason.value.trim(),
       },
       {
         headers: {
@@ -308,14 +303,16 @@ const confirmReject = async () => {
         },
       }
     );
-    
-    console.log('Reject response:', response.data);
-    
+
+    console.log("Reject response:", response.data);
+
     showToast("Success", "Review berhasil direject");
-    reviews.value = reviews.value.filter((r) => r.id !== selectedReview.value.id);
+    reviews.value = reviews.value.filter(
+      (r) => r.id !== selectedReview.value.id
+    );
     closeRejectModal();
   } catch (error) {
-    console.error('Reject error details:', error.response?.data);
+    console.error("Reject error details:", error.response?.data);
     showToast("Error", "Gagal reject review", "destructive");
   } finally {
     isRejecting.value = false;

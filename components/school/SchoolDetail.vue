@@ -71,18 +71,18 @@
               <p
                 class="text-sm sm:text-base text-[#212529] leading-relaxed mb-4 sm:mb-6"
               >
-                {{ schoolData.name }} adalah sekolah
+                {{ schoolData.name }} adalah {{schoolLabel}}
                 {{ schoolData.statusName.toLowerCase() }} yang berlokasi di
                 {{ schoolData.village }}, {{ schoolData.subDistrictName }},
-                {{ schoolData.districtName }}. Sekolah ini menyediakan
+                {{ schoolData.districtName }}. {{schoolLabel}} ini menyediakan
                 pendidikan tingkat {{ schoolData.educationLevelName }} dengan
                 kurikulum {{ schoolData.curriculum }}.
               </p>
               <p
                 class="text-sm sm:text-base text-[#212529] leading-relaxed mb-6 sm:mb-8"
               >
-                Sekolah ini memiliki {{ schoolData.numStudent }} siswa dan
-                {{ schoolData.numTeacher }} guru. Status akreditasi sekolah
+                {{schoolLabel}} ini memiliki {{ schoolData.numStudent }} siswa dan
+                {{ schoolData.numTeacher }} guru. Status akreditasi {{schoolLabel}}
                 adalah {{ schoolData.accreditationCode }} dengan kepemilikan
                 {{ schoolData.ownershipStatus }}.
               </p>
@@ -258,7 +258,7 @@
                 </h3>
               </div>
               <p class="text-secondary-gray text-xs sm:text-sm">
-                Informasi biaya pendidikan untuk siswa.
+                Informasi biaya pendidikan untuk siswa/mahasiswa.
               </p>
             </div>
           </div>
@@ -267,7 +267,7 @@
             <h2
               class="text-xl sm:text-2xl font-semibold text-primary-green mb-4 sm:mb-6"
             >
-              Sekolah Terkait
+              {{schoolLabel}} Terkait
             </h2>
             <div class="space-y-3 sm:space-y-4">
               <div
@@ -370,7 +370,7 @@
               class="bg-bg-light rounded-lg p-4 sm:p-6 text-center"
             >
               <p class="text-sm sm:text-base text-secondary-gray">
-                Tidak ada sekolah terkait yang tersedia
+                Tidak ada {{schoolLabel}} terkait yang tersedia
               </p>
             </div>
           </div>
@@ -464,12 +464,16 @@
               <h3
                 class="text-base sm:text-lg font-semibold text-primary-green mb-3 sm:mb-4"
               >
-                Informasi Sekolah
+                Informasi {{schoolLabel}}
               </h3>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <p class="text-xs sm:text-sm text-secondary-gray">
-                    Kepala Sekolah
+                    {{
+                      schoolData.educationLevelName === "Universitas"
+                        ? "Rektor"
+                        : "Kepala Sekolah"
+                    }}
                   </p>
                   <p class="text-sm sm:text-base text-primary-green">
                     {{ schoolData.principal }}
@@ -479,10 +483,10 @@
                   <p class="text-xs sm:text-sm text-secondary-gray">Operator</p>
                   <p class="text-sm sm:text-base text-primary-green">
                     {{
-                    schoolData.operator
-                      ? `${schoolData.operator}`
-                      : "Belum Tersedia"
-                  }}
+                      schoolData.operator
+                        ? `${schoolData.operator}`
+                        : "Belum Tersedia"
+                    }}
                   </p>
                 </div>
                 <div>
@@ -499,10 +503,10 @@
                   </p>
                   <p class="text-sm sm:text-base text-primary-green">
                     {{
-                    schoolData.operationalLicense
-                      ? `${schoolData.operationalLicense}`
-                      : "Belum Tersedia"
-                  }}
+                      schoolData.operationalLicense
+                        ? `${schoolData.operationalLicense}`
+                        : "Belum Tersedia"
+                    }}
                   </p>
                 </div>
               </div>
@@ -514,7 +518,7 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted, nextTick } from "vue";
+import { ref, onMounted, nextTick, computed } from "vue";
 import { useRoute } from "vue-router";
 import axios from "@/lib/axios";
 
@@ -526,14 +530,18 @@ const schoolData = ref({});
 const route = useRoute();
 const navTop = ref("0px");
 
-const tabs = [
+const schoolLabel = computed(() => {
+  return schoolData.value.educationLevelName === 'Universitas' ? 'Kampus' : 'Sekolah';
+});
+
+const tabs = computed(() => [
   { id: "overview", name: "Ringkasan" },
   { id: "location", name: "Lokasi" },
   { id: "facilities", name: "Fasilitas" },
   { id: "cost", name: "Biaya" },
-  { id: "related-schools", name: "Sekolah Terkait" },
+  { id: "related-schools", name: `${schoolLabel.value} Terkait` },
   { id: "contact", name: "Kontak" },
-];
+]);
 
 const fetchSchoolData = async () => {
   try {

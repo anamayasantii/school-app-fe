@@ -99,13 +99,7 @@
                   </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm mb-3">
-                  <div>
-                    <p class="font-medium text-muted-foreground mb-1">
-                      Review:
-                    </p>
-                    <p class="line-clamp-2">{{ review.reviewText }}</p>
-                  </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm mb-3">
                   <div>
                     <p class="font-medium text-muted-foreground mb-1">
                       Yang Disukai:
