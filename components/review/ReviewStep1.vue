@@ -113,7 +113,7 @@
               class="w-full px-3 py-2 md:px-4 md:py-3 text-sm md:text-base border border-border-gray rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
             >
               <option value="">Pilih Hubungan</option>
-              <option value="aktif">Siswa Aktif</option>
+              <option value="aktif">Siswa/Mahasiswa Aktif</option>
               <option value="alumni">Alumni</option>
             </select>
             <svg
