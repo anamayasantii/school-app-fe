@@ -91,7 +91,7 @@
             <div
               class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
             >
-              <div class="border border-border-gray rounded-lg p-4 sm:p-6">
+              <div class="border border-border-gray rounded-lg p-4 sm:p-4">
                 <svg
                   width="24"
                   height="24"
@@ -114,7 +114,7 @@
                 <p class="text-xs sm:text-sm text-secondary-gray">Akreditasi</p>
               </div>
 
-              <div class="border border-border-gray rounded-lg p-4 sm:p-6">
+              <div class="border border-border-gray rounded-lg p-4 sm:p-4">
                 <svg
                   width="24"
                   height="24"
@@ -139,7 +139,7 @@
                 </p>
               </div>
 
-              <div class="border border-border-gray rounded-lg p-4 sm:p-6">
+              <div class="border border-border-gray rounded-lg p-4 sm:p-4">
                 <svg
                   width="24"
                   height="24"
@@ -213,7 +213,7 @@
                 :key="index"
                 class="flex items-center p-3 border border-border-gray rounded-lg"
               >
-                <svg
+                <!-- <svg
                   class="w-5 h-5 sm:w-6 sm:h-6 mr-3 sm:mr-4 text-gray-600 flex-shrink-0"
                   fill="currentColor"
                   viewBox="0 0 20 20"
@@ -221,7 +221,7 @@
                   <path
                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                   ></path>
-                </svg>
+                </svg> -->
                 <span class="text-sm sm:text-base text-primary-green">{{
                   facility
                 }}</span>
@@ -240,7 +240,7 @@
             >
               Biaya
             </h2>
-            <div class="border border-border-gray rounded-lg p-6 sm:p-8">
+            <div class="border border-border-gray rounded-lg p-6 sm:p-6">
               <div class="mb-3 sm:mb-4">
                 <span class="text-xs sm:text-sm font-medium text-secondary-gray"
                   >Biaya Pendidikan</span
@@ -252,13 +252,13 @@
                 >
                   {{
                     schoolData.tuitionFee
-                      ? `Rp ${formatNumber(schoolData.tuitionFee)}`
+                      ? `${schoolData.tuitionFee}`
                       : "Belum Tersedia"
                   }}
                 </h3>
               </div>
               <p class="text-secondary-gray text-xs sm:text-sm">
-                Informasi biaya pendidikan tahunan untuk siswa.
+                Informasi biaya pendidikan untuk siswa.
               </p>
             </div>
           </div>
@@ -478,7 +478,11 @@
                 <div>
                   <p class="text-xs sm:text-sm text-secondary-gray">Operator</p>
                   <p class="text-sm sm:text-base text-primary-green">
-                    {{ schoolData.operator }}
+                    {{
+                    schoolData.operator
+                      ? `${schoolData.operator}`
+                      : "Belum Tersedia"
+                  }}
                   </p>
                 </div>
                 <div>
@@ -494,7 +498,11 @@
                     Izin Operasional
                   </p>
                   <p class="text-sm sm:text-base text-primary-green">
-                    {{ schoolData.operationalLicense }}
+                    {{
+                    schoolData.operationalLicense
+                      ? `${schoolData.operationalLicense}`
+                      : "Belum Tersedia"
+                  }}
                   </p>
                 </div>
               </div>
@@ -570,9 +578,9 @@ const fetchSchoolData = async () => {
 //   return addressParts.join(", ");
 // };
 
-const formatNumber = (number) => {
-  return new Intl.NumberFormat("id-ID").format(number);
-};
+// const formatNumber = (number) => {
+//   return new Intl.NumberFormat("id-ID").format(number);
+// };
 
 const toggleSchool = (index) => {
   if (

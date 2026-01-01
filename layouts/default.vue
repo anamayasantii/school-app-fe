@@ -399,7 +399,7 @@
                 href="mailto:hallo@schoolaadvisor.com"
                 class="text-gray-900 hover:text-gray-700 transition-colors text-sm"
               >
-                hallo@schoolaadvisor.com
+                hallo@schoolpedia.com
               </a>
             </div>
 
@@ -605,7 +605,7 @@
 
         <div class="border-t border-gray-200 pt-4 sm:pt-6">
           <p class="text-xs text-gray-600 text-left">
-            Copyright © 2025 School Advisor. All Rights Reserved. Powered by PT.
+            Copyright © {{ currentYear }} School Advisor. All Rights Reserved. Powered by PT.
             Timedoor Indonesia.
           </p>
         </div>
@@ -627,6 +627,7 @@ import Logo from "~/assets/Logo.vue";
 import IndoFlag from "~/assets/IndoFlag.vue";
 import EngFlag from "~/assets/EngFlag.vue";
 
+const currentYear = new Date().getFullYear();
 const isDropdownOpen = ref(false);
 const isLangOpen = ref(false);
 const isMobileMenuOpen = ref(false);

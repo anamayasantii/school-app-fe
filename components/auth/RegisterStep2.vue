@@ -102,7 +102,7 @@
               </div>
               <div class="flex items-center text-xs">
                 <span :class="passwordValidation.hasSymbol ? 'text-green-600' : 'text-red-600'">
-                  {{ passwordValidation.hasSymbol ? '✓' : '✗' }} Simbol
+                  {{ passwordValidation.hasSymbol ? '✓' : '✗' }} Simbol @ # $ ! % * ? &
                 </span>
               </div>
             </div>

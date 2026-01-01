@@ -73,7 +73,7 @@ const topRowLevels = ref([
   {
     id: 'sma',
     icon: IconSMA,
-    title: "Sekolah Menengah Akhir",
+    title: "Sekolah Menengah Atas",
     description: "Jelajahi sekolah menengah akademik untuk siswa usia 15-18 tahun"
   }
 ])

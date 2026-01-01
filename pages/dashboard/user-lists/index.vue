@@ -17,7 +17,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Trash2 } from 'lucide-vue-next'
+import { Trash2, Eye } from 'lucide-vue-next'
 import dashboardLayout from '~/layouts/dashboardLayout.vue'
 import Cookies from 'js-cookie'
 import axios from '@/lib/axios'
@@ -35,31 +35,51 @@ const totalPages = ref(1)
 const limit = ref(10)
 const showDeleteDialog = ref(false)
 const userToDelete = ref(null)
+const showImageDialog = ref(false)
+const selectedImage = ref(null)
 
-const getFirstName = (fullname) => {
-  if (!fullname) return '-'
-  const names = fullname.trim().split(' ')
-  return names[0]
+const getChildName = (user) => {
+  if (user.role !== 'parent' || !user.child || user.child.length === 0) {
+    return '-'
+  }
+  return user.child.map(c => c.fullname).join(', ')
 }
 
-const getLastName = (fullname) => {
-  if (!fullname) return '-'
-  const names = fullname.trim().split(' ')
-  return names.length > 1 ? names.slice(1).join(' ') : '-'
-}
-
-const getUsername = (email) => {
-  if (!email) return '-'
-  return email.split('@')[0]
-}   
-
-const getRoleDisplay = (roles) => {
-  if (!roles || roles.length === 0) return '-'
-  return roles[0].charAt(0).toUpperCase() + roles[0].slice(1)
+const getRoleDisplay = (role) => {
+  if (!role) return '-'
+  const roleMap = {
+    'admin': 'Admin',
+    'parent': 'Parent',
+    'student': 'Student'
+  }
+  return roleMap[role] || role.charAt(0).toUpperCase() + role.slice(1)
 }
 
 const getNISN = (user) => {
   return user.nisn || '-'
+}
+
+const getSchoolName = (user) => {
+  return user.schoolDetail || '-'
+}
+
+const getSchoolValidation = (user) => {
+  if (user.riwayatPendidikan && user.riwayatPendidikan.length > 0) {
+    const activeSchool = user.riwayatPendidikan.find(r => r.status === 'aktif')
+    return activeSchool?.schoolValidation || null
+  }
+  return null
+}
+
+const openImageDialog = (imageUrl, event) => {
+  event.stopPropagation()
+  selectedImage.value = imageUrl
+  showImageDialog.value = true
+}
+
+const closeImageDialog = () => {
+  showImageDialog.value = false
+  selectedImage.value = null
 }
 
 const fetchUsers = async (page = 1) => {
@@ -121,10 +141,6 @@ const fetchUsers = async (page = 1) => {
 const handlePageChange = (page) => {
   if (page < 1 || page > totalPages.value) return
   fetchUsers(page)
-}
-
-const handleRowClick = (user) => {
-  navigateTo(`/dashboard/user-lists/${user.id}`)
 }
 
 const confirmDelete = (user, event) => {
@@ -205,7 +221,6 @@ onMounted(() => {
     <div class="p-6">
       <h1 class="text-3xl font-bold mb-6">User List</h1>
       
-      <!-- Header Actions -->
       <div class="flex justify-end items-center mb-6">
         <div class="flex items-center gap-2">
           <span class="text-sm font-medium">Search:</span>
@@ -218,29 +233,26 @@ onMounted(() => {
         </div>
       </div>
 
-      <!-- Loading State -->
       <div v-if="loading" class="text-center py-8">
         <p>Loading...</p>
       </div>
 
-      <!-- Error State -->
       <div v-else-if="error" class="text-red-500 text-center py-8">
         <p>Error: {{ error }}</p>
       </div>
 
-      <!-- Table -->
       <div v-else class="border rounded-lg overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow class="bg-gray-200">
               <TableHead class="font-semibold text-black">ID</TableHead>
-              <TableHead class="font-semibold text-black">First Name</TableHead>
-              <TableHead class="font-semibold text-black">Last Name</TableHead>
-              <TableHead class="font-semibold text-black">Username</TableHead>
+              <TableHead class="font-semibold text-black">Fullname</TableHead>
+              <TableHead class="font-semibold text-black">Child Name</TableHead>
               <TableHead class="font-semibold text-black">Email</TableHead>
               <TableHead class="font-semibold text-black">Role</TableHead>
-              <TableHead class="font-semibold text-black">NIS</TableHead>
-              <TableHead class="font-semibold text-black">Phone</TableHead>
+              <TableHead class="font-semibold text-black">NISN/NIM</TableHead>
+              <TableHead class="font-semibold text-black">School Name</TableHead>
+              <TableHead class="font-semibold text-black">Image</TableHead>
               <TableHead class="font-semibold text-black text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -248,21 +260,29 @@ onMounted(() => {
             <TableRow 
               v-for="(user, index) in users" 
               :key="user.id"
-              @click="handleRowClick(user)"
-              class="cursor-pointer hover:bg-gray-50"
+              class=" hover:bg-gray-50"
             >
               <TableCell>{{ (currentPage - 1) * limit + index + 1 }}</TableCell>
-              <TableCell>{{ getFirstName(user.fullname) }}</TableCell>
-              <TableCell>{{ getLastName(user.fullname) }}</TableCell>
-              <TableCell>{{ getUsername(user.email) }}</TableCell>
+              <TableCell>{{ user.fullname || '-' }}</TableCell>
+              <TableCell>{{ getChildName(user) }}</TableCell>
               <TableCell>
                 <a :href="`mailto:${user.email}`" class="text-blue-600 hover:underline">
                   {{ user.email }}
                 </a>
               </TableCell>
-              <TableCell>{{ getRoleDisplay(user.roles) }}</TableCell>
+              <TableCell>{{ getRoleDisplay(user.role) }}</TableCell>
               <TableCell>{{ getNISN(user) }}</TableCell>
-              <TableCell>{{ user.phoneNo || '-' }}</TableCell>
+              <TableCell>{{ getSchoolName(user) }}</TableCell>
+              <TableCell>
+                <button
+                  v-if="getSchoolValidation(user)"
+                  @click="openImageDialog(getSchoolValidation(user), $event)"
+                  class="p-2 rounded-full bg-blue-100 hover:bg-blue-200 transition-colors"
+                >
+                  <Eye class="w-4 h-4 text-blue-600" />
+                </button>
+                <span v-else class="text-gray-400">-</span>
+              </TableCell>
               <TableCell>
                 <div class="flex justify-end gap-2">
                   <button
@@ -278,7 +298,6 @@ onMounted(() => {
         </Table>
       </div>
 
-      <!-- Pagination -->
       <div class="flex justify-end items-center gap-2 mt-6">
         <Button
           @click="handlePageChange(currentPage - 1)"
@@ -310,7 +329,6 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Delete Confirmation Dialog -->
     <Dialog :open="showDeleteDialog" @update:open="cancelDelete">
       <DialogContent>
         <DialogHeader>
@@ -326,6 +344,27 @@ onMounted(() => {
           </Button>
           <Button @click="handleDelete" variant="destructive">
             Hapus
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+
+    <Dialog :open="showImageDialog" @update:open="closeImageDialog">
+      <DialogContent class="max-w-3xl">
+        <DialogHeader>
+          <DialogTitle>School Validation Image</DialogTitle>
+        </DialogHeader>
+        <div class="flex justify-center items-center">
+          <img 
+            v-if="selectedImage" 
+            :src="selectedImage" 
+            alt="School Validation" 
+            class="max-w-full max-h-[70vh] object-contain rounded-lg"
+          />
+        </div>
+        <DialogFooter>
+          <Button @click="closeImageDialog" variant="outline">
+            Tutup
           </Button>
         </DialogFooter>
       </DialogContent>

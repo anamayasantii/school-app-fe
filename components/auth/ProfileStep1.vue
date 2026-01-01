@@ -52,13 +52,13 @@
 
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">
-              NISN/NIS/NIM
+              Nomor Induk Siswa Nasional/Nomor Induk Mahasiswa
             </label>
             <input
               v-model="form.nisn"
               type="text"
               class="w-full px-4 py-2.5 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm sm:text-base"
-              placeholder="NISN/NIS/NIM"
+              placeholder="NISN/NIM"
             />
           </div>
 
