@@ -63,8 +63,8 @@
             </div>
 
             <template v-if="school.rating > 4.5">
-              <span class="hidden lg:inline"
-                ><svg
+              <span class="inline">
+                <svg
                   width="2"
                   height="16"
                   viewBox="0 0 2 16"
@@ -74,9 +74,9 @@
                   <rect width="2" height="16" rx="1" fill="#F8F9FA" />
                 </svg>
               </span>
-              <div class="hidden lg:flex items-center gap-1 sm:gap-2">
-                <span
-                  ><svg
+              <div class="flex items-center gap-1 sm:gap-2">
+                <span>
+                  <svg
                     class="w-4 h-4 sm:w-5 sm:h-5"
                     viewBox="0 0 24 24"
                     fill="none"
@@ -88,9 +88,9 @@
                     />
                   </svg>
                 </span>
-                <span class="font-medium text-primary-green text-xs sm:text-sm"
-                  >Direkomendasikan oleh sebagian besar pengguna</span
-                >
+                <span class="font-medium text-primary-green text-xs sm:text-sm">
+                  Direkomendasikan oleh sebagian besar pengguna
+                </span>
               </div>
             </template>
           </div>

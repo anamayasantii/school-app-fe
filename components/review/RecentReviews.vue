@@ -12,7 +12,7 @@
         <p
           class="text-primary-green max-w-4xl mx-auto text-sm sm:text-base px-4"
         >
-          Baca pengalaman langsung dari siswa aktif dan alumni yang pernah
+          Baca pengalaman langsung dari siswa/mahasiswa aktif dan alumni yang pernah
           belajar di sekolah tersebut. Setiap ulasan mencerminkan penilaian
           jujur tentang kualitas pembelajaran, lingkungan, dan fasilitas
           sekolah.
@@ -96,7 +96,7 @@
                     "
                   >
                     {{
-                      review.userStatus === "alumni" ? "Alumni" : "Siswa Aktif"
+                      review.userStatus === "alumni" ? "Alumni" : "Siswa/Mahasiswa Aktif"
                     }}
                   </span>
                   <span class="text-gray-600">dari</span>
@@ -239,7 +239,7 @@
                     "
                   >
                     {{
-                      review.userStatus === "alumni" ? "Alumni" : "Siswa Aktif"
+                      review.userStatus === "alumni" ? "Alumni" : "Siswa/Mahasiswa Aktif"
                     }}
                   </span>
                   <span class="text-gray-600">dari</span>
@@ -467,8 +467,9 @@ const visibleReviews = computed(() => {
 });
 
 const getInitials = (fullname) => {
-  return fullname
-    .split(" ")
+  const parts = fullname.split(" ");
+  const lastTwoParts = parts.slice(-2);
+  return lastTwoParts
     .map((part) => part.charAt(0).toUpperCase())
     .join("");
 };
