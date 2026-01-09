@@ -119,14 +119,14 @@
                     <span class="text-xs text-muted-foreground">{{
                       formatDate(review.createdAt)
                     }}</span>
-                    <Button
+                    <!-- <Button
                       v-if="review.image"
                       variant="outline"
                       size="sm"
                       @click="openImageModal(review.schoolValidation?.[0]?.file)"
                     >
                       Lihat Foto
-                    </Button>
+                    </Button> -->
                   </div>
 
                   <div class="flex items-center gap-2">

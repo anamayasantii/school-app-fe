@@ -71,19 +71,20 @@
               <p
                 class="text-sm sm:text-base text-[#212529] leading-relaxed mb-4 sm:mb-6"
               >
-                {{ schoolData.name }} adalah {{schoolLabel}}
+                {{ schoolData.name }} adalah {{ schoolLabel }}
                 {{ schoolData.statusName.toLowerCase() }} yang berlokasi di
                 {{ schoolData.village }}, {{ schoolData.subDistrictName }},
-                {{ schoolData.districtName }}. {{schoolLabel}} ini menyediakan
+                {{ schoolData.districtName }}. {{ schoolLabel }} ini menyediakan
                 pendidikan tingkat {{ schoolData.educationLevelName }} dengan
                 kurikulum {{ schoolData.curriculum }}.
               </p>
               <p
                 class="text-sm sm:text-base text-[#212529] leading-relaxed mb-6 sm:mb-8"
               >
-                {{schoolLabel}} ini memiliki {{ schoolData.numStudent }} siswa dan
-                {{ schoolData.numTeacher }} guru. Status akreditasi {{schoolLabel}}
-                adalah {{ schoolData.accreditationCode }} dengan kepemilikan
+                {{ schoolLabel }} ini memiliki {{ schoolData.numStudent }} siswa
+                dan {{ schoolData.numTeacher }} guru. Status akreditasi
+                {{ schoolLabel }} adalah
+                {{ schoolData.accreditationCode }} dengan kepemilikan
                 {{ schoolData.ownershipStatus }}.
               </p>
             </div>
@@ -139,7 +140,21 @@
                 </p>
               </div>
 
-              <div class="border border-border-gray rounded-lg p-4 sm:p-4">
+              <a
+                :href="
+                  schoolData.contacts?.website
+                    ? `https://${schoolData.contacts.website}`
+                    : '#'
+                "
+                target="_blank"
+                rel="noopener noreferrer"
+                :class="[
+                  'border border-border-gray rounded-lg p-4 sm:p-4 block',
+                  schoolData.contacts?.website
+                    ? 'hover:shadow-md transition-shadow cursor-pointer'
+                    : 'cursor-default',
+                ]"
+              >
                 <svg
                   width="24"
                   height="24"
@@ -155,14 +170,14 @@
                 </svg>
 
                 <h3
-                  class="text-lg sm:text-xl font-semibold text-primary-green mb-1 mt-4 sm:mt-5"
+                  class="text-lg sm:text-xl font-semibold text-primary-green mb-1 mt-4 sm:mt-5 break-words"
                 >
-                  <p>Belum Tersedia</p>
+                  {{ schoolData.contacts?.website || "Belum Tersedia" }}
                 </h3>
                 <p class="text-xs sm:text-sm text-secondary-gray">
                   Situs Resmi
                 </p>
-              </div>
+              </a>
             </div>
           </div>
 
@@ -267,7 +282,7 @@
             <h2
               class="text-xl sm:text-2xl font-semibold text-primary-green mb-4 sm:mb-6"
             >
-              {{schoolLabel}} Terkait
+              {{ schoolLabel }} Terkait
             </h2>
             <div class="space-y-3 sm:space-y-4">
               <div
@@ -370,7 +385,7 @@
               class="bg-bg-light rounded-lg p-4 sm:p-6 text-center"
             >
               <p class="text-sm sm:text-base text-secondary-gray">
-                Tidak ada {{schoolLabel}} terkait yang tersedia
+                Tidak ada {{ schoolLabel }} terkait yang tersedia
               </p>
             </div>
           </div>
@@ -415,8 +430,9 @@
                   ></path>
                 </svg>
               </div>
-              <div
+              <a
                 v-if="schoolData.contacts.email"
+                :href="`mailto:${schoolData.contacts.email}`"
                 class="border rounded-lg p-3 sm:p-4 flex items-center justify-between hover:shadow-md transition-shadow cursor-pointer"
               >
                 <div class="flex items-center min-w-0">
@@ -450,7 +466,7 @@
                     d="M9 5l7 7-7 7"
                   ></path>
                 </svg>
-              </div>
+              </a>
             </div>
             <div v-else class="space-y-3 sm:space-y-4">
               <div class="bg-bg-light rounded-lg p-4 sm:p-6 text-center">
@@ -464,7 +480,7 @@
               <h3
                 class="text-base sm:text-lg font-semibold text-primary-green mb-3 sm:mb-4"
               >
-                Informasi {{schoolLabel}}
+                Informasi {{ schoolLabel }}
               </h3>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
@@ -531,7 +547,9 @@ const route = useRoute();
 const navTop = ref("0px");
 
 const schoolLabel = computed(() => {
-  return schoolData.value.educationLevelName === 'Universitas' ? 'Kampus' : 'Sekolah';
+  return schoolData.value.educationLevelName === "Universitas"
+    ? "Kampus"
+    : "Sekolah";
 });
 
 const tabs = computed(() => [

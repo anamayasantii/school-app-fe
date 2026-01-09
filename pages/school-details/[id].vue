@@ -10,7 +10,7 @@
           </li>
           <span>›</span>
           <li>
-            <a href="/schools" class="hover:text-primary-green">
+            <a href="/" class="hover:text-primary-green">
               Jelajahi Sekolah
             </a>
           </li>

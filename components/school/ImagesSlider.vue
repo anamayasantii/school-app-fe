@@ -1,6 +1,6 @@
 <template>
   <div class="w-full max-w-[1440px] mx-auto">
-    <div class="relative overflow-hidden rounded-lg sm:rounded-xl md:rounded-2xl h-[250px] sm:h-[400px] md:h-[500px] lg:h-[608px] group">
+    <div class="relative overflow-hidden rounded-lg sm:rounded-xl md:rounded-2xl h-[200px] sm:h-[300px] md:h-[400px] lg:h-[450px] group">
       <div class="relative w-full h-full">
         <div v-if="!isLoading && !error" class="w-full h-full">
           <img
@@ -130,8 +130,6 @@ const isLoading = ref(true);
 const error = ref(null);
 const currentIndex = ref(0);
 
-let autoSlideInterval = null;
-
 const currentImages = computed(() => {
   if (!school.value) return [];
 
@@ -161,21 +159,6 @@ const previousImage = () => {
   }
 };
 
-const startAutoSlide = () => {
-  if (currentImages.value.length > 1) {
-    autoSlideInterval = setInterval(() => {
-      nextImage();
-    }, 5000);
-  }
-};
-
-const stopAutoSlide = () => {
-  if (autoSlideInterval) {
-    clearInterval(autoSlideInterval);
-    autoSlideInterval = null;
-  }
-};
-
 const handleKeydown = (event) => {
   if (event.key === "ArrowLeft") {
     previousImage();
@@ -189,8 +172,6 @@ const fetchSchoolData = async () => {
     const response = await axios.get(`/school-details/${route.params.id}`);
     school.value = response.data.data || {};
     isLoading.value = false;
-
-    startAutoSlide();
   } catch (err) {
     console.error("Error fetching data:", err);
     error.value = "Failed to load school data";
@@ -204,7 +185,6 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  stopAutoSlide();
   window.removeEventListener("keydown", handleKeydown);
 });
 </script>

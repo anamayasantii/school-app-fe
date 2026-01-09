@@ -238,7 +238,7 @@
             <input
               type="checkbox"
               :id="`facility-${facility.id}`"
-              :checked="formData.facilityIds.includes(facility.name)"
+              :checked="formData.facilityIds.includes(facility.id)"
               @change="
                 (e) => handleFacilityChange(facility.id, e.target.checked)
               "
@@ -515,94 +515,108 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
-import axios from '@/lib/axios'
-import Cookies from 'js-cookie'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Loader2, Plus, X, Upload } from 'lucide-vue-next'
+import { ref, watch } from "vue";
+import axios from "@/lib/axios";
+import Cookies from "js-cookie";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Loader2, Plus, X, Upload } from "lucide-vue-next";
 
 definePageMeta({
-  layout: 'dashboardLayout'
-})
+  layout: "dashboardLayout",
+});
 
-const route = useRoute()
-const schoolId = route.params.id
+const route = useRoute();
+const schoolId = route.params.id;
 
-const loading = ref(false)
-const loadingData = ref(true)
-const uploading = ref(false)
+const loading = ref(false);
+const loadingData = ref(true);
+const uploading = ref(false);
+const isInitialLoad = ref(true)
 
 // Toast state
-const toastMessage = ref('')
-const toastTitle = ref('')
-const toastVariant = ref('default')
+const toastMessage = ref("");
+const toastTitle = ref("");
+const toastVariant = ref("default");
 
-const showToast = (title, message, variant = 'default') => {
-  toastTitle.value = title
-  toastMessage.value = message
-  toastVariant.value = variant
+const showToast = (title, message, variant = "default") => {
+  toastTitle.value = title;
+  toastMessage.value = message;
+  toastVariant.value = variant;
 
   setTimeout(() => {
-    toastMessage.value = ''
-  }, 5000)
-}
+    toastMessage.value = "";
+  }, 5000);
+};
 
 // Dropdown data
-const schools = ref([])
-const statuses = ref([])
-const educationLevels = ref([])
-const accreditations = ref([])
-const facilities = ref([])
-const provinces = ref([])
-const districts = ref([])
-const subDistricts = ref([])
+const schools = ref([]);
+const statuses = ref([]);
+const educationLevels = ref([]);
+const accreditations = ref([]);
+const facilities = ref([]);
+const provinces = ref([]);
+const districts = ref([]);
+const subDistricts = ref([]);
 
-const contactTypes = ['phone', 'email', 'website', 'whatsapp', 'facebook', 'instagram', 'other']
+const contactTypes = [
+  "phone",
+  "email",
+  "website",
+  "whatsapp",
+  "facebook",
+  "instagram",
+  "other",
+];
 
 // Form state
 const formData = ref({
-  name: '',
-  institutionCode: '',
-  schoolId: '',
-  statusId: '',
-  educationLevelId: '',
-  ownershipStatus: '',
-  dateEstablishmentDecree: '',
-  operationalLicense: '',
-  dateOperationalLicense: '',
-  principal: '',
-  operator: '',
-  accreditationId: '',
-  curriculum: '',
+  name: "",
+  institutionCode: "",
+  schoolId: "",
+  statusId: "",
+  educationLevelId: "",
+  ownershipStatus: "",
+  dateEstablishmentDecree: "",
+  operationalLicense: "",
+  dateOperationalLicense: "",
+  principal: "",
+  operator: "",
+  accreditationId: "",
+  curriculum: "",
   facilityIds: [],
   contacts: [],
-  tuitionFee: '',
-  numStudent: '',
-  numTeacher: '',
+  tuitionFee: "",
+  numStudent: "",
+  numTeacher: "",
   imageUrl: [],
-  movie: '',
-  examInfo: '',
+  movie: "",
+  examInfo: "",
   address: {
-    provinceId: '',
-    districtId: '',
-    subDistrictId: '',
-    village: '',
-    street: '',
-    postalCode: '',
-    latitude: '',
-    longitude: ''
+    provinceId: "",
+    districtId: "",
+    subDistrictId: "",
+    village: "",
+    street: "",
+    postalCode: "",
+    latitude: "",
+    longitude: "",
   },
-  isRecommended: 0
-})
+  isRecommended: 0,
+});
 
-console.log("Facility Id", formData.facilityIds)
+console.log("Facility Id", formData.facilityIds);
 
-// Fetch dropdown data and school detail
 onMounted(async () => {
-  const token = Cookies.get('token')
+  const token = Cookies.get("token");
 
   try {
     const [
@@ -612,212 +626,254 @@ onMounted(async () => {
       accreditationsRes,
       facilitiesRes,
       provincesRes,
-      schoolDetailRes
+      schoolDetailRes,
     ] = await Promise.all([
-      axios.get('/schools', { headers: { 'Authorization': `Bearer ${token}` } }),
-      axios.get('/school-status', { headers: { 'Authorization': `Bearer ${token}` } }),
-      axios.get('/education-levels', { headers: { 'Authorization': `Bearer ${token}` } }),
-      axios.get('/accreditations', { headers: { 'Authorization': `Bearer ${token}` } }),
-      axios.get('/facilities', { headers: { 'Authorization': `Bearer ${token}` } }),
-      axios.get('/provinces', { headers: { 'Authorization': `Bearer ${token}` } }),
-      axios.get(`/school-details/${schoolId}`, { headers: { 'Authorization': `Bearer ${token}` } })
-    ])
+      axios.get("/schools", { headers: { Authorization: `Bearer ${token}` } }),
+      axios.get("/school-status", {
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+      axios.get("/education-levels", {
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+      axios.get("/accreditations", {
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+      axios.get("/facilities", {
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+      axios.get("/provinces", {
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+      axios.get(`/school-details/${schoolId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+    ]);
 
-    schools.value = schoolsRes.data.data
-    statuses.value = statusesRes.data.data
-    educationLevels.value = levelsRes.data.data
-    accreditations.value = accreditationsRes.data.data
-    facilities.value = facilitiesRes.data.data
-    provinces.value = provincesRes.data.data
+    schools.value = schoolsRes.data.data;
+    statuses.value = statusesRes.data.data;
+    educationLevels.value = levelsRes.data.data;
+    accreditations.value = accreditationsRes.data.data;
+    facilities.value = facilitiesRes.data.data;
+    provinces.value = provincesRes.data.data;
 
-    // Populate form with existing data
-    const detail = schoolDetailRes.data.data
+    const detail = schoolDetailRes.data.data;
 
-    // Find IDs from names
-    const province = provinces.value.find(p => p.name === detail.provinceName)
-    const status = statuses.value.find(s => s.name === detail.statusName)
-    const educationLevel = educationLevels.value.find(e => e.name === detail.educationLevelName)
-
-    console.log("Detail Contact", detail.contacts)
-    formData.value = {
-      name: detail.name || '',
-      institutionCode: detail.institutionCode || '',
-      schoolId: detail.schoolId?.toString() || '',
-      statusId: status?.id.toString() || '',
-      educationLevelId: educationLevel?.id.toString() || '',
-      ownershipStatus: detail.ownershipStatus || '',
-      dateEstablishmentDecree: detail.dateEstablishmentDecree || '',
-      operationalLicense: detail.operationalLicense || '',
-      dateOperationalLicense: detail.dateOperationalLicense || '',
-      principal: detail.principal || '',
-      operator: detail.operator || '',
-      accreditationId: detail.accreditationId?.toString() || '',
-      curriculum: detail.curriculum || '',
-      facilityIds: detail.facilities || [],
-      contacts: detail.contacts || [],
-      tuitionFee: detail.tuitionFee || '',
-      numStudent: detail.numStudent || '',
-      numTeacher: detail.numTeacher || '',
-      imageUrl: detail.galleryImages || [],
-      movie: detail.movie || '',
-      examInfo: detail.examInfo || '',
-      address: {
-        provinceId: province?.id.toString() || '',
-        districtId: '',
-        subDistrictId: '',
-        village: detail.village || '',
-        street: detail.street || '',
-        postalCode: detail.postalCode || '',
-        latitude: detail.latitude || '',
-        longitude: detail.longitude || ''
-      },
-      isRecommended: detail.isRecommended || 0
-    }
-
-    // Load districts and subdistricts based on province
-    if (province) {
-      const districtsRes = await axios.get('/districts', {
-        params: { provinceName: province.name },
-        headers: { 'Authorization': `Bearer ${token}` }
+    const selectedFacilityIds = detail.facilities
+      .map((facilityName) => {
+        const facility = facilities.value.find((f) => f.name === facilityName);
+        return facility ? facility.id : null;
       })
-      districts.value = districtsRes.data.data
+      .filter((id) => id !== null);
 
-      const district = districts.value.find(d => d.name === detail.districtName)
+    const province = provinces.value.find(
+      (p) => p.name === detail.provinceName
+    );
+    const status = statuses.value.find((s) => s.name === detail.statusName);
+    const educationLevel = educationLevels.value.find(
+      (e) => e.name === detail.educationLevelName
+    );
+
+    console.log("Detail Contact", detail.contacts);
+    formData.value = {
+      name: detail.name || "",
+      institutionCode: detail.institutionCode || "",
+      schoolId: detail.schoolId?.toString() || "",
+      statusId: status?.id.toString() || "",
+      educationLevelId: educationLevel?.id.toString() || "",
+      ownershipStatus: detail.ownershipStatus || "",
+      dateEstablishmentDecree: detail.dateEstablishmentDecree || "",
+      operationalLicense: detail.operationalLicense || "",
+      dateOperationalLicense: detail.dateOperationalLicense || "",
+      principal: detail.principal || "",
+      operator: detail.operator || "",
+      accreditationId: detail.accreditationId?.toString() || "",
+      curriculum: detail.curriculum || "",
+      facilityIds: selectedFacilityIds,
+      contacts: detail.contacts || [],
+      tuitionFee: detail.tuitionFee || "",
+      numStudent: detail.numStudent || "",
+      numTeacher: detail.numTeacher || "",
+      imageUrl: detail.galleryImages || [],
+      movie: detail.movie || "",
+      examInfo: detail.examInfo || "",
+      address: {
+        provinceId: province?.id.toString() || "",
+        districtId: "",
+        subDistrictId: "",
+        village: detail.village || "",
+        street: detail.street || "",
+        postalCode: detail.postalCode || "",
+        latitude: detail.latitude || "",
+        longitude: detail.longitude || "",
+      },
+      isRecommended: detail.isRecommended || 0,
+    };
+
+    if (province) {
+      const districtsRes = await axios.get("/districts", {
+        params: { provinceName: province.name },
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      districts.value = districtsRes.data.data;
+
+      const district = districts.value.find(
+        (d) => d.name === detail.districtName
+      );
       if (district) {
-        formData.value.address.districtId = district.id.toString()
+        formData.value.address.districtId = district.id.toString();
 
-        const subDistrictsRes = await axios.get('/sub-districts', {
+        const subDistrictsRes = await axios.get("/sub-districts", {
           params: { districtName: district.name },
-          headers: { 'Authorization': `Bearer ${token}` }
-        })
-        subDistricts.value = subDistrictsRes.data.data
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        subDistricts.value = subDistrictsRes.data.data;
 
-        const subDistrict = subDistricts.value.find(sd => sd.name === detail.subDistrictName)
+        const subDistrict = subDistricts.value.find(
+          (sd) => sd.name === detail.subDistrictName
+        );
         if (subDistrict) {
-          formData.value.address.subDistrictId = subDistrict.id.toString()
+          formData.value.address.subDistrictId = subDistrict.id.toString();
         }
       }
     }
-
   } catch (error) {
-    showToast('Error', 'Gagal memuat data', 'destructive')
+    showToast("Error", "Gagal memuat data", "destructive");
   } finally {
-    loadingData.value = false
+    loadingData.value = false;
+    isInitialLoad.value = false
   }
-})
+});
 
 // Watch province changes
-watch(() => formData.value.address.provinceId, async (newVal) => {
-  if (!newVal) {
-    districts.value = []
-    subDistricts.value = []
+watch(
+  () => formData.value.address.provinceId,
+  async (newVal) => {
+    if (!newVal) {
+      districts.value = [];
+      subDistricts.value = [];
+      return;
+    }
+
+    if (isInitialLoad.value) {
     return
   }
 
-  const token = Cookies.get('token')
-  try {
-    const selectedProvince = provinces.value.find(p => p.id.toString() === newVal)
-    if (!selectedProvince) return
+    const token = Cookies.get("token");
+    try {
+      const selectedProvince = provinces.value.find(
+        (p) => p.id.toString() === newVal
+      );
+      if (!selectedProvince) return;
 
-    const response = await axios.get('/districts', {
-      params: { provinceName: selectedProvince.name },
-      headers: { 'Authorization': `Bearer ${token}` }
-    })
-    districts.value = response.data.data
-    subDistricts.value = []
-    formData.value.address.districtId = ''
-    formData.value.address.subDistrictId = ''
-  } catch (error) {
-    showToast('Error', 'Gagal memuat data kabupaten', 'destructive')
+      const response = await axios.get("/districts", {
+        params: { provinceName: selectedProvince.name },
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      districts.value = response.data.data;
+      subDistricts.value = [];
+      formData.value.address.districtId = "";
+      formData.value.address.subDistrictId = "";
+    } catch (error) {
+      showToast("Error", "Gagal memuat data kabupaten", "destructive");
+    }
   }
-})
+);
 
 // Watch district changes
-watch(() => formData.value.address.districtId, async (newVal) => {
-  if (!newVal) {
-    subDistricts.value = []
+watch(
+  () => formData.value.address.districtId,
+  async (newVal) => {
+    if (!newVal) {
+      subDistricts.value = [];
+      return;
+    }
+
+    if (isInitialLoad.value) {
     return
   }
 
-  const token = Cookies.get('token')
-  try {
-    const selectedDistrict = districts.value.find(d => d.id.toString() === newVal)
-    if (!selectedDistrict) return
+    const token = Cookies.get("token");
+    try {
+      const selectedDistrict = districts.value.find(
+        (d) => d.id.toString() === newVal
+      );
+      if (!selectedDistrict) return;
 
-    const response = await axios.get('/sub-districts', {
-      params: { districtName: selectedDistrict.name },
-      headers: { 'Authorization': `Bearer ${token}` }
-    })
-    subDistricts.value = response.data.data
-    formData.value.address.subDistrictId = ''
-  } catch (error) {
-    showToast('Error', 'Gagal memuat data kecamatan', 'destructive')
+      const response = await axios.get("/sub-districts", {
+        params: { districtName: selectedDistrict.name },
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      subDistricts.value = response.data.data;
+      formData.value.address.subDistrictId = "";
+    } catch (error) {
+      showToast("Error", "Gagal memuat data kecamatan", "destructive");
+    }
   }
-})
+);
 
 // Handle file upload
 const handleFileUpload = async (e) => {
-  const token = Cookies.get('token')
+  const token = Cookies.get("token");
 
-  const files = Array.from(e.target.files)
-  if (files.length === 0) return
+  const files = Array.from(e.target.files);
+  if (files.length === 0) return;
 
-  uploading.value = true
-  const formDataUpload = new FormData()
-  files.forEach(file => {
-    formDataUpload.append('files[]', file)
-  })
+  uploading.value = true;
+  const formDataUpload = new FormData();
+  files.forEach((file) => {
+    formDataUpload.append("files[]", file);
+  });
 
   try {
-    const response = await axios.post('/upload', formDataUpload, {
+    const response = await axios.post("/upload", formDataUpload, {
       headers: {
-        'Content-Type': 'multipart/form-data',
-        'Authorization': `Bearer ${token}`
-      }
-    })
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-    const urls = response.data.data.urls
-    formData.value.imageUrl = [...formData.value.imageUrl, ...urls]
+    const urls = response.data.data.urls;
+    formData.value.imageUrl = [...formData.value.imageUrl, ...urls];
 
-    showToast('Success', 'Gambar berhasil diupload')
+    showToast("Success", "Gambar berhasil diupload");
   } catch (error) {
-    showToast('Error', 'Gagal upload gambar', 'destructive')
+    showToast("Error", "Gagal upload gambar", "destructive");
   } finally {
-    uploading.value = false
+    uploading.value = false;
   }
-}
+};
 
 // Add contact
 const addContact = () => {
-  formData.value.contacts.push({ type: 'phone', value: '' })
-}
+  formData.value.contacts.push({ type: "phone", value: "" });
+};
 
 // Remove contact
 const removeContact = (index) => {
-  formData.value.contacts.splice(index, 1)
-}
+  formData.value.contacts.splice(index, 1);
+};
 
 // Remove image
 const removeImage = (index) => {
-  formData.value.imageUrl.splice(index, 1)
-}
+  formData.value.imageUrl.splice(index, 1);
+};
 
 // Handle facility checkbox
 const handleFacilityChange = (facilityId, checked) => {
   if (checked) {
-    formData.value.facilityIds.push(facilityId)
+    formData.value.facilityIds.push(facilityId);
   } else {
-    const index = formData.value.facilityIds.indexOf(facilityId)
+    const index = formData.value.facilityIds.indexOf(facilityId);
     if (index > -1) {
-      formData.value.facilityIds.splice(index, 1)
+      formData.value.facilityIds.splice(index, 1);
     }
   }
-}
+};
 
 // Handle submit
 const handleSubmit = async () => {
-  const token = Cookies.get('token')
-  loading.value = true
+  const token = Cookies.get("token");
+  loading.value = true;
 
   try {
     const payload = {
@@ -826,11 +882,19 @@ const handleSubmit = async () => {
       statusId: formData.value.statusId || null,
       educationLevelId: formData.value.educationLevelId || null,
       accreditationId: formData.value.accreditationId || null,
-      facilityIds: formData.value.facilityIds.length > 0 ? formData.value.facilityIds : null,
-      contacts: formData.value.contacts.length > 0 ? formData.value.contacts : null,
+      facilityIds:
+        formData.value.facilityIds.length > 0
+          ? formData.value.facilityIds
+          : null,
+      contacts:
+        formData.value.contacts.length > 0 ? formData.value.contacts : null,
       tuitionFee: formData.value.tuitionFee || null,
-      numStudent: formData.value.numStudent ? parseInt(formData.value.numStudent) : null,
-      numTeacher: formData.value.numTeacher ? parseInt(formData.value.numTeacher) : null,
+      numStudent: formData.value.numStudent
+        ? parseInt(formData.value.numStudent)
+        : null,
+      numTeacher: formData.value.numTeacher
+        ? parseInt(formData.value.numTeacher)
+        : null,
       movie: formData.value.movie || null,
       examInfo: formData.value.examInfo || null,
       operator: formData.value.operator || null,
@@ -843,26 +907,30 @@ const handleSubmit = async () => {
         street: formData.value.address.street || null,
         postalCode: formData.value.address.postalCode || null,
         latitude: formData.value.address.latitude || null,
-        longitude: formData.value.address.longitude || null
+        longitude: formData.value.address.longitude || null,
       },
-      isRecommended: formData.value.isRecommended ? 1 : 0
-    }
+      isRecommended: formData.value.isRecommended ? 1 : 0,
+    };
 
     await axios.put(`/school-details/${schoolId}`, payload, {
       headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-    showToast('Success', 'Sekolah berhasil diupdate')
+    showToast("Success", "Sekolah berhasil diupdate");
 
     setTimeout(() => {
-      navigateTo('/dashboard/school-lists')
-    }, 1500)
+      navigateTo("/dashboard/school-lists");
+    }, 1500);
   } catch (error) {
-    showToast('Error', error.response?.data?.message || 'Gagal mengupdate sekolah', 'destructive')
+    showToast(
+      "Error",
+      error.response?.data?.message || "Gagal mengupdate sekolah",
+      "destructive"
+    );
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
+};
 </script>
