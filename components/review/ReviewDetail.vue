@@ -2,7 +2,7 @@
 import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import axios from "@/lib/axios";
-import { useAuthStore } from '@/store/auth'
+import { useAuthStore } from "@/store/auth";
 import StarRatingOverall from "~/assets/StarRatingOverall.vue";
 import Smiley from "~/assets/Smiley.vue";
 import Verify from "~/assets/Verify.vue";
@@ -28,7 +28,7 @@ const currentPage = ref(1);
 const showSortDropdown = ref(false);
 
 const selectSortOption = (sort) => {
-  console.log('Sort selected:', sort);
+  console.log("Sort selected:", sort);
   selectedSort.value = sort;
   showSortDropdown.value = false;
   currentPage.value = 1;
@@ -211,11 +211,11 @@ const goToPage = (page) => {
 
 const goToWriteReview = () => {
   if (!authStore.isLoggedIn) {
-    useState('showLoginModal').value = true
-    useState('intendedRoute').value = `/reviews/${route.params.id}`
-    useState('fromMiddleware').value = false
+    useState("showLoginModal").value = true;
+    useState("intendedRoute").value = `/reviews/${route.params.id}`;
+    useState("fromMiddleware").value = false;
   } else {
-    router.push(`/reviews/${route.params.id}`)
+    router.push(`/reviews/${route.params.id}`);
   }
 };
 
@@ -650,6 +650,20 @@ onMounted(fetchReviews);
                 </span>
               </div>
 
+              <div v-if="review.source === 'google'" class="mb-3">
+                <span
+                  class="inline-flex items-center gap-1 px-2 py-1 bg-bg-light text-secondary-gray rounded text-xs font-medium"
+                >
+                  Source: Google Maps
+                </span>
+              </div>
+
+              <div v-if="review.reviewText" class="mb-3">
+                <p class="text-primary-green text-sm leading-relaxed">
+                  {{ review.reviewText }}
+                </p>
+              </div>
+
               <!-- Review Text -->
               <!-- <div class="mb-3">
                 <p class="text-primary-green text-sm font-semibold mb-1">
@@ -684,7 +698,10 @@ onMounted(fetchReviews);
               </div>
 
               <!-- Detail Scores -->
-              <div class="grid grid-cols-5 gap-2 sm:gap-3 mb-3">
+              <div
+                v-if="review.source === 'internal'"
+                class="grid grid-cols-5 gap-2 sm:gap-3 mb-3"
+              >
                 <div
                   v-for="questionId in [1, 2, 3, 4, 5]"
                   :key="questionId"
