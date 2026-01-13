@@ -351,7 +351,6 @@ const uploadFile = async (file) => {
     console.log("Response status:", response.status);
     console.log("Response data:", response.data);
 
-    // Cek jika response status bukan 2xx
     if (response.status !== 200 && response.status !== 201) {
       console.log("Masuk ke error handling, status:", response.status);
       
@@ -386,7 +385,6 @@ const uploadFile = async (file) => {
     console.error("Catch block - Upload error:", error);
     console.error("errorModal.value.isOpen:", errorModal.value.isOpen);
     
-    // Jika sudah ada errorModal yang di-set, skip
     if (!errorModal.value.isOpen) {
       let errorTitle = "Koneksi Gagal";
       let errorMessage = "Tidak dapat terhubung ke server. Periksa koneksi internet Anda.";
@@ -412,6 +410,9 @@ const handleFileSelect = async (event) => {
       const fileUrl = await uploadFile(file);
       form.value.schoolValidation = fileUrl;
       console.log("File uploaded, URL:", fileUrl);
+      
+      emit('save', form.value, 2);
+      
     } catch (error) {
       console.error("Failed to upload file:", error);
       selectedFile.value = null;
@@ -432,6 +433,9 @@ const handleDrop = async (event) => {
       const fileUrl = await uploadFile(files[0]);
       form.value.schoolValidation = fileUrl;
       console.log("File uploaded, URL:", fileUrl);
+      
+      emit('save', form.value, 2);
+      
     } catch (error) {
       console.error("Failed to upload file:", error);
       selectedFile.value = null;

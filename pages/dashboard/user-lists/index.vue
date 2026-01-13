@@ -56,18 +56,34 @@ const getRoleDisplay = (role) => {
 }
 
 const getNISN = (user) => {
+  if (user.role === 'parent' && user.child && user.child.length > 0) {
+    return user.child[0].nisn || '-'
+  }
   return user.nisn || '-'
 }
 
 const getSchoolName = (user) => {
+  if (user.role === 'parent' && user.child && user.child.length > 0) {
+    return user.child[0].schoolDetail || '-'
+  }
   return user.schoolDetail || '-'
 }
 
 const getSchoolValidation = (user) => {
+  if (user.role === 'parent' && user.child && user.child.length > 0) {
+    const childRiwayat = user.child[0].riwayatPendidikan
+    if (childRiwayat && childRiwayat.length > 0) {
+      const activeSchool = childRiwayat.find(r => r.status === 'aktif')
+      return activeSchool?.schoolValidation || null
+    }
+    return null
+  }
+  
   if (user.riwayatPendidikan && user.riwayatPendidikan.length > 0) {
     const activeSchool = user.riwayatPendidikan.find(r => r.status === 'aktif')
     return activeSchool?.schoolValidation || null
   }
+  
   return null
 }
 
@@ -95,14 +111,20 @@ const fetchUsers = async (page = 1) => {
       return
     }
 
+    const params = {
+      page: page,
+      limit: limit.value
+    }
+    
+    if (searchQuery.value.trim()) {
+      params.search = searchQuery.value.trim()
+    }
+
     const response = await axios.get('/users', {
       headers: {
         'Authorization': `Bearer ${token}`
       },
-      params: {
-        page: page,
-        limit: limit.value
-      }
+      params
     })
     
     console.log('Response:', response.data)
@@ -137,6 +159,19 @@ const fetchUsers = async (page = 1) => {
     loading.value = false
   }
 }
+
+const handleSearch = () => {
+  currentPage.value = 1
+  fetchUsers(1)
+}
+
+let searchTimeout = null
+watch(searchQuery, () => {
+  if (searchTimeout) clearTimeout(searchTimeout)
+  searchTimeout = setTimeout(() => {
+    handleSearch()
+  }, 500)
+})
 
 const handlePageChange = (page) => {
   if (page < 1 || page > totalPages.value) return
@@ -228,7 +263,6 @@ onMounted(() => {
             v-model="searchQuery"
             placeholder="Cari user..."
             class="w-80"
-            disabled
           />
         </div>
       </div>

@@ -223,7 +223,6 @@ const handleSubmit = async () => {
   } catch (error) {
     console.error('Registration failed:', error)
     
-    // Handle error 422 (Validation Error)
     if (error.response?.status === 422) {
       const errors = error.response.data.errors
       
@@ -237,13 +236,10 @@ const handleSubmit = async () => {
         errorMessage.value = 'Data yang Anda masukkan tidak valid.'
       }
     } 
-    // Handle error 409 (Conflict)
     else if (error.response?.status === 409) {
       errorMessage.value = 'Email sudah terdaftar. Silakan gunakan email lain.'
     }
-    // Handle custom message from backend
     else if (error.response?.data?.message) {
-      // Translate common backend messages
       const message = error.response.data.message
       if (message.includes('email has already been taken')) {
         errorMessage.value = 'Email sudah terdaftar. Silakan gunakan email lain.'
@@ -251,7 +247,6 @@ const handleSubmit = async () => {
         errorMessage.value = message
       }
     } 
-    // Default error message
     else {
       errorMessage.value = 'Terjadi kesalahan. Silakan coba lagi.'
     }

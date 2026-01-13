@@ -124,8 +124,9 @@ const paginationPages = computed(() => {
 });
 
 const getInitials = (fullname) => {
-  return fullname
-    .split(" ")
+  const parts = fullname.split(" ");
+  const lastTwoParts = parts.slice(-2);
+  return lastTwoParts
     .map((part) => part.charAt(0).toUpperCase())
     .join("");
 };

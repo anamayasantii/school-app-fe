@@ -55,7 +55,7 @@ const userData = computed(() => {
 const handleLogout = async () => {
   try {
     Cookies.remove('token')
-    await navigateTo('dashboard/login')
+    await navigateTo('/dashboard/login')
   } catch (error) {
     console.error('Logout failed:', error)
   }
