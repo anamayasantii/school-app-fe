@@ -16,6 +16,17 @@ import { ref } from 'vue'
 import RoleSelection from '~/components/auth/RegisterStep1.vue'
 import RegisterForm from '~/components/auth/RegisterStep2.vue'
 
+useHead({
+  title: "Register - Schoola Advisor",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Register ke akun School Review Anda untuk mengakses fitur-fitur terbaik kami dan temukan sekolah impian Anda dengan mudah.",
+    },
+  ],
+});
+
 definePageMeta({
   layout: 'authPage'
 })

@@ -59,7 +59,7 @@
               >
                 <div
                   v-if="isDropdownOpen"
-                  class="absolute left-0 mt-2 w-[320px] sm:w-[360px] md:w-[400px] lg:w-[440px] xl:w-[480px] bg-white rounded-lg shadow-xl border border-gray-100 py-3 z-50"
+                  class="absolute left-0 mt-2 w-[280px] sm:w-[320px] bg-white rounded-lg shadow-xl border border-gray-100 py-2 z-50"
                 >
                   <div v-if="loading" class="px-4 py-3 text-gray-400 text-sm">
                     Loading...
@@ -70,89 +70,89 @@
                   </div>
 
                   <template v-else>
-                    <div class="flex p-3 min-h-[140px]">
-                      <div class="w-1/2 pr-2">
-                        <div class="flex flex-col gap-2">
+                    <div class="flex p-2">
+                      <div class="w-1/2 pr-1">
+                        <div class="flex flex-col gap-1">
                           <nuxt-link
                             to="/schools/sd"
-                            class="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors group rounded-md"
+                            class="flex items-center px-3 py-2 hover:bg-gray-50 transition-colors group rounded-md"
                             @click="isDropdownOpen = false"
                           >
                             <div
-                              class="w-5 h-5 sm:w-6 sm:h-6 mr-3 text-gray-700 group-hover:text-gray-900 flex-shrink-0"
+                              class="w-5 h-5 mr-2 text-gray-700 group-hover:text-gray-900 flex-shrink-0"
                             >
                               <IconSD class="w-full h-full" />
                             </div>
                             <span
-                              class="text-gray-700 text-sm sm:text-base group-hover:text-gray-900 font-medium"
+                              class="text-gray-700 text-sm group-hover:text-gray-900 font-medium"
                               >SD</span
                             >
                           </nuxt-link>
 
                           <nuxt-link
                             to="/schools/smp"
-                            class="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors group rounded-md"
+                            class="flex items-center px-3 py-2 hover:bg-gray-50 transition-colors group rounded-md"
                             @click="isDropdownOpen = false"
                           >
                             <div
-                              class="w-5 h-5 sm:w-6 sm:h-6 mr-3 text-gray-700 group-hover:text-gray-900 flex-shrink-0"
+                              class="w-5 h-5 mr-2 text-gray-700 group-hover:text-gray-900 flex-shrink-0"
                             >
                               <IconSMP class="w-full h-full" />
                             </div>
                             <span
-                              class="text-gray-700 text-sm sm:text-base group-hover:text-gray-900 font-medium"
+                              class="text-gray-700 text-sm group-hover:text-gray-900 font-medium"
                               >SMP</span
                             >
                           </nuxt-link>
 
                           <nuxt-link
                             to="/schools/sma"
-                            class="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors group rounded-md"
+                            class="flex items-center px-3 py-2 hover:bg-gray-50 transition-colors group rounded-md"
                             @click="isDropdownOpen = false"
                           >
                             <div
-                              class="w-5 h-5 sm:w-6 sm:h-6 mr-3 text-gray-700 group-hover:text-gray-900 flex-shrink-0"
+                              class="w-5 h-5 mr-2 text-gray-700 group-hover:text-gray-900 flex-shrink-0"
                             >
                               <IconSMA class="w-full h-full" />
                             </div>
                             <span
-                              class="text-gray-700 text-sm sm:text-base group-hover:text-gray-900 font-medium"
+                              class="text-gray-700 text-sm group-hover:text-gray-900 font-medium"
                               >SMA</span
                             >
                           </nuxt-link>
                         </div>
                       </div>
 
-                      <div class="w-1/2 pl-2">
-                        <div class="flex flex-col gap-2">
+                      <div class="w-1/2 pl-1">
+                        <div class="flex flex-col gap-1">
                           <nuxt-link
                             to="/schools/smk"
-                            class="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors group rounded-md"
+                            class="flex items-center px-3 py-2 hover:bg-gray-50 transition-colors group rounded-md"
                             @click="isDropdownOpen = false"
                           >
                             <div
-                              class="w-5 h-5 sm:w-6 sm:h-6 mr-3 text-gray-700 group-hover:text-gray-900 flex-shrink-0"
+                              class="w-5 h-5 mr-2 text-gray-700 group-hover:text-gray-900 flex-shrink-0"
                             >
                               <IconSMK class="w-full h-full" />
                             </div>
                             <span
-                              class="text-gray-700 text-sm sm:text-base group-hover:text-gray-900 font-medium"
+                              class="text-gray-700 text-sm group-hover:text-gray-900 font-medium"
                               >SMK</span
                             >
                           </nuxt-link>
 
                           <nuxt-link
                             to="/schools/universitas"
-                            class="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors group rounded-md"
+                            class="flex items-center px-3 py-2 hover:bg-gray-50 transition-colors group rounded-md"
                             @click="isDropdownOpen = false"
                           >
                             <div
-                              class="w-5 h-5 sm:w-6 sm:h-6 mr-3 text-gray-700 group-hover:text-gray-900 flex-shrink-0"
+                              class="w-5 h-5 mr-2 text-gray-700 group-hover:text-gray-900 flex-shrink-0"
                             >
                               <IconUniversity class="w-full h-full" />
                             </div>
                             <span
-                              class="text-gray-700 text-sm sm:text-base group-hover:text-gray-900 font-medium"
+                              class="text-gray-700 text-sm group-hover:text-gray-900 font-medium"
                               >Universitas</span
                             >
                           </nuxt-link>
@@ -393,7 +393,7 @@
               </div>
             </div>
 
-            <div class="mb-3 sm:mb-6">
+            <!-- <div class="mb-3 sm:mb-6">
               <p class="text-xs text-gray-600 mb-1">General Inquiry</p>
               <a
                 href="mailto:hallo@schoolaadvisor.com"
@@ -401,7 +401,7 @@
               >
                 hallo@schoolpedia.com
               </a>
-            </div>
+            </div> -->
 
             <div class="flex space-x-3 sm:space-x-4">
               <a
@@ -470,7 +470,7 @@
           </div>
 
           <!-- Navigation - 1 column on mobile -->
-          <div>
+          <!-- <div>
             <ul class="space-y-2 lg:space-y-3">
               <li>
                 <NuxtLink
@@ -505,10 +505,10 @@
                 </NuxtLink>
               </li>
             </ul>
-          </div>
+          </div> -->
 
           <!-- Policies - 1 column on mobile -->
-          <div>
+          <!-- <div>
             <ul class="space-y-2 lg:space-y-3">
               <li>
                 <NuxtLink
@@ -543,10 +543,10 @@
                 </NuxtLink>
               </li>
             </ul>
-          </div>
+          </div> -->
 
           <!-- Newsletter & Social - Full width on mobile -->
-          <div class="col-span-2 lg:col-span-1">
+          <!-- <div class="col-span-2 lg:col-span-1">
             <div class="mb-4 sm:mb-6">
               <h4
                 class="text-sm sm:text-base font-semibold text-gray-900 mb-2 sm:mb-3"
@@ -600,13 +600,13 @@
                 Youtube
               </a>
             </div>
-          </div>
+          </div> -->
         </div>
 
         <div class="border-t border-gray-200 pt-4 sm:pt-6">
           <p class="text-xs text-gray-600 text-left">
-            Copyright © {{ currentYear }} School Advisor. All Rights Reserved. Powered by PT.
-            Timedoor Indonesia.
+            Copyright © {{ currentYear }} School Advisor. All Rights Reserved.
+            Powered by PT. Timedoor Indonesia.
           </p>
         </div>
       </div>

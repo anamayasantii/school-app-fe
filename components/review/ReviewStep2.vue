@@ -399,7 +399,7 @@ watch(
     const allRatings = Object.values(newRatings);
     if (allRatings.every((r) => r !== null)) {
       const sum = allRatings.reduce((acc, val) => acc + val, 0);
-      overallRating.value = Math.round(sum / allRatings.length);
+      overallRating.value = Math.floor(sum / allRatings.length);
     } else {
       overallRating.value = 0;
     }

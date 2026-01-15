@@ -151,7 +151,7 @@ const handleNext = () => {
 }
 
 const handlePrev = () => {
-  emit('prev')
+  navigateTo('/auth/login')
 }
 
 watch(() => props.formData?.step1, (newData) => {

@@ -132,14 +132,14 @@
         >
           Ulasan Anda telah dikirim.
         </h1>
-
         <p
           class="text-sm sm:text-base text-gray-700 leading-relaxed max-w-xl mx-auto mb-6 md:mb-8 px-4"
         >
           Ulasan Anda tentang
           <span class="font-semibold">{{ schoolName }}</span> telah berhasil
-          dikirim. Kami menghargai umpan balik Anda dan berharap dapat
-          membagikan wawasan Anda kepada orang lain.
+          dikirim dan masuk ke dalam antrian **pending**. Ulasan akan
+          ditampilkan setelah melalui proses verifikasi oleh admin. Terima kasih
+          atas kontribusi Anda yang berharga!
         </p>
 
         <NuxtLink :to="`/school-details/${schoolId}`">

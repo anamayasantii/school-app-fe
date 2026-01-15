@@ -177,12 +177,13 @@
 
         <div v-if="form.isVerified" class="mb-4 md:mb-6">
           <h3 class="text-base md:text-lg font-semibold mb-3 md:mb-4">
-            Unggah Berkas
+            Unggah Dokumen Bukti Sekolah
           </h3>
 
           <div
             v-if="!form.file"
-            class="border-2 border-dashed border-border-gray rounded-lg p-4 sm:p-6 md:p-8 text-center"
+            @click="triggerFileInput"
+            class="border-2 border-dashed border-border-gray rounded-lg p-4 sm:p-6 md:p-8 text-center cursor-pointer hover:border-primary-green transition-colors"
           >
             <div class="flex flex-col items-center">
               <div
@@ -210,16 +211,16 @@
               <p class="text-xs sm:text-sm text-secondary-gray mb-1">
                 <span v-if="isUploading">Mengunggah...</span>
                 <span v-else class="block sm:inline">
-                  Seret dan jatuhkan berkas di sini atau
-                  <label
-                    for="fileUpload"
-                    class="text-blue-600 underline cursor-pointer block sm:inline mt-1 sm:mt-0"
-                    >Pilih berkas</label
-                  >
+                  Seret dan lepas file di sini atau Pilih file
+                  <br>
+                  Unggah dokumen untuk membuktikan sebagai verifikasi, dapat
+                  berupa foto kartu siswa atau dokumen yang relevan.
+                  <!-- atau
+                  <span class="text-blue-600 underline">Pilih berkas</span> -->
                 </span>
               </p>
               <input
-                id="fileUpload"
+                ref="fileInput"
                 type="file"
                 @change="handleFileUpload"
                 class="hidden"
@@ -394,6 +395,13 @@ const isFormValid = computed(() => {
   );
 });
 
+const fileInput = ref(null);
+
+const triggerFileInput = () => {
+  if (!isUploading.value) {
+    fileInput.value.click();
+  }
+};
 const fileSize = computed(() => {
   if (form.value.file) {
     const sizeInMB = (form.value.file.size / (1024 * 1024)).toFixed(2);
@@ -446,10 +454,19 @@ const handleFileDelete = () => {
 const handleNext = () => {
   if (!isFormValid.value) return;
 
-  console.log("Form data saat next:", form.value);
-  console.log("User Status:", form.value.userStatus);
+  const dataToSend = {
+    phoneNo: form.value.phoneNo,
+    userStatus: form.value.userStatus,
+    fileUrl: form.value.fileUrl,
+    fileName: form.value.fileName,
+    file: form.value.file,
+    isVerified: form.value.isVerified
+  };
 
-  emit("updateFormData", { step1: form.value });
+  console.log("Form data saat next:", dataToSend);
+  console.log("User Status:", dataToSend.userStatus);
+
+  emit("updateFormData", { step1: dataToSend });
   emit("next");
 };
 

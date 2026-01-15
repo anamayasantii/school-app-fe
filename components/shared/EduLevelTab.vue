@@ -10,7 +10,7 @@
         :class="[
           'flex items-center gap-2 px-3 py-3 rounded-lg text-sm font-medium transition-colors',
           activeTab === tab.value
-            ? 'bg-primary-green-dark text-[#F8F9FA]'
+            ? 'bg-primary-green text-[#F8F9FA]'
             : 'text-primary-green hover:bg-[#fafbfb]',
         ]"
       >
@@ -29,7 +29,7 @@
         :class="[
           'flex items-center justify-center gap-1.5 px-3 py-3 rounded-lg text-xs font-medium transition-colors whitespace-nowrap flex-1',
           activeTab === tab.value
-            ? 'bg-primary-green-dark text-[#F8F9FA]'
+            ? 'bg-primary-green text-[#F8F9FA]'
             : 'text-primary-green hover:bg-[#fafbfb]',
         ]"
       >

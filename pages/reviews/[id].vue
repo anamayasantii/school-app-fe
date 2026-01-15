@@ -94,6 +94,7 @@ const fetchSchoolData = async () => {
   }
 };
 
+
 const updateFormData = (data) => {
   reviewFormData.value = {
     ...reviewFormData.value,
@@ -103,6 +104,7 @@ const updateFormData = (data) => {
 
 const handleNext = () => {
   currentStep.value++;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 const handlePrev = () => {
@@ -120,8 +122,8 @@ const handleSubmit = async () => {
     const token = Cookies.get('token')
     
     const reviewPayload = {
-      fullname: reviewFormData.value.step1?.fullName || '',
-      email: reviewFormData.value.step1?.email || '',
+      // fullname: reviewFormData.value.step1?.fullName || '',
+      // email: reviewFormData.value.step1?.email || '',
       phoneNo: reviewFormData.value.step1?.phoneNo || '',
       userStatus: reviewFormData.value.step1?.userStatus || '',
       schoolValidationFile: reviewFormData.value.step1?.fileUrl || null,

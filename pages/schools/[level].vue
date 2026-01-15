@@ -7,10 +7,12 @@
         >
           <li><a href="/">Beranda</a></li>
           <li><span class="mx-2">›</span></li>
-          <li><a href="">Jelajahi Sekolah</a></li>
+          <li><a href="/explore-school">Jelajahi Sekolah</a></li>
           <li><span class="mx-2">›</span></li>
-          <li :class="selectedStatus ? 'text-[#76685A]' : 'text-[#28190C]'">
-            {{ getLevelTitle(level) }}
+          <li :class="selectedStatus ? 'text-secondary-gray' : 'text-[#28190C]'">
+            <a :href="getLevelPath(level)" class="hover:text-primary-green">
+              {{ getLevelTitle(level) }}
+            </a>
           </li>
           <template v-if="selectedStatus">
             <li><span class="mx-2">›</span></li>
@@ -57,10 +59,7 @@
         </div>
 
         <!-- Status Filter Cards with Transition -->
-        <transition
-          name="fade-slide"
-          @after-leave="showLocationFilters = true"
-        >
+        <transition name="fade-slide" @after-leave="showLocationFilters = true">
           <StatusFilterCards
             v-if="!selectedStatus"
             :status-list="statusList"
@@ -84,14 +83,11 @@
         </transition>
       </div>
 
-      <div
-        class="flex items-center justify-between mb-4 sm:mb-6 pb-4"
-      >
+      <div class="flex items-center justify-between mb-4 sm:mb-6 pb-4">
         <div class="text-xs sm:text-sm text-[#1D2B29] font-medium">
           <span v-if="schools.length > 0 && pagination.total > 0">
-            Showing {{ pagination.from }} - {{ pagination.to }} of {{ pagination.total }} result{{
-              pagination.total !== 1 ? "s" : ""
-            }}
+            Showing {{ pagination.from }} - {{ pagination.to }} of
+            {{ pagination.total }} result{{ pagination.total !== 1 ? "s" : "" }}
           </span>
           <span v-else-if="loading"> Loading... </span>
           <span v-else> No results found </span>
@@ -183,6 +179,10 @@ const pagination = ref({
   to: 0,
 });
 
+const getLevelPath = (levelParam) => {
+  return `/schools/${levelParam}`;
+};
+
 const getLevelTitle = (levelParam) => {
   const titles = {
     sd: "Sekolah Dasar",
@@ -213,7 +213,7 @@ const fetchSchoolsByLevel = async () => {
       if (!query[key]) delete query[key];
     });
 
-    const response = await axios.get("/school-details", { params: query });
+    const response = await axios.get("/school-details?sortBy=name&sortDirection=asc", { params: query });
     schools.value = response.data.data.datas || [];
 
     if (response.data.data.meta) {
@@ -303,7 +303,7 @@ const changePage = (page) => {
   ) {
     pagination.value.currentPage = page;
     fetchSchoolsByLevel();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 };
 
@@ -377,13 +377,13 @@ watch(
     selectedProvince.value = newQuery.provinceName || "";
     selectedDistrict.value = newQuery.districtName || "";
     selectedSubDistrict.value = newQuery.subDistrictName || "";
-    
+
     if (selectedStatus.value) {
       showLocationFilters.value = true;
     } else {
       showLocationFilters.value = false;
     }
-    
+
     pagination.value.currentPage = 1;
     fetchSchoolsByLevel();
   },
