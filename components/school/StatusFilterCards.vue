@@ -17,7 +17,7 @@
         <div class="flex items-start space-x-2.5 sm:space-x-3">
           <div class="flex-shrink-0">
             <slot name="icon">
-              <IconType class="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10" />
+              <IconType class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" />
             </slot>
           </div>
           <div class="flex-1 min-w-0">

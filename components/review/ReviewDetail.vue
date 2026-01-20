@@ -36,10 +36,14 @@ const selectSortOption = (sort) => {
 };
 
 const schoolRating = computed(() => {
+  console.log("Meta value:", meta.value);
+  console.log("Question stats:", meta.value?.questionStats);
+
   if (!meta.value || !reviews.value.length) {
     return {
       overall: "0.0",
       showRecommended: false,
+      hasQuestionStats: false,
       categories: [
         { score: "0.0", label: "Fasilitas & Peralatan" },
         { score: "0.0", label: "Proses Pembelajaran" },
@@ -60,13 +64,27 @@ const schoolRating = computed(() => {
     5: "Kegiatan Sekolah",
   };
 
+  const hasQuestionStats =
+    meta.value.questionStats && meta.value.questionStats.length > 0;
+
+  console.log("Has question stats:", hasQuestionStats);
+
   return {
     overall: finalRating.toFixed(1),
     showRecommended: finalRating >= 4.5,
-    categories: meta.value.questionStats.map((stat) => ({
-      score: parseFloat(stat.avg_score).toFixed(1),
-      label: questionLabels[stat.questionId] || "",
-    })),
+    hasQuestionStats,
+    categories: hasQuestionStats
+      ? meta.value.questionStats.map((stat) => ({
+          score: parseFloat(stat.avg_score).toFixed(1),
+          label: questionLabels[stat.questionId] || "",
+        }))
+      : [
+          { score: "0.0", label: "Fasilitas & Peralatan" },
+          { score: "0.0", label: "Proses Pembelajaran" },
+          { score: "0.0", label: "Layanan Sekolah" },
+          { score: "0.0", label: "Keamanan Sekolah" },
+          { score: "0.0", label: "Kegiatan Sekolah" },
+        ],
   };
 });
 
@@ -123,12 +141,20 @@ const paginationPages = computed(() => {
   return pages;
 });
 
+const getDisplayName = (review) => {
+  if (review.children && review.children.length > 0) {
+    if (review.schoolValidation?.[0]?.userStatus === "alumni") {
+      return review.children[0].fullname;
+    }
+    return review.fullname;
+  }
+  return review.fullname;
+};
+
 const getInitials = (fullname) => {
   const parts = fullname.split(" ");
   const lastTwoParts = parts.slice(-2);
-  return lastTwoParts
-    .map((part) => part.charAt(0).toUpperCase())
-    .join("");
+  return lastTwoParts.map((part) => part.charAt(0).toUpperCase()).join("");
 };
 
 const formatDate = (dateString) => {
@@ -574,18 +600,18 @@ onMounted(fetchReviews);
                 <img
                   v-if="review.image"
                   :src="review.image"
-                  :alt="review.fullname"
+                  :alt="getDisplayName(review)"
                   class="w-10 h-10 rounded-full object-cover flex-shrink-0"
                 />
                 <div
                   v-else
                   class="w-10 h-10 bg-primary-green rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0"
                 >
-                  {{ getInitials(review.fullname) }}
+                  {{ getInitials(getDisplayName(review)) }}
                 </div>
                 <div class="flex-1 min-w-0">
                   <h3 class="font-semibold text-sm text-primary-green truncate">
-                    {{ review.fullname }}
+                    {{ getDisplayName(review) }}
                   </h3>
                   <div class="flex flex-wrap items-center gap-1.5 mt-1">
                     <span
@@ -599,7 +625,11 @@ onMounted(fetchReviews);
                       class="inline-flex items-center gap-1 px-2 py-0.5 bg-[#E5F3FE] text-[#0789F2] rounded-full text-xs font-medium capitalize"
                     >
                       <UserStatus />
-                      {{ review.schoolValidation[0].userStatus }}
+                      {{
+                        review.schoolValidation[0].userStatus === "aktif"
+                          ? "Siswa/Mahasiswa Aktif"
+                          : review.schoolValidation[0].userStatus
+                      }}
                     </span>
                     <span
                       class="inline-flex items-center gap-1 px-2 py-0.5 border border-border-gray text-primary-green rounded-full text-xs font-medium"

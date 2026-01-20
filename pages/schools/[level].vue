@@ -58,7 +58,6 @@
           </div>
         </div>
 
-        <!-- Status Filter Cards with Transition -->
         <transition name="fade-slide" @after-leave="showLocationFilters = true">
           <StatusFilterCards
             v-if="!selectedStatus"
@@ -68,7 +67,6 @@
           />
         </transition>
 
-        <!-- Location Filters with Transition -->
         <transition name="fade-slide">
           <LocationFilters
             v-if="selectedStatus && showLocationFilters"
@@ -86,11 +84,11 @@
       <div class="flex items-center justify-between mb-4 sm:mb-6 pb-4">
         <div class="text-xs sm:text-sm text-[#1D2B29] font-medium">
           <span v-if="schools.length > 0 && pagination.total > 0">
-            Showing {{ pagination.from }} - {{ pagination.to }} of
-            {{ pagination.total }} result{{ pagination.total !== 1 ? "s" : "" }}
+            Menampilkan {{ pagination.from }} - {{ pagination.to }} dari
+            {{ pagination.total }} hasil
           </span>
           <span v-else-if="loading"> Loading... </span>
-          <span v-else> No results found </span>
+          <span v-else> Tidak menemukan hasil </span>
         </div>
       </div>
 

@@ -12,10 +12,10 @@
         <p
           class="text-primary-green max-w-4xl mx-auto text-sm sm:text-base px-4"
         >
-          Baca pengalaman langsung dari siswa/mahasiswa aktif dan alumni yang pernah
-          belajar di sekolah tersebut. Setiap ulasan mencerminkan penilaian
-          jujur tentang kualitas pembelajaran, lingkungan, dan fasilitas
-          sekolah.
+          Baca pengalaman langsung dari siswa/mahasiswa aktif dan alumni yang
+          pernah belajar di sekolah tersebut. Setiap ulasan mencerminkan
+          penilaian jujur tentang kualitas pembelajaran, lingkungan, dan
+          fasilitas sekolah.
         </p>
       </div>
 
@@ -26,44 +26,6 @@
             :key="review.id"
             class="bg-white rounded-2xl border border-gray-200 p-4 sm:p-5"
           >
-            <!-- <div class="flex items-center gap-2 mb-4 sm:mb-6">
-              <div class="border border-border-gray rounded-full px-2 sm:px-3 py-1.5 sm:py-2 flex items-center gap-1.5 sm:gap-2">
-                <span class="text-xs sm:text-xs text-secondary-gray">Review untuk</span>
-                <NuxtLink
-                  :to="`/school-details/${review.schoolDetailId}`"
-                  class="flex items-center gap-1 sm:gap-1.5 underline"
-                >
-                  <div class="flex items-center gap-1 sm:gap-1.5">
-                    <svg
-                      class="w-3 h-3 sm:w-4 sm:h-4 text-primary-green flex-shrink-0"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                    >
-                      <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                      <path d="M2 17l10 5 10-5M2 12l10 5 10-5" />
-                    </svg>
-                    <span class="line-clamp-1 font-semibold text-primary-green text-xs sm:text-sm">{{
-                      review.schoolDetailName
-                    }}</span>
-                  </div>
-                  <svg
-                    class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M7 17L17 7M17 7H7M17 7V17"
-                      stroke="#082519"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </NuxtLink>
-              </div>
-            </div> -->
-
             <div class="flex items-start gap-3 sm:gap-4 mb-4 sm:mb-6">
               <img
                 v-if="review.image"
@@ -75,13 +37,13 @@
                 v-else
                 class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gray-700 flex items-center justify-center text-white font-bold text-base sm:text-lg flex-shrink-0"
               >
-                {{ getInitials(review.fullname) }}
+                {{ getInitials(getDisplayName(review)) }}
               </div>
               <div class="flex-1 min-w-0">
                 <h3
                   class="text-base sm:text-lg font-bold text-gray-900 mb-1 truncate"
                 >
-                  {{ review.fullname }}
+                  {{ getDisplayName(review) }}
                 </h3>
                 <div
                   class="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm flex-wrap"
@@ -96,7 +58,9 @@
                     "
                   >
                     {{
-                      review.userStatus === "alumni" ? "Alumni" : "Siswa/Mahasiswa Aktif"
+                      review.userStatus === "alumni"
+                        ? "Alumni"
+                        : "Siswa/Mahasiswa Aktif"
                     }}
                   </span>
                   <span class="text-gray-600">dari</span>
@@ -109,9 +73,11 @@
                       <path d="M12 2L2 7l10 5 10-5-10-5z" />
                       <path d="M2 17l10 5 10-5M2 12l10 5 10-5" />
                     </svg>
-                    <span class="text-gray-900 font-medium text-xs truncate">{{
-                      review.schoolDetailName
-                    }}</span>
+                    <NuxtLink
+                      :to="`/school-details/${review.schoolDetailId}`"
+                      class="text-gray-900 font-medium text-xs truncate"
+                      >{{ review.schoolDetailName }}</NuxtLink
+                    >
                   </div>
                 </div>
               </div>
@@ -173,44 +139,6 @@
             :key="review.id"
             class="bg-white rounded-2xl border border-gray-200 p-4 shadow-sm flex-shrink-0 w-[300px] snap-start"
           >
-            <!-- <div class="flex items-center gap-2 mb-4">
-              <div class="border border-border-gray rounded-full px-2 py-1.5 flex items-center gap-1.5">
-                <span class="text-xs text-secondary-gray">Review untuk</span>
-                <NuxtLink
-                  :to="`/school-details/${review.schoolDetailId}`"
-                  class="flex items-center gap-1 underline"
-                >
-                  <div class="flex items-center gap-1">
-                    <svg
-                      class="w-3 h-3 text-primary-green flex-shrink-0"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                    >
-                      <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                      <path d="M2 17l10 5 10-5M2 12l10 5 10-5" />
-                    </svg>
-                    <span class="font-semibold text-primary-green text-xs line-clamp-1">{{
-                      review.schoolDetailName
-                    }}</span>
-                  </div>
-                  <svg
-                    class="w-4 h-4 flex-shrink-0"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M7 17L17 7M17 7H7M17 7V17"
-                      stroke="#082519"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </NuxtLink>
-              </div>
-            </div> -->
-
             <div class="flex items-start gap-3 mb-4">
               <img
                 v-if="review.image"
@@ -222,11 +150,11 @@
                 v-else
                 class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center text-white font-bold text-base flex-shrink-0"
               >
-                {{ getInitials(review.fullname) }}
+                {{ getInitials(getDisplayName(review)) }}
               </div>
               <div class="flex-1 min-w-0">
                 <h3 class="text-base font-bold text-gray-900 mb-1 line-clamp-1">
-                  {{ review.fullname }}
+                  {{ getDisplayName(review) }}
                 </h3>
                 <div class="flex items-center gap-2 text-xs flex-wrap">
                   <span
@@ -239,7 +167,9 @@
                     "
                   >
                     {{
-                      review.userStatus === "alumni" ? "Alumni" : "Siswa/Mahasiswa Aktif"
+                      review.userStatus === "alumni"
+                        ? "Alumni"
+                        : "Siswa/Mahasiswa Aktif"
                     }}
                   </span>
                   <span class="text-gray-600">dari</span>
@@ -252,9 +182,10 @@
                       <path d="M12 2L2 7l10 5 10-5-10-5z" />
                       <path d="M2 17l10 5 10-5M2 12l10 5 10-5" />
                     </svg>
-                    <span
+                    <NuxtLink
+                      :to="`/school-details/${review.schoolDetailId}`"
                       class="text-gray-900 font-medium text-xs line-clamp-1"
-                      >{{ review.schoolDetailName }}</span
+                      >{{ review.schoolDetailName }}</NuxtLink
                     >
                   </div>
                 </div>
@@ -466,12 +397,24 @@ const visibleReviews = computed(() => {
   return reviews.value.slice(start, start + 2);
 });
 
+const getDisplayName = (review) => {
+  // Cek apakah user adalah parent (punya children)
+  if (review.children && review.children.length > 0) {
+    // Jika anak alumni, tampilkan nama anak
+    if (review.userStatus === "alumni") {
+      return review.children[0].fullname;
+    }
+    // Jika anak aktif, tampilkan nama orang tua
+    return review.fullname;
+  }
+  // Jika bukan parent (student), tampilkan nama user
+  return review.fullname;
+};
+
 const getInitials = (fullname) => {
   const parts = fullname.split(" ");
   const lastTwoParts = parts.slice(-2);
-  return lastTwoParts
-    .map((part) => part.charAt(0).toUpperCase())
-    .join("");
+  return lastTwoParts.map((part) => part.charAt(0).toUpperCase()).join("");
 };
 
 const formatDate = (dateString) => {
