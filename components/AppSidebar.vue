@@ -30,7 +30,6 @@ const props = withDefaults(defineProps<SidebarProps>(), {
   collapsible: "icon",
 })
 
-// This is sample data.
 const data = {
   user: {
     name: "shadcn",
@@ -84,14 +83,14 @@ const data = {
           title: "School Lists",
           url: "/dashboard/school-lists",
         },
-        // {
-        //   title: "Add School",
-        //   url: "/dashboard/school-lists/add",
-        // },
-        // {
-        //   title: "Add Highlight School",
-        //   url: "/dashboard/school-lists/add-highlight",
-        // }
+        {
+          title: "Add School",
+          url: "/dashboard/school-lists/add",
+        },
+        {
+          title: "Add Highlight School",
+          url: "/dashboard/school-lists/add-highlight",
+        }
       ],
     },
     {

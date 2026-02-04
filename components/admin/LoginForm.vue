@@ -58,7 +58,6 @@ const handleSubmit = async () => {
         return
       }
       
-      // Gunakan replace agar tidak bisa back ke login page
       await navigateTo('/dashboard', { replace: true })
     } else {
       errorMessage.value = response.data.message || 'Login gagal'
@@ -113,7 +112,6 @@ const handleSubmit = async () => {
           />
         </div>
 
-        <!-- Error Message -->
         <div v-if="errorMessage" class="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-800">
           {{ errorMessage }}
         </div>

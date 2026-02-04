@@ -1,13 +1,10 @@
 <template>
   <div class="max-w-full mx-auto space-y-8 py-6 pt-1">
-    <!-- Showing Results and Sort By -->
     <div class="flex justify-between items-center mb-6">
-      <!-- Showing Results -->
       <div class="text-md font-semibold text-gray-700">
         Showing {{ startIndex }} - {{ endIndex }} of {{ totalResults }} Results
       </div>
 
-      <!-- Sort By Dropdown -->
       <div class="relative">
         <button
           @click="toggleSortDropdown"
@@ -38,7 +35,6 @@
     </div>
 
     <div v-for="review in reviews" :key="review.id" class="flex gap-4">
-      <!-- Profile Picture - Left Column -->
       <div class="w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
         <img
           v-if="review.image"
@@ -54,15 +50,12 @@
         </div>
       </div>
 
-      <!-- Content - Right Column -->
       <div class="flex-1">
-        <!-- User Info -->
         <div class="mb-6">
           <h3 class="text-lg font-semibold text-gray-900 mb-2">
             {{ review.username }}
           </h3>
           <div class="flex items-center gap-4 text-sm text-gray-600">
-            <!-- Faculty Info -->
             <div class="flex items-center gap-2">
               <svg
                 class="w-4 h-4"
@@ -79,7 +72,6 @@
               </svg>
               <span>{{ review.schoolDetailName }}</span>
             </div>
-            <!-- Enrollment Info -->
             <div class="flex items-center gap-2">
               <svg
                 class="w-4 h-4"
@@ -99,16 +91,12 @@
           </div>
         </div>
 
-        <!-- Divider -->
         <hr class="border-gray-200 mb-6" />
 
-        <!-- Rating and Date Section -->
         <div class="flex items-center gap-4 mb-4">
-          <!-- Rating Score -->
           <span class="text-sm font-semibold text-gray-900">{{
             review.rating
           }}</span>
-          <!-- Stars -->
           <div class="flex items-center gap-1">
             <svg
               v-for="star in 5"
@@ -126,21 +114,17 @@
               ></path>
             </svg>
           </div>
-          <!-- Date -->
           <span class="text-sm text-gray-500">{{
             formatDate(review.createdAt)
           }}</span>
         </div>
 
-        <!-- Review Title -->
         <h4 class="text-xl font-semibold text-gray-900 mb-4">Comment:</h4>
 
-        <!-- Review Content -->
         <p class="text-gray-700 leading-relaxed mb-6">
           {{ review.reviewText }}
         </p>
 
-        <!-- Rating Categories -->
         <div class="grid grid-cols-5 gap-4 mb-6">
           <div
             v-for="category in review.reviewDetails"
@@ -158,10 +142,7 @@
         </div>
       </div>
     </div>
-    <!-- Paginasi -->
-    <!-- Paginasi -->
     <div class="flex justify-center items-center space-x-2">
-      <!-- Previous Button -->
       <button
         :disabled="page <= 1"
         @click="changePage(page - 1)"
@@ -170,7 +151,6 @@
         Previous
       </button>
 
-      <!-- Page Numbers -->
       <button
         v-for="n in totalPages"
         :key="n"
@@ -184,7 +164,6 @@
         {{ n }}
       </button>
 
-      <!-- Next Button -->
       <button
         :disabled="page >= totalPages"
         @click="changePage(page + 1)"

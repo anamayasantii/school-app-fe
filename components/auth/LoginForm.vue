@@ -5,11 +5,17 @@
       :style="`background-image: url('${backgroundImage}')`"
     ></div>
 
-    <div class="flex-1 bg-white flex flex-col justify-center px-6 sm:px-8 md:px-12 py-8 md:py-12">
+    <div
+      class="flex-1 bg-white flex flex-col justify-center px-6 sm:px-8 md:px-12 py-8 md:py-12"
+    >
       <div class="max-w-md mx-auto w-full">
         <div class="mb-6 md:mb-8">
-          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 md:mb-3">Masuk</h1>
-          <p class="text-sm sm:text-base text-gray-600">Masuk dengan informasi kredensial Anda</p>
+          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 md:mb-3">
+            Masuk
+          </h1>
+          <p class="text-sm sm:text-base text-gray-600">
+            Masuk dengan informasi kredensial Anda
+          </p>
         </div>
 
         <form @submit.prevent="handleSubmit" class="space-y-4 md:space-y-6">
@@ -56,20 +62,20 @@
             </div>
             <div class="relative">
               <input
-  id="password"
-  v-model="form.password"
-  :type="showPassword ? 'text' : 'password'"
-  required
-  :class="[
-    'w-full px-4 py-2.5 md:py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 pr-12 text-sm sm:text-base',
-    form.errors.password
-      ? 'border-red-300 error-input'
-      : 'border-gray-300',
-  ]"
-  placeholder="Kata Sandi"
-  @input="validatePassword"
-  @blur="handlePasswordBlur"
-/>
+                id="password"
+                v-model="form.password"
+                :type="showPassword ? 'text' : 'password'"
+                required
+                :class="[
+                  'w-full px-4 py-2.5 md:py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 pr-12 text-sm sm:text-base',
+                  form.errors.password
+                    ? 'border-red-300 error-input'
+                    : 'border-gray-300',
+                ]"
+                placeholder="Kata Sandi"
+                @input="validatePassword"
+                @blur="handlePasswordBlur"
+              />
               <button
                 type="button"
                 @click="showPassword = !showPassword"
@@ -301,7 +307,7 @@ const handleSubmit = async () => {
     const { token, expiresAt } = result.data;
 
     authStore.setAuthToken(token, expiresAt);
-    
+
     await authStore.fetchUser();
 
     if (checkAdminRole(authStore.user)) {
@@ -312,10 +318,11 @@ const handleSubmit = async () => {
     }
 
     let isProfileComplete = false;
-    
-    if (authStore.user?.role === 'parent') {
-      isProfileComplete = authStore.user?.child?.length > 0 && 
-                         authStore.user.child.some(child => child.nisn && child.schoolDetail);
+
+    if (authStore.user?.role === "parent") {
+      isProfileComplete =
+        authStore.user?.child?.length > 0 &&
+        authStore.user.child.some((child) => child.nisn && child.schoolDetail);
     } else {
       isProfileComplete = authStore.user?.nisn && authStore.user?.schoolDetail;
     }
@@ -379,7 +386,8 @@ a {
 }
 
 @media (max-width: 640px) {
-  input, button {
+  input,
+  button {
     font-size: 16px;
   }
 }

@@ -78,7 +78,6 @@
               </button>
             </div>
             
-            <!-- Password Validation Indicators -->
             <div class="mt-2 space-y-1">
               <div class="flex items-center text-xs">
                 <span :class="passwordValidation.hasMinLength ? 'text-green-600' : 'text-red-600'">

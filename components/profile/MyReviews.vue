@@ -1,5 +1,7 @@
 <template>
-  <div class="bg-white rounded-lg shadow-sm border border-gray-100 w-full max-w-full">
+  <div
+    class="bg-white rounded-lg shadow-sm border border-gray-100 w-full max-w-full"
+  >
     <div class="px-4 py-3 md:px-6 md:py-4">
       <h2 class="text-lg md:text-xl font-semibold text-gray-900">
         Ulasan Saya({{ reviews.length }})
@@ -11,7 +13,9 @@
         <div
           class="animate-spin rounded-full h-10 w-10 md:h-12 md:w-12 border-b-2 border-gray-900 mx-auto"
         ></div>
-        <p class="mt-3 md:mt-4 text-sm md:text-base text-gray-600">Memuat ulasan...</p>
+        <p class="mt-3 md:mt-4 text-sm md:text-base text-gray-600">
+          Memuat ulasan...
+        </p>
       </div>
 
       <div v-else class="space-y-6 md:space-y-8">
@@ -22,16 +26,19 @@
             <div
               class="flex items-center space-x-2 border border-gray-300 rounded-full px-3 py-1 md:px-4 md:py-1 self-start"
             >
-              <span class="text-xs md:text-sm whitespace-nowrap">Ulasan untuk</span>
+              <span class="text-xs md:text-sm whitespace-nowrap font-medium"
+                >Ulasan untuk</span
+              >
               <NuxtLink
                 :to="`/school-details/${review.schoolDetailId}`"
                 class="flex items-center space-x-1 md:space-x-2 min-w-0"
               >
-                <span class="text-xs md:text-sm font-medium text-gray-900 underline truncate">{{
-                  review.schoolDetailName
-                }}</span>
+                <span
+                  class="text-xs md:text-xs font-medium text-gray-900 underline truncate"
+                  >{{ review.schoolDetailName }}</span
+                >
                 <svg
-                  class="w-4 h-4 md:w-5 md:h-5 flex-shrink-0"
+                  class="w-4 h-4 md:w-4 md:h-4 flex-shrink-0"
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -51,7 +58,11 @@
               @click="toggleMenu(index)"
               class="p-1 text-gray-400 hover:text-gray-600 transition-colors relative self-end sm:self-auto"
             >
-              <svg class="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 20 20">
+              <svg
+                class="w-4 h-4 md:w-5 md:h-5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
                 <path
                   d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"
                 />
@@ -77,9 +88,11 @@
             </button>
           </div>
 
-          <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-4 mb-3 md:mb-4 px-3 md:px-6 space-y-2 sm:space-y-0">
+          <div
+            class="flex flex-col sm:flex-row sm:items-center sm:space-x-4 mb-3 md:mb-4 px-3 md:px-6 space-y-2 sm:space-y-0"
+          >
             <div class="flex items-center space-x-1">
-              <span class="text-base md:text-lg font-semibold text-gray-900">{{
+              <span class="text-base md:text-sm font-semibold text-gray-900">{{
                 review.rating
               }}</span>
               <div class="flex space-x-0.5 md:space-x-1">
@@ -89,7 +102,7 @@
                   :class="
                     star <= review.rating ? 'text-yellow-400' : 'text-gray-300'
                   "
-                  class="w-4 h-4 md:w-5 md:h-5"
+                  class="w-4 h-4 md:w-4 md:h-4"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -100,34 +113,53 @@
               </div>
             </div>
 
-            <span class="text-xs md:text-sm text-gray-500">{{
+            <span class="text-xs md:text-xs text-gray-500">{{
               formatDate(review.createdAt)
             }}</span>
           </div>
 
-          <p class="text-sm md:text-base text-gray-700 leading-relaxed mb-4 md:mb-6 px-3 md:px-6 pt-0">
+          <p
+            v-if="review.reviewText"
+            class="text-sm md:text-base text-gray-700 leading-relaxed mb-4 md:mb-6 px-3 md:px-6 pt-0"
+          >
             {{ review.reviewText }}
           </p>
 
-          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 md:gap-4 border-b border-gray-300 p-3 md:p-6">
-            <template
-              v-for="category in review.review_details"
-              :key="category.id"
+          <div
+            v-if="review.liked || review.improved"
+            class="px-3 md:px-6 space-y-3 mb-4"
+          >
+            <div v-if="review.liked">
+              <h4 class="font-semibold text-sm text-gray-900 mb-1">
+                Apa yang disukai dari sekolah ini?
+              </h4>
+              <p class="text-sm text-gray-700">{{ review.liked }}</p>
+            </div>
+            <div v-if="review.improved">
+              <h4 class="font-semibold text-sm text-gray-900 mb-1">
+                Apa yang perlu diperbaiki dari sekolah ini?
+              </h4>
+              <p class="text-sm text-gray-700">{{ review.improved }}</p>
+            </div>
+          </div>
+
+          <div
+            class="grid grid-cols-5 gap-2 md:gap-3 border-b border-gray-300 p-3 md:p-6"
+          >
+            <div
+              v-for="questionId in [1, 2, 3, 4, 5]"
+              :key="questionId"
+              class="border border-gray-300 rounded-lg py-2 px-1 md:px-2"
             >
               <div
-                class="relative rounded-lg p-3 md:p-4 min-h-[80px] md:min-h-[90px] border border-gray-200"
+                class="text-sm md:text-base font-semibold text-gray-900 mb-3 md:mb-5"
               >
-                <div class="absolute top-2 left-2 md:top-3 md:left-3 text-sm md:text-base font-medium">
-                  {{ parseInt(category.score) }}
-                </div>
-
-                <div
-                  class="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-xs md:text-sm text-gray-600 text-center w-[calc(100%-16px)]"
-                >
-                  {{ category.question }}
-                </div>
+                {{ getDetailScore(review.reviewDetails, questionId) }}
               </div>
-            </template>
+              <div class="text-[8px] md:text-[9px] text-gray-600 leading-tight">
+                {{ getQuestionName(questionId) }}
+              </div>
+            </div>
           </div>
         </template>
 
@@ -166,7 +198,9 @@
         <div
           class="px-4 py-3 md:px-6 md:py-4 border-b border-gray-200 flex justify-between items-center sticky top-0 bg-white z-10"
         >
-          <h3 class="text-lg md:text-xl font-semibold text-gray-900">Edit Ulasan</h3>
+          <h3 class="text-lg md:text-xl font-semibold text-gray-900">
+            Edit Ulasan
+          </h3>
           <button
             @click="closeEditModal"
             class="text-gray-400 hover:text-gray-600"
@@ -189,7 +223,9 @@
 
         <div class="p-4 md:p-6 space-y-4 md:space-y-6">
           <div>
-            <h4 class="font-medium text-sm md:text-base text-gray-900 mb-2 md:mb-3">
+            <h4
+              class="font-medium text-sm md:text-base text-gray-900 mb-2 md:mb-3"
+            >
               Penilaian Keseluruhan
             </h4>
             <p class="text-xs md:text-sm text-gray-600 mb-2 md:mb-3">
@@ -222,20 +258,11 @@
           </div>
 
           <div>
-            <h4 class="font-medium text-sm md:text-base text-gray-900 mb-2 md:mb-3">Ulasan Anda</h4>
-            <p class="text-xs md:text-sm text-gray-600 mb-2 md:mb-3">
-              Bagikan pemikiran Anda di sini
-            </p>
-            <textarea
-              v-model="editForm.reviewText"
-              rows="4"
-              class="w-full px-3 py-2 text-sm md:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Bagikan pemikiran Anda di sini"
-            ></textarea>
-          </div>
-
-          <div>
-            <h4 class="font-medium text-sm md:text-base text-gray-900 mb-2 md:mb-3">Detail Penilaian</h4>
+            <h4
+              class="font-medium text-sm md:text-base text-gray-900 mb-2 md:mb-3"
+            >
+              Detail Penilaian
+            </h4>
             <div class="space-y-3 md:space-y-4">
               <div
                 v-for="(detail, idx) in editForm.details"
@@ -266,7 +293,9 @@
           </div>
 
           <div>
-            <h4 class="font-medium text-sm md:text-base text-gray-900 mb-2 md:mb-3">
+            <h4
+              class="font-medium text-sm md:text-base text-gray-900 mb-2 md:mb-3"
+            >
               Apa yang paling Anda sukai?
             </h4>
             <textarea
@@ -278,7 +307,9 @@
           </div>
 
           <div>
-            <h4 class="font-medium text-sm md:text-base text-gray-900 mb-2 md:mb-3">
+            <h4
+              class="font-medium text-sm md:text-base text-gray-900 mb-2 md:mb-3"
+            >
               Apa yang bisa diperbaiki?
             </h4>
             <textarea
@@ -377,10 +408,10 @@ const editReview = (review, index) => {
   editingIndex.value = index;
 
   editForm.value = {
-    reviewText: review.reviewText,
+    reviewText: review.reviewText || "",
     liked: review.liked || "",
     improved: review.improved || "",
-    details: review.review_details.map((detail) => ({
+    details: review.reviewDetails.map((detail) => ({
       questionId: detail.questionId,
       score: parseInt(detail.score),
     })),
@@ -429,6 +460,11 @@ const getQuestionName = (questionId) => {
     5: "Kegiatan Sekolah",
   };
   return questions[questionId] || "Unknown";
+};
+
+const getDetailScore = (reviewDetails, questionId) => {
+  const detail = reviewDetails.find((d) => d.questionId === questionId);
+  return detail ? parseInt(detail.score) : 0;
 };
 
 const deleteReview = async (reviewId, index) => {
@@ -492,4 +528,4 @@ defineExpose({
   editReview,
   deleteReview,
 });
-</script> 
+</script>

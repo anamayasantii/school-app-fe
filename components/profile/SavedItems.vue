@@ -261,9 +261,9 @@ const removeAllSaved = async () => {
     const token = Cookies.get('token')
     
     // TODO: Replace with actual DELETE endpoint when available
-    // await axios.delete('/school-details/saved', {
-    //   headers: { 'Authorization': `Bearer ${token}` }
-    // })
+    await axios.delete('/school-details/saved', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
     
     savedSchools.value = []
     

@@ -3,7 +3,7 @@
     <section class="bg-gradient-to-br py-8 sm:py-12 md:py-16 pb-0">
       <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="mb-6 sm:mb-8 flex justify-center px-4">
-          <button @click="scrollToLeaderboard" class="figma-button w-full sm:w-[360px]">
+          <NuxtLink to="/ranking" class="figma-button w-full sm:w-[360px]">
             <span class="text-[#F9F6F1] underline text-sm sm:text-base">
               Lihat 10 Sekolah Terbaik {{ currentYear }}
             </span>
@@ -37,7 +37,7 @@
                 <path d="M12 5l7 7-7 7" />
               </svg>
             </div>
-          </button>
+          </NuxtLink>
         </div>
 
         <h1
@@ -56,9 +56,9 @@
       <SchoolTypes />
     </section>
 
-    <!-- <section class="py-6 sm:py-7">
+    <section class="py-6 sm:py-7">
       <IndexSchools />
-    </section> -->
+    </section>
 
     <section ref="leaderboardSection" class="py-12 sm:py-16">
       <client-only>
@@ -66,9 +66,9 @@
       </client-only>
     </section>
 
-    <!-- <section class="py-12 sm:py-16">
+    <section class="py-12 sm:py-16">
       <SchoolHighlight />
-    </section> -->
+    </section>
 
     <section class="py-12 sm:py-16">
       <RecentReviews />
@@ -85,11 +85,6 @@ import IndexSchools from "~/components/home/index.vue";
 import SchoolHighlight from "~/components/school/SchoolHighlight.vue";
 
 const currentYear = new Date().getFullYear();
-const leaderboardSection = ref(null);
-
-const scrollToLeaderboard = () => {
-  leaderboardSection.value?.scrollIntoView({ behavior: 'smooth' });
-};
 </script>
 
 <style scoped>

@@ -45,9 +45,7 @@
                 >
                   {{ getDisplayName(review) }}
                 </h3>
-                <div
-                  class="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm flex-wrap"
-                >
+                <div class="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm">
                   <span
                     v-if="review.userStatus"
                     class="px-2 py-0.5 rounded-full text-xs font-medium flex-shrink-0"
@@ -75,7 +73,7 @@
                     </svg>
                     <NuxtLink
                       :to="`/school-details/${review.schoolDetailId}`"
-                      class="text-gray-900 font-medium text-xs truncate"
+                      class="text-gray-900 font-medium text-xs line-clamp-1"
                       >{{ review.schoolDetailName }}</NuxtLink
                     >
                   </div>
@@ -115,7 +113,7 @@
               <p class="text-xs sm:text-sm font-semibold text-gray-900 mb-1">
                 Apa yang disukai dari sekolah ini?
               </p>
-              <p class="text-xs sm:text-sm text-gray-700 leading-relaxed">
+              <p class="text-xs sm:text-sm text-gray-700 leading-relaxed line-clamp-1">
                 {{ review.liked }}
               </p>
             </div>
@@ -124,9 +122,33 @@
               <p class="text-xs sm:text-sm font-semibold text-gray-900 mb-1">
                 Apa yang perlu diperbaiki dari sekolah ini?
               </p>
-              <p class="text-xs sm:text-sm text-gray-700 leading-relaxed">
+              <p class="text-xs sm:text-sm text-gray-700 leading-relaxed line-clamp-1">
                 {{ review.improved }}
               </p>
+            </div>
+
+            <div class="flex items-center gap-2 pt-3">
+              <div class="border border-border-gray rounded-full px-2 py-1.5 flex items-center gap-1.5">
+                <span class="text-xs text-secondary-gray">Helpful?</span>
+                <button @click="handleLikeClick(review.id)">
+                  <svg
+                    class="w-3.5 h-3.5"
+                    :fill="reviewLikes[review.id]?.isLiked ? 'currentColor' : 'none'"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <span class="text-xs text-gray-600"
+                >{{ reviewLikes[review.id]?.likesCount || 0 }} orang menganggap ini bermanfaat</span
+              >
             </div>
           </article>
         </div>
@@ -156,7 +178,7 @@
                 <h3 class="text-base font-bold text-gray-900 mb-1 line-clamp-1">
                   {{ getDisplayName(review) }}
                 </h3>
-                <div class="flex items-center gap-2 text-xs flex-wrap">
+                <div class="flex items-center gap-2 text-xs">
                   <span
                     v-if="review.userStatus"
                     class="px-2 py-0.5 rounded-full text-xs font-medium flex-shrink-0"
@@ -224,7 +246,7 @@
               <p class="text-xs font-semibold text-gray-900 mb-1">
                 Apa yang disukai dari sekolah ini?
               </p>
-              <p class="text-xs text-gray-700 leading-relaxed">
+              <p class="text-xs text-gray-700 leading-relaxed line-clamp-1">
                 {{ review.liked }}
               </p>
             </div>
@@ -233,9 +255,33 @@
               <p class="text-xs font-semibold text-gray-900 mb-1">
                 Apa yang perlu diperbaiki dari sekolah ini?
               </p>
-              <p class="text-xs text-gray-700 leading-relaxed">
+              <p class="text-xs text-gray-700 leading-relaxed line-clamp-1">
                 {{ review.improved }}
               </p>
+            </div>
+
+            <div class="flex items-center gap-2 pt-3">
+              <div class="border border-border-gray rounded-full px-2 py-1.5 flex items-center gap-1.5">
+                <span class="text-xs text-secondary-gray">Helpful?</span>
+                <button @click="handleLikeClick(review.id)">
+                  <svg
+                    class="w-3.5 h-3.5"
+                    :fill="reviewLikes[review.id]?.isLiked ? 'currentColor' : 'none'"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <span class="text-xs text-gray-600"
+                >{{ reviewLikes[review.id]?.likesCount || 0 }} orang menganggap ini bermanfaat</span
+              >
             </div>
           </article>
         </div>
@@ -299,6 +345,7 @@ import { useRouter } from "vue-router";
 import axios from "@/lib/axios";
 import { useAuthStore } from "@/store/auth";
 import Modal from "@/components/common/Modal.vue";
+import Cookies from "js-cookie";
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -337,9 +384,16 @@ const fetchReviews = async () => {
 
 const fetchLikesStatus = async () => {
   try {
+    const token = Cookies.get('token');
+    if (!token) return;
+
     const promises = reviews.value.map(async (review) => {
       try {
-        const { data } = await axios.get(`/reviews/${review.id}/likes/check`);
+        const { data } = await axios.get(`/reviews/${review.id}/likes/check`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         return {
           id: review.id,
           isLiked: data.data.isLiked,
@@ -376,7 +430,18 @@ const handleLikeClick = (reviewId) => {
 
 const toggleLike = async (reviewId) => {
   try {
-    const { data } = await axios.post(`/reviews/${reviewId}/like`);
+    const token = Cookies.get('token');
+    if (!token) {
+      showLoginModal.value = true;
+      return;
+    }
+
+    const { data } = await axios.post(`/reviews/${reviewId}/like`, {}, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
     if (data.success) {
       reviewLikes.value[reviewId] = {
         isLiked: data.data.action === "liked",
@@ -398,16 +463,12 @@ const visibleReviews = computed(() => {
 });
 
 const getDisplayName = (review) => {
-  // Cek apakah user adalah parent (punya children)
   if (review.children && review.children.length > 0) {
-    // Jika anak alumni, tampilkan nama anak
     if (review.userStatus === "alumni") {
       return review.children[0].fullname;
     }
-    // Jika anak aktif, tampilkan nama orang tua
     return review.fullname;
   }
-  // Jika bukan parent (student), tampilkan nama user
   return review.fullname;
 };
 

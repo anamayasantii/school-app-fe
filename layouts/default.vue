@@ -170,12 +170,12 @@
             >
               Tentang Kami
             </a> -->
-            <!-- <a
+            <a
               href="/ranking"
               class="text-gray-700 hover:text-gray-900 whitespace-nowrap"
             >
               Peringkat Sekolah
-            </a> -->
+            </a>
           </nav>
 
           <!-- <div
@@ -340,13 +340,13 @@
             >
               Tentang Kami
             </a> -->
-            <!-- <a
+            <a
               href="/ranking"
               class="block py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg px-3"
               @click="isMobileMenuOpen = false"
             >
               Peringkat Sekolah
-            </a> -->
+            </a>
 
             <!-- <div class="pt-4 border-t border-gray-200">
               <div class="font-medium text-gray-900 mb-3">Bahasa</div>

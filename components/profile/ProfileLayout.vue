@@ -101,11 +101,13 @@
     <Modal
       :isOpen="showLogoutModal"
       type="error"
+      gradientColor="red"
       title="Keluar?"
       message="Anda selalu dapat masuk kembali kapan saja."
       confirmText="Ya, keluar"
       cancelText="Batal"
       :showCancel="true"
+      :useGradient="true"
       @confirm="confirmLogout"
       @cancel="cancelLogout"
       @close="cancelLogout"
@@ -148,16 +150,16 @@ const menuItems = [
     name: 'Ganti Kata Sandi',
     icon: KeyIcon,
   },
-  // {
-  //   id: 'saved',
-  //   name: 'Disimpan',
-  //   icon: BookmarkIcon,
-  // },
-  // {
-  //   id: 'reviews',
-  //   name: 'Ulasan Saya',
-  //   icon: ReviewIcon,
-  // },
+  {
+    id: 'saved',
+    name: 'Disimpan',
+    icon: BookmarkIcon,
+  },
+  {
+    id: 'reviews',
+    name: 'Ulasan Saya',
+    icon: ReviewIcon,
+  },
   {
     id: 'logout',
     name: 'Keluar',

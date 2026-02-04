@@ -282,9 +282,7 @@ onMounted(fetchReviews);
     </div>
 
     <template v-else>
-      <!-- Rating Overview Section -->
       <div class="p-2 sm:p-4 mb-4 sm:mb-6">
-        <!-- Overall Rating -->
         <div
           class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-4 sm:mb-6"
         >
@@ -316,9 +314,7 @@ onMounted(fetchReviews);
           </div>
         </div>
 
-        <!-- Rating Distribution & Categories -->
         <div class="flex flex-col lg:flex-row gap-4 lg:gap-8 mb-4 sm:mb-6">
-          <!-- Rating Distribution -->
           <div class="space-y-1.5 w-full sm:w-40 lg:w-32">
             <div
               v-for="item in ratingDistribution"
@@ -337,7 +333,6 @@ onMounted(fetchReviews);
             </div>
           </div>
 
-          <!-- Category Scores -->
           <div
             class="flex-1 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-4"
           >
@@ -373,7 +368,6 @@ onMounted(fetchReviews);
         </button>
       </div>
 
-      <!-- Mobile Filter Button -->
       <div class="lg:hidden mb-4">
         <button
           @click="showMobileFilter = !showMobileFilter"
@@ -397,9 +391,7 @@ onMounted(fetchReviews);
         </button>
       </div>
 
-      <!-- Reviews Section -->
       <div class="flex flex-col lg:flex-row gap-4 lg:gap-6">
-        <!-- Filter Sidebar (Desktop) / Dropdown (Mobile) -->
         <div
           class="w-full lg:w-48 lg:flex-shrink-0"
           :class="{ 'hidden lg:block': !showMobileFilter }"
@@ -419,7 +411,6 @@ onMounted(fetchReviews);
               </button>
             </div>
 
-            <!-- Rating Filter -->
             <div class="pb-4 mb-4 border-b border-border-gray">
               <button
                 @click="showRatingFilter = !showRatingFilter"
@@ -473,7 +464,6 @@ onMounted(fetchReviews);
               </div>
             </div>
 
-            <!-- User Filter -->
             <div>
               <button
                 @click="showUserFilter = !showUserFilter"
@@ -521,9 +511,7 @@ onMounted(fetchReviews);
           </div>
         </div>
 
-        <!-- Reviews List -->
         <div class="flex-1 border border-border-gray rounded-xl p-3 sm:p-6">
-          <!-- Header -->
           <div
             class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4"
           >
@@ -587,15 +575,12 @@ onMounted(fetchReviews);
             </div>
           </div>
 
-          <!-- Reviews -->
           <div v-if="reviews.length > 0" class="space-y-4">
             <div
               v-for="review in reviews"
               :key="review.id"
               class="border-t pt-4"
             >
-              <!-- User Info -->
-              <!-- User Info -->
               <div class="flex items-start gap-3 mb-3">
                 <img
                   v-if="review.image"
@@ -640,7 +625,6 @@ onMounted(fetchReviews);
                 </div>
               </div>
 
-              <!-- Rating & Date -->
               <div class="flex items-center gap-3 mb-3">
                 <div class="flex items-center gap-1">
                   <span class="font-semibold text-sm text-primary-green">
@@ -695,8 +679,7 @@ onMounted(fetchReviews);
                 </p>
               </div>
 
-              <!-- Review Text -->
-              <!-- <div class="mb-3">
+              <div class="mb-3">
                 <p class="text-primary-green text-sm font-semibold mb-1">
                   Komentar :
                 </p>
@@ -706,9 +689,8 @@ onMounted(fetchReviews);
                 >
                   {{ review.reviewText }}
                 </p>
-              </div> -->
+              </div>
 
-              <!-- Liked Section -->
               <div v-if="review.liked" class="mb-3">
                 <p class="text-primary-green text-sm font-semibold mb-1">
                   Apa yang disukai dari sekolah ini?
@@ -718,7 +700,6 @@ onMounted(fetchReviews);
                 </p>
               </div>
 
-              <!-- Improved Section -->
               <div v-if="review.improved" class="mb-3">
                 <p class="text-primary-green text-sm font-semibold mb-1">
                   Apa yang bisa diperbaiki dari sekolah ini?
@@ -728,7 +709,6 @@ onMounted(fetchReviews);
                 </p>
               </div>
 
-              <!-- Detail Scores -->
               <div
                 v-if="review.source === 'internal'"
                 class="grid grid-cols-5 gap-2 sm:gap-3 mb-3"
@@ -747,8 +727,7 @@ onMounted(fetchReviews);
                 </div>
               </div>
 
-              <!-- Like Button -->
-              <!-- <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+              <div class="flex flex-col sm:flex-row sm:items-center gap-2">
                 <button
                   @click="handleLikeReview(review.id)"
                   class="inline-flex items-center justify-center sm:justify-start gap-2 px-3 py-1.5 text-xs text-secondary-gray hover:bg-bg-light rounded-lg transition-colors"
@@ -762,7 +741,7 @@ onMounted(fetchReviews);
                 >
                   {{ review.likesCount }} orang menganggap ini bermanfaat
                 </span>
-              </div> -->
+              </div>
             </div>
           </div>
 
@@ -770,7 +749,6 @@ onMounted(fetchReviews);
             <p class="text-secondary-gray">Data belum tersedia.</p>
           </div>
 
-          <!-- Pagination -->
           <div
             v-if="meta && meta.last_page > 1"
             class="flex flex-wrap justify-center items-center gap-2 sm:gap-3 mt-6"

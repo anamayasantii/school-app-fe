@@ -5,7 +5,7 @@
         Sekolah terbaik yang terdaftar di Denpasar
       </h1>
       
-      <button 
+      <!-- <button 
         v-if="authStore.isLoggedIn"
         @click="downloadPDF"
         :disabled="schools.length === 0"
@@ -17,7 +17,7 @@
           <line x1="12" y1="15" x2="12" y2="3"></line>
         </svg>
         <span class="hidden sm:inline">Download PDF</span>
-      </button>
+      </button> -->
     </div>
 
     <EducationLevelTabs

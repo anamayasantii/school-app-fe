@@ -285,14 +285,13 @@
   </div>
 
   <!-- Education History Component -->
-  <!-- <EducationHistory
+  <EducationHistory
     :educationData="educationHistory"
     @add="handleAddEducation"
     @edit="handleEditEducation"
     @delete="handleDeleteEducation"
-  /> -->
+  />
 
-  <!-- Modals -->
   <ProfileEditModal
     :isOpen="isEditModalOpen"
     :userData="profileData"

@@ -63,7 +63,7 @@
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6 mb-4 sm:mb-5 md:mb-6">
-            <!-- <div>
+            <div>
               <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                 Email
               </label>
@@ -74,8 +74,8 @@
                 readonly
                 disabled
               />
-            </div> -->
-            <!-- <div>
+            </div>
+            <div>
               <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                 No. Telp
               </label>
@@ -85,7 +85,7 @@
                 class="w-full px-3 py-2 sm:px-4 sm:py-2.5 md:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                 placeholder="Masukkan nomor telepon"
               />
-            </div> -->
+            </div>
           </div>
 
           <div class="mb-6 sm:mb-7 md:mb-8">

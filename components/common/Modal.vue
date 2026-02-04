@@ -9,14 +9,17 @@
         <div class="absolute inset-0 bg-black/50"></div>
 
         <div
-          class="relative bg-white rounded-2xl shadow-xl max-w-md w-full p-8 text-center"
+          :class="[
+            'relative rounded-2xl shadow-xl max-w-md w-full p-8 text-center',
+            gradientClass,
+          ]"
           @click.stop
         >
           <div class="mb-6 flex justify-center">
             <div
               :class="[
                 'w-20 h-20 rounded-full flex items-center justify-center',
-                iconBgClass
+                iconBgClass,
               ]"
             >
               <svg
@@ -102,7 +105,7 @@
               @click="handleConfirm"
               :class="[
                 'flex-1 px-6 py-3 rounded-lg font-medium transition-colors',
-                confirmButtonClass
+                confirmButtonClass,
               ]"
             >
               {{ confirmText }}
@@ -115,87 +118,102 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed } from "vue";
 
 const props = defineProps({
   isOpen: {
     type: Boolean,
-    default: false
+    default: false,
   },
   type: {
     type: String,
-    default: 'info',
-    validator: (value) => ['success', 'error', 'warning', 'info'].includes(value)
+    default: "info",
+    validator: (value) =>
+      ["success", "error", "warning", "info"].includes(value),
   },
   title: {
     type: String,
-    required: true
+    required: true,
   },
   message: {
     type: String,
-    required: true
+    required: true,
   },
   confirmText: {
     type: String,
-    default: 'Oke'
+    default: "Oke",
   },
   cancelText: {
     type: String,
-    default: 'Batal'
+    default: "Batal",
   },
   showCancel: {
     type: Boolean,
-    default: false
+    default: false,
   },
   closeOnBackdrop: {
     type: Boolean,
-    default: true
+    default: true,
+  },
+  gradientColor: {
+    type: String,
+    default: '',
+    validator: (value) => ['', 'red', 'green'].includes(value)
+  },
+});
+
+const gradientClass = computed(() => {
+  if (props.gradientColor === 'red') {
+    return 'bg-gradient-to-b from-red-50 via-pink-50 via-60% to-white'
+  } else if (props.gradientColor === 'green') {
+    return 'bg-gradient-to-b from-green-50 via-emerald-50 via-60% to-white'
   }
+  return 'bg-white'
 })
 
-const emit = defineEmits(['confirm', 'cancel', 'close'])
+const emit = defineEmits(["confirm", "cancel", "close"]);
 
 const iconBgClass = computed(() => {
   switch (props.type) {
-    case 'success':
-      return 'bg-gradient-to-br from-green-50 to-green-100'
-    case 'error':
-      return 'bg-gradient-to-br from-red-50 to-red-100'
-    case 'warning':
-      return 'bg-gradient-to-br from-yellow-50 to-yellow-100'
+    case "success":
+      return "bg-gradient-to-br from-green-50 to-green-100";
+    case "error":
+      return "bg-gradient-to-br from-red-50 to-red-100";
+    case "warning":
+      return "bg-gradient-to-br from-yellow-50 to-yellow-100";
     default:
-      return 'bg-gradient-to-br from-blue-50 to-blue-100'
+      return "bg-gradient-to-br from-blue-50 to-blue-100";
   }
-})
+});
 
 const confirmButtonClass = computed(() => {
   switch (props.type) {
-    case 'success':
-      return 'bg-gray-900 text-white hover:bg-gray-800'
-    case 'error':
-      return 'bg-red-600 text-white hover:bg-red-700'
-    case 'warning':
-      return 'bg-yellow-600 text-white hover:bg-yellow-700'
+    case "success":
+      return "bg-gray-900 text-white hover:bg-gray-800";
+    case "error":
+      return "bg-red-600 text-white hover:bg-red-700";
+    case "warning":
+      return "bg-yellow-600 text-white hover:bg-yellow-700";
     default:
-      return 'bg-blue-600 text-white hover:bg-blue-700'
+      return "bg-blue-600 text-white hover:bg-blue-700";
   }
-})
+});
 
 const handleConfirm = () => {
-  emit('confirm')
-  emit('close')
-}
+  emit("confirm");
+  emit("close");
+};
 
 const handleCancel = () => {
-  emit('cancel')
-  emit('close')
-}
+  emit("cancel");
+  emit("close");
+};
 
 const handleBackdropClick = () => {
   if (props.closeOnBackdrop) {
-    emit('close')
+    emit("close");
   }
-}
+};
 </script>
 
 <style scoped>

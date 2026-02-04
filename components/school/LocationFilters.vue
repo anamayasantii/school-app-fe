@@ -2,7 +2,6 @@
   <div
     class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6"
   >
-    <!-- Province Dropdown -->
     <div class="relative">
       <div
         @click="toggleProvince"
@@ -116,7 +115,6 @@
       </div>
     </div>
 
-    <!-- District Dropdown -->
     <div class="relative">
       <div
         @click="toggleDistrict"
@@ -229,7 +227,6 @@
       </div>
     </div>
 
-    <!-- SubDistrict Dropdown -->
     <div class="relative">
       <div
         @click="toggleSubDistrict"
