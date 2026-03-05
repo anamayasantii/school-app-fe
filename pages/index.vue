@@ -44,6 +44,7 @@
           class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-semibold mb-4 py-4 max-w-3xl tracking-tight mx-auto px-4"
         >
           Pencarian sekolah lebih sederhana dan mudah.
+          tes perubahan
         </h1>
 
         <div class="flex justify-center mb-3 sm:mb-3 px-4">
